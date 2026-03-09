@@ -103,7 +103,7 @@ const TracePage = () => {
         </FadeIn>
         <FadeIn delay={0.1}>
           <div className="bg-card rounded-2xl overflow-hidden shadow-card border border-border">
-            <img src={heroFarm} alt="Vùng canh tác" className="w-full h-40 object-cover" />
+            <img src={heroFarm} alt="Vùng canh tác" className="w-[60%] mx-auto py-3 object-contain rounded-lg" />
             <div className="p-4">
               <p className="text-xs font-semibold text-foreground mb-1">📍 Vùng canh tác</p>
               <p className="text-xs text-muted-foreground">{farmer.region} — Cao nguyên Trung phần, độ cao 500-700m</p>
