@@ -17,7 +17,7 @@ const TracePage = () => {
   return (
     <div>
       {/* Hero */}
-      <section className="relative h-72 overflow-hidden">
+      <section className="relative h-44 overflow-hidden">
         <img src={heroFarm} alt="Nông trại" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
         <div className="relative z-10 h-full flex items-end px-5 pb-6">
@@ -61,7 +61,7 @@ const TracePage = () => {
                   <img
                     src={imageMap[entry.imageKey]}
                     alt={entry.stage}
-                    className="w-full object-contain bg-muted"
+                    className="w-[60%] mx-auto object-contain rounded-lg"
                   />
                   <div className="p-5">
                     <div className="flex items-center justify-between mb-2">
@@ -103,7 +103,7 @@ const TracePage = () => {
         </FadeIn>
         <FadeIn delay={0.1}>
           <div className="bg-card rounded-2xl overflow-hidden shadow-card border border-border">
-            <img src={heroFarm} alt="Vùng canh tác" className="w-full h-40 object-cover" />
+            <img src={heroFarm} alt="Vùng canh tác" className="w-[60%] mx-auto py-3 object-contain rounded-lg" />
             <div className="p-4">
               <p className="text-xs font-semibold text-foreground mb-1">📍 Vùng canh tác</p>
               <p className="text-xs text-muted-foreground">{farmer.region} — Cao nguyên Trung phần, độ cao 500-700m</p>
