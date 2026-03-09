@@ -61,7 +61,7 @@ const TracePage = () => {
                   <img
                     src={imageMap[entry.imageKey]}
                     alt={entry.stage}
-                    className="w-full h-44 object-cover"
+                    className="w-full object-contain bg-muted"
                   />
                   <div className="p-5">
                     <div className="flex items-center justify-between mb-2">
