@@ -17,7 +17,7 @@ const TracePage = () => {
   return (
     <div>
       {/* Hero */}
-      <section className="relative h-72 overflow-hidden">
+      <section className="relative h-44 overflow-hidden">
         <img src={heroFarm} alt="Nông trại" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
         <div className="relative z-10 h-full flex items-end px-5 pb-6">
