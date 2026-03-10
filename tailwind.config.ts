@@ -15,6 +15,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
+        serif: ["Playfair Display", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -50,19 +51,28 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        "eden-green": {
+          DEFAULT: "hsl(var(--eden-green))",
+          light: "hsl(var(--eden-green-light))",
+          dark: "hsl(var(--eden-green-dark))",
+        },
+        "purple-brand": "hsl(var(--purple))",
+        "purple-light": "hsl(var(--purple-light))",
+        "purple-dark": "hsl(var(--purple-dark))",
+        cream: "hsl(var(--cream))",
+        gold: "hsl(var(--gold))",
         sage: {
-          DEFAULT: "hsl(var(--sage))",
-          light: "hsl(var(--sage-light))",
+          DEFAULT: "hsl(var(--muted))",
+          light: "hsl(var(--cream))",
         },
         forest: {
-          DEFAULT: "hsl(var(--forest))",
-          light: "hsl(var(--forest-light))",
+          DEFAULT: "hsl(var(--eden-green))",
+          light: "hsl(var(--eden-green-light))",
         },
         terracotta: {
-          DEFAULT: "hsl(var(--terracotta))",
-          light: "hsl(var(--terracotta-light))",
+          DEFAULT: "hsl(var(--eden-green))",
+          light: "hsl(var(--eden-green-light))",
         },
-        cream: "hsl(var(--cream))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
