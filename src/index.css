@@ -2,51 +2,52 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
 
 @layer base {
   :root {
-    --background: 43 50% 97%;
-    --foreground: 153 42% 15%;
+    --background: 0 0% 100%;
+    --foreground: 150 10% 15%;
 
-    --card: 43 40% 99%;
-    --card-foreground: 153 42% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 150 10% 15%;
 
-    --popover: 43 40% 99%;
-    --popover-foreground: 153 42% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 150 10% 15%;
 
-    --primary: 153 42% 18%;
-    --primary-foreground: 43 50% 97%;
+    --primary: 152 100% 32%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 60 7% 68%;
-    --secondary-foreground: 153 42% 15%;
+    --secondary: 263 30% 55%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 60 7% 88%;
-    --muted-foreground: 153 20% 40%;
+    --muted: 150 5% 95%;
+    --muted-foreground: 150 5% 45%;
 
-    --accent: 30 64% 44%;
-    --accent-foreground: 43 50% 97%;
+    --accent: 263 30% 55%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 60 10% 85%;
-    --input: 60 10% 85%;
-    --ring: 153 42% 18%;
+    --border: 150 5% 90%;
+    --input: 150 5% 90%;
+    --ring: 152 100% 32%;
 
-    --radius: 1rem;
+    --radius: 0.75rem;
 
-    --sage: 60 7% 68%;
-    --sage-light: 60 7% 92%;
-    --cream: 43 50% 97%;
-    --forest: 153 42% 18%;
-    --forest-light: 153 30% 30%;
-    --terracotta: 30 64% 44%;
-    --terracotta-light: 30 64% 54%;
+    --eden-green: 152 100% 32%;
+    --eden-green-light: 152 60% 45%;
+    --eden-green-dark: 152 100% 22%;
+    --purple: 263 30% 55%;
+    --purple-light: 263 20% 70%;
+    --purple-dark: 263 40% 35%;
+    --cream: 40 30% 97%;
+    --gold: 43 80% 55%;
 
-    --shadow-soft: 0 4px 20px -4px hsl(153 42% 18% / 0.08);
-    --shadow-card: 0 8px 30px -8px hsl(153 42% 18% / 0.1);
-    --shadow-lift: 0 12px 40px -12px hsl(153 42% 18% / 0.15);
+    --shadow-soft: 0 4px 20px -4px hsl(150 10% 15% / 0.06);
+    --shadow-card: 0 8px 30px -8px hsl(150 10% 15% / 0.08);
+    --shadow-lift: 0 12px 40px -12px hsl(150 10% 15% / 0.12);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -65,76 +66,113 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', sans-serif;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
   }
 }
 
 @layer components {
   .section-padding {
-    @apply px-5 py-12 md:px-8 md:py-16;
+    @apply px-5 py-16 md:px-8 md:py-20;
   }
 
   .card-hover {
-    @apply transition-all duration-300 ease-out hover:scale-[1.03] hover:-translate-y-1;
+    @apply transition-all duration-300 ease-out hover:scale-[1.02] hover:-translate-y-1;
+  }
+
+  .badge-new {
+    @apply bg-secondary text-secondary-foreground px-3 py-1 rounded text-xs font-semibold uppercase tracking-wider;
   }
 
   .badge-terracotta {
-    @apply bg-accent text-accent-foreground px-3 py-1 rounded-full text-xs font-semibold tracking-wide;
+    @apply bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-semibold tracking-wide;
   }
 
   .badge-sage {
-    @apply bg-sage-light text-forest px-3 py-1 rounded-full text-xs font-semibold tracking-wide;
+    @apply bg-muted text-foreground px-3 py-1 rounded-full text-xs font-semibold tracking-wide;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground px-8 py-3.5 rounded-lg font-semibold text-base
+    transition-all duration-300 ease-out hover:bg-eden-green-light hover:scale-[1.02]
+    active:scale-[0.98] shadow-soft;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground px-8 py-3.5 rounded-lg font-semibold text-base
+    transition-all duration-300 ease-out hover:bg-purple-light hover:scale-[1.02]
+    active:scale-[0.98] shadow-soft;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .btn-outline-primary {
+    @apply border-2 border-primary text-primary px-8 py-3 rounded-lg font-semibold text-base
+    transition-all duration-300 ease-out hover:bg-primary hover:text-primary-foreground
+    active:scale-[0.98];
+    font-family: 'Inter', sans-serif;
   }
 
   .btn-terracotta {
-    @apply bg-accent text-accent-foreground px-6 py-3.5 rounded-2xl font-semibold text-base
-    transition-all duration-300 ease-out hover:bg-terracotta-light hover:scale-[1.03] hover:-translate-y-0.5
+    @apply bg-primary text-primary-foreground px-6 py-3.5 rounded-lg font-semibold text-base
+    transition-all duration-300 ease-out hover:bg-eden-green-light hover:scale-[1.02]
     active:scale-[0.98] shadow-soft;
+    font-family: 'Inter', sans-serif;
   }
 
   .btn-forest {
-    @apply bg-primary text-primary-foreground px-6 py-3.5 rounded-2xl font-semibold text-base
-    transition-all duration-300 ease-out hover:bg-forest-light hover:scale-[1.03] hover:-translate-y-0.5
+    @apply bg-primary text-primary-foreground px-6 py-3.5 rounded-lg font-semibold text-base
+    transition-all duration-300 ease-out hover:bg-eden-green-light hover:scale-[1.02]
     active:scale-[0.98] shadow-soft;
+    font-family: 'Inter', sans-serif;
   }
 
   .timeline-line {
-    @apply absolute left-5 top-0 bottom-0 w-0.5 bg-secondary;
+    @apply absolute left-5 top-0 bottom-0 w-0.5 bg-border;
   }
 
   .timeline-dot {
-    @apply absolute left-[14px] w-3 h-3 rounded-full bg-accent border-2 border-background z-10;
+    @apply absolute left-[14px] w-3 h-3 rounded-full bg-primary border-2 border-background z-10;
   }
 }
 
 @layer utilities {
-  .text-forest {
-    color: hsl(var(--forest));
+  .text-eden-green {
+    color: hsl(var(--eden-green));
   }
-  .bg-forest {
-    background-color: hsl(var(--forest));
+  .bg-eden-green {
+    background-color: hsl(var(--eden-green));
   }
-  .text-terracotta {
-    color: hsl(var(--terracotta));
+  .bg-eden-green-light {
+    background-color: hsl(var(--eden-green-light));
   }
-  .bg-terracotta {
-    background-color: hsl(var(--terracotta));
+  .bg-eden-green-dark {
+    background-color: hsl(var(--eden-green-dark));
   }
-  .bg-terracotta-light {
-    background-color: hsl(var(--terracotta-light));
+  .text-purple-brand {
+    color: hsl(var(--purple));
   }
-  .bg-sage-light {
-    background-color: hsl(var(--sage-light));
+  .bg-purple-brand {
+    background-color: hsl(var(--purple));
   }
-  .bg-sage {
-    background-color: hsl(var(--sage));
+  .bg-purple-light {
+    background-color: hsl(var(--purple-light));
+  }
+  .bg-purple-dark {
+    background-color: hsl(var(--purple-dark));
   }
   .bg-cream {
     background-color: hsl(var(--cream));
   }
-  .text-sage {
-    color: hsl(var(--sage));
+  .bg-gold {
+    background-color: hsl(var(--gold));
+  }
+  .text-gold {
+    color: hsl(var(--gold));
   }
   .shadow-soft {
     box-shadow: var(--shadow-soft);
@@ -145,7 +183,31 @@
   .shadow-lift {
     box-shadow: var(--shadow-lift);
   }
+  .text-forest {
+    color: hsl(var(--eden-green));
+  }
+  .bg-forest {
+    background-color: hsl(var(--eden-green));
+  }
   .bg-forest-light {
-    background-color: hsl(var(--forest-light));
+    background-color: hsl(var(--eden-green-light));
+  }
+  .bg-sage-light {
+    background-color: hsl(var(--cream));
+  }
+  .text-sage {
+    color: hsl(var(--muted-foreground));
+  }
+  .bg-sage {
+    background-color: hsl(var(--muted));
+  }
+  .bg-terracotta {
+    background-color: hsl(var(--eden-green));
+  }
+  .text-terracotta {
+    color: hsl(var(--eden-green));
+  }
+  .bg-terracotta-light {
+    background-color: hsl(var(--eden-green-light));
   }
 }
