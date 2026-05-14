@@ -219,8 +219,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Certifications Marquee */}
-      <CertMarquee />
 
 
       {/* Export section */}
