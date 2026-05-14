@@ -1,10 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Sprout, BarChart3, BookOpen, ShoppingCart, Search, Cpu, Truck, Globe, Award, CheckCircle, Zap, Shield, MapPin, Calendar, ArrowRight, Star } from "lucide-react";
 import FadeIn from "@/components/FadeIn";
 import StickyStoryScroll from "@/components/StickyStoryScroll";
-import CertMarquee from "@/components/CertMarquee";
 import heroCoffeeFarm from "@/assets/hero-coffee-farm.jpg";
 import exportBg from "@/assets/export-bg.jpg";
 import { useQuery } from "@tanstack/react-query";
