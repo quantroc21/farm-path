@@ -106,14 +106,14 @@ const HomePage = () => {
           src={heroCoffeeFarm}
           alt="Nông trại ớt Bình Thuận – hệ sinh thái nông nghiệp số Daklink"
           className="absolute inset-0 w-full h-full object-cover"
-          initial={{ scale: 1.05 }}
+          initial={{ scale: 1.1 }}
           animate={{
-            scale: [1.05, 1.15, 1.05],
-            x: ["0%", "-2%", "0%"],
-            y: ["0%", "1%", "0%"],
+            scale: [1.1, 1.25, 1.1],
+            x: ["0%", "-4%", "0%"],
+            y: ["0%", "2%", "0%"],
           }}
           transition={{
-            duration: 40,
+            duration: 25,
             ease: "easeInOut",
             repeat: Infinity,
           }}
