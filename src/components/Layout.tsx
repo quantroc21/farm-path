@@ -12,9 +12,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <div className="w-8 h-8 bg-primary rounded-xl flex items-center justify-center">
               <Leaf className="w-4 h-4 text-primary-foreground" />
             </div>
-            <span className="font-bold text-lg text-foreground tracking-tight">TraceFarm</span>
+            <span className="font-bold text-lg text-foreground tracking-tight">Daklink</span>
           </Link>
-          <span className="text-xs font-medium text-muted-foreground bg-muted px-2.5 py-1 rounded-full">Demo</span>
         </div>
       </header>
 
