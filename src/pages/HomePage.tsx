@@ -154,33 +154,8 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Ecosystem */}
-      <section id="ecosystem" className="section-padding bg-cream">
-        <div className="max-w-6xl mx-auto">
-          <FadeIn>
-            <p className="text-primary text-xs font-semibold uppercase tracking-[0.2em] mb-2 text-center">
-              HỆ SINH THÁI
-            </p>
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground text-center mb-10">
-              Nền tảng & Ứng dụng
-            </h2>
-          </FadeIn>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {ecosystem.map((item, i) => (
-              <FadeIn key={item.title} delay={i * 0.1}>
-                <div className="bg-card rounded-2xl p-6 shadow-card border border-border card-hover h-full">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
-                    <item.icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-bold text-lg text-foreground mb-2">{item.title}</h3>
-                  <p className="text-primary/70 text-sm leading-relaxed">{item.desc}</p>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Ecosystem — Sticky Scroll Storytelling */}
+      <StickyStoryScroll />
 
       {/* Guarantees */}
       <section className="section-padding bg-background">
@@ -198,8 +173,8 @@ const HomePage = () => {
             {guarantees.map((g, i) => (
               <FadeIn key={g.text} delay={i * 0.1}>
                 <div className="flex items-center gap-6 group justify-center md:justify-start">
-                  <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center transition-all duration-500 group-hover:rounded-xl shadow-sm">
-                    <g.icon className="w-7 h-7 text-primary" />
+                  <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center transition-all duration-500 group-hover:rounded-xl group-hover:scale-110 group-hover:bg-primary group-hover:text-primary-foreground shadow-sm">
+                    <g.icon className="w-7 h-7 text-primary group-hover:text-primary-foreground transition-colors" />
                   </div>
                   <div className="flex flex-col text-left">
                     <p className="text-base font-bold text-foreground leading-snug max-w-[220px] md:max-w-xs">{g.text}</p>
@@ -211,6 +186,8 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Certifications Marquee */}
+      <CertMarquee />
 
 
       {/* Export section */}
