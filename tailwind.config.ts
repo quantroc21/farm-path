@@ -116,6 +116,14 @@ export default {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { boxShadow: "0 0 0 0 rgba(16, 110, 85, 0.5)" },
+          "50%": { boxShadow: "0 0 0 14px rgba(16, 110, 85, 0)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -124,6 +132,8 @@ export default {
         "fade-in": "fade-in 0.5s ease-out forwards",
         "scale-in": "scale-in 0.4s ease-out forwards",
         shimmer: "shimmer 2s infinite linear",
+        marquee: "marquee 38s linear infinite",
+        "pulse-glow": "pulse-glow 2.4s ease-in-out infinite",
       },
     },
   },
