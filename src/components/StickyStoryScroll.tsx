@@ -1,180 +1,130 @@
 import { useRef } from "react";
-import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
-import { Sprout, Leaf, Wheat, Coffee, BookOpen, QrCode, type LucideIcon } from "lucide-react";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import seedling from "@/assets/seedling.jpg";
-import cultivation from "@/assets/tabs/tab_cultivation_protocol_1773716426810.png";
+import heroFarm from "@/assets/hero-farm.jpg";
 import harvest from "@/assets/coffee-harvest.jpg";
 import drying from "@/assets/coffee-drying.jpg";
-import diary from "@/assets/tabs/tab_digital_diary_1773716443710.png";
-import trace from "@/assets/tabs/tab_traceability_verification_1773716537899.png";
+import farmerPortrait from "@/assets/farmer-portrait.jpg";
+import productPkg from "@/assets/product-proud-vietnam.jpg";
 
 type Chapter = {
-  id: string;
   step: string;
   title: string;
   desc: string;
   image: string;
-  icon: LucideIcon;
-  meta: string;
+  location: string;
 };
 
 const chapters: Chapter[] = [
   {
-    id: "gieo-hat",
     step: "01",
     title: "Gieo hạt",
-    desc: "Hạt giống được tuyển chọn từ những vườn ươm đạt chuẩn VietGAP. Mỗi lô đều được gắn ID truy xuất ngay từ ngày đầu tiên xuống đất.",
+    desc: "Hạt giống được tuyển chọn từ những vườn ươm đạt chuẩn VietGAP. Mỗi lô đều được gắn mã truy xuất ngay từ ngày đầu tiên xuống đất.",
     image: seedling,
-    icon: Sprout,
-    meta: "Vườn ươm M'Drak · Đắk Lắk",
+    location: "Vườn ươm M'Drak, Đắk Lắk",
   },
   {
-    id: "cham-soc",
     step: "02",
     title: "Chăm sóc",
-    desc: "Quy trình canh tác bền vững theo tiêu chuẩn VietGAP. Tưới tiêu, bón phân hữu cơ và phòng trừ sâu bệnh được lên lịch dựa trên dữ liệu cảm biến IoT.",
-    image: cultivation,
-    icon: Leaf,
-    meta: "VietGAP · Hữu cơ chuyển đổi",
+    desc: "Quy trình canh tác bền vững theo tiêu chuẩn VietGAP. Tưới tiêu, bón phân hữu cơ và phòng trừ sâu bệnh được theo dõi qua dữ liệu cảm biến.",
+    image: heroFarm,
+    location: "VietGAP · Hữu cơ chuyển đổi",
   },
   {
-    id: "thu-hoach",
     step: "03",
     title: "Thu hoạch",
-    desc: "Hái chín chọn lọc thủ công – chỉ những quả đạt độ chín >95% Brix mới được thu. Mỗi mẻ được cân và ghi nhận trực tiếp tại rẫy.",
+    desc: "Hái chín chọn lọc thủ công — chỉ những quả đạt độ chín trên 95% mới được thu. Mỗi mẻ được cân và ghi nhận trực tiếp tại rẫy.",
     image: harvest,
-    icon: Wheat,
-    meta: "Vụ mùa 2026 · 1.247 kg cherry",
+    location: "Vụ mùa 2026 · 1.247 kg cherry",
   },
   {
-    id: "so-che",
     step: "04",
     title: "Sơ chế",
-    desc: "Phương pháp natural & honey process trên giàn phơi cao. Nhiệt độ và độ ẩm được giám sát liên tục để giữ trọn hương vị bản địa.",
+    desc: "Phương pháp natural và honey process trên giàn phơi cao. Nhiệt độ và độ ẩm được giám sát liên tục để giữ trọn hương vị.",
     image: drying,
-    icon: Coffee,
-    meta: "Natural process · 18 ngày phơi",
+    location: "Natural process · 18 ngày phơi",
   },
   {
-    id: "nhat-ky-so",
     step: "05",
     title: "Nhật ký số",
-    desc: "Mọi hoạt động canh tác được nông dân ghi nhận qua app di động. Dữ liệu lưu trữ bất biến, tạo nên bằng chứng số cho từng lô hàng.",
-    image: diary,
-    icon: BookOpen,
-    meta: "Daklink Farmer App · 168 nhật ký",
+    desc: "Mọi hoạt động canh tác được nông dân ghi nhận qua ứng dụng di động. Dữ liệu lưu trữ minh bạch, tạo nên bằng chứng số cho từng lô hàng.",
+    image: farmerPortrait,
+    location: "Daklink Farmer App · 168 nhật ký",
   },
   {
-    id: "truy-xuat",
     step: "06",
-    title: "Truy xuất QR",
-    desc: "Khách hàng quét mã QR trên bao bì để xem toàn bộ hành trình – từ giống, người nông dân, ngày thu hoạch đến lô vận chuyển.",
-    image: trace,
-    icon: QrCode,
-    meta: "Mỗi sản phẩm · Một câu chuyện",
+    title: "Truy xuất",
+    desc: "Quét mã QR trên bao bì để xem toàn bộ hành trình — từ giống, người trồng, ngày thu hoạch đến lô vận chuyển.",
+    image: productPkg,
+    location: "Mỗi sản phẩm, một câu chuyện",
   },
+];
+
+const ease = [0.25, 0.1, 0.25, 1] as const;
+
+const shapes = [
+  <svg viewBox="0 0 100 100" className="w-16 h-16 md:w-20 md:h-20 text-[#FCE192] rotate-12"><path d="M20 90 Q40 100 70 70 Q90 50 90 20 Q70 40 50 60 Q30 75 20 90 Z" fill="currentColor"/></svg>,
+  <svg viewBox="0 0 100 100" className="w-12 h-12 md:w-16 md:h-16 text-[#E53E3E] -rotate-12"><path d="M50 20 C80 20 90 40 85 70 C80 90 20 90 15 70 C10 40 20 20 50 20 Z" fill="currentColor"/><path d="M45 20 L50 5 L55 20 Z" fill="#718096"/></svg>,
+  <svg viewBox="0 0 100 50" className="w-20 h-10 md:w-28 md:h-14 text-[#81C2B6] rotate-6"><path d="M5 48 Q25 25 30 30 Q50 5 60 20 Q75 -10 95 48 Z" fill="currentColor"/></svg>,
+  <svg viewBox="0 0 100 100" className="w-14 h-14 md:w-20 md:h-20 text-[#FDBA9B] -rotate-6"><path d="M25 80 C 10 65 10 40 25 25 C 40 10 65 10 80 25 C 95 40 85 70 70 70 C 55 70 60 50 50 40 C 40 30 25 40 25 55 C 25 65 30 75 25 80 Z" fill="currentColor"/></svg>,
+  <svg viewBox="0 0 100 100" className="w-14 h-14 md:w-20 md:h-20 text-[#2F855A] rotate-12"><path d="M40 90 L50 60 C30 60 20 40 30 25 C40 10 60 10 70 25 C80 40 70 60 50 60 L60 90 Z" fill="currentColor"/></svg>
 ];
 
 const StickyStoryScroll = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end end"],
+    offset: ["start 80%", "end 20%"],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 40,
+    damping: 25,
+    restDelta: 0.001,
   });
 
   return (
-    <section className="bg-[#0a2319] text-white">
-      {/* Section intro */}
-<<<<<<< Updated upstream
-      <div className="max-w-6xl mx-auto px-6 md:px-10 pt-24 pb-12 md:pt-32 md:pb-20">
-        <p className="text-[#BC6C25] text-xs font-semibold uppercase tracking-[0.3em] mb-4">
-          HỆ SINH THÁI · TRUY XUẤT NGUỒN GỐC
-        </p>
-        <h2 className="text-3xl md:text-5xl font-extrabold leading-[1.05] tracking-tight max-w-3xl">
-          Hành trình từ rẫy <br className="hidden md:block" />
-          <span className="text-white/60">đến tay bạn</span>
-        </h2>
-        <p className="text-white/60 text-base md:text-lg mt-6 max-w-xl leading-relaxed">
-=======
-      <div className="max-w-6xl mx-auto px-6 md:px-10 pt-20 pb-10 md:pt-32 md:pb-20">
-        <p className="text-[#BC6C25] text-[10px] md:text-xs font-semibold uppercase tracking-[0.3em] mb-4 text-center md:text-left">
-          HỆ SINH THÁI · TRUY XUẤT NGUỒN GỐC
-        </p>
-        <h2 className="text-3xl md:text-5xl font-extrabold leading-[1.1] tracking-tight max-w-3xl text-center md:text-left">
-          Hành trình từ rẫy <br className="hidden md:block" />
-          <span className="text-white/60">đến tay bạn</span>
-        </h2>
-        <p className="text-white/60 text-sm md:text-lg mt-6 max-w-xl leading-relaxed text-center md:text-left mx-auto md:mx-0">
->>>>>>> Stashed changes
-          Sáu mắt xích minh bạch. Mỗi bước được số hoá, đóng dấu thời gian, và sẵn sàng kiểm chứng.
-        </p>
-      </div>
+    <section className="bg-gradient-to-b from-[#15422D] to-[#0A2319] text-white relative overflow-hidden">
+      <div className="max-w-6xl mx-auto px-4 md:px-12 py-24 md:py-40 relative z-10">
+        {/* Header — calm, confident, no shouting */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease }}
+          className="mb-20 md:mb-32 max-w-xl"
+        >
+          <p className="text-[#BC6C25] text-sm tracking-[0.15em] mb-4 font-semibold">
+            Hành trình minh bạch
+          </p>
+          <h2 className="text-3xl md:text-[2.75rem] font-bold leading-[1.2] tracking-tight text-white mb-5">
+            Từ rẫy đến bàn ăn
+          </h2>
+          <p className="text-white/80 text-base md:text-lg leading-relaxed">
+            Mỗi sản phẩm Daklink mang theo một hành trình — từ hạt giống, qua
+            bàn tay người nông dân, đến tách cà phê trên bàn bạn.
+          </p>
+        </motion.div>
 
-<<<<<<< Updated upstream
-      {/* Sticky scroll */}
-      <div ref={containerRef} className="relative" style={{ height: `${chapters.length * 90}vh` }}>
-        <div className="sticky top-0 h-screen flex items-center overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6 md:px-10 w-full grid md:grid-cols-2 gap-10 md:gap-16 items-center">
-            {/* Left: text chapters stacked */}
-            <div className="relative h-[60vh] md:h-[70vh]">
-              {chapters.map((ch, i) => (
-                <ChapterText
-                  key={ch.id}
-                  chapter={ch}
-                  index={i}
-                  total={chapters.length}
-                  progress={scrollYProgress}
-                />
-              ))}
-            </div>
+        {/* Timeline */}
+        <div ref={containerRef} className="relative">
+          {/* Vertical progress line */}
+          <div className="absolute left-0 md:left-1/2 md:-translate-x-px top-0 bottom-0 w-px">
+            <div className="absolute inset-0 bg-white/[0.06]" />
+            <motion.div
+              style={{ scaleY: smoothProgress, transformOrigin: "top" }}
+              className="absolute inset-0 bg-[#BC6C25]/50"
+            />
+          </div>
 
-            {/* Right: image stack */}
-            <div className="relative h-[60vh] md:h-[70vh] rounded-3xl overflow-hidden shadow-2xl border border-white/10">
-=======
-      {/* Sticky scroll container */}
-      <div ref={containerRef} className="relative" style={{ height: `${chapters.length * 120}vh` }}>
-        <div className="sticky top-0 h-screen w-full flex items-center overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6 md:px-10 w-full h-full flex flex-col md:grid md:grid-cols-2 gap-6 md:gap-16 items-center justify-center py-10 md:py-0">
-            
-            {/* Image Stack - Top on mobile, Right on desktop */}
-            <div className="relative w-full h-[40vh] md:h-[70vh] rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl border border-white/10 order-1 md:order-2">
->>>>>>> Stashed changes
-              {chapters.map((ch, i) => (
-                <ChapterImage
-                  key={ch.id}
-                  chapter={ch}
-                  index={i}
-                  total={chapters.length}
-                  progress={scrollYProgress}
-                />
-              ))}
-
-              {/* Step counter overlay */}
-<<<<<<< Updated upstream
-              <div className="absolute bottom-6 left-6 z-20 flex items-center gap-3 px-4 py-2.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20">
-                <StepIndicator progress={scrollYProgress} total={chapters.length} />
-              </div>
-            </div>
-=======
-              <div className="absolute bottom-4 right-4 md:bottom-6 md:left-6 md:right-auto z-20 flex items-center gap-3 px-4 py-2 rounded-full bg-[#0a2319]/80 backdrop-blur-md border border-white/20">
-                <StepIndicator progress={scrollYProgress} total={chapters.length} />
-              </div>
-            </div>
-
-            {/* Text Stack - Bottom on mobile, Left on desktop */}
-            <div className="relative w-full h-[30vh] md:h-[70vh] order-2 md:order-1 px-4">
-              {chapters.map((ch, i) => (
-                <ChapterText
-                  key={ch.id}
-                  chapter={ch}
-                  index={i}
-                  total={chapters.length}
-                  progress={scrollYProgress}
-                />
-              ))}
-            </div>
-
->>>>>>> Stashed changes
+          <div className="flex flex-col gap-16 md:gap-28">
+            {chapters.map((chapter, index) => (
+              <TimelineChapter
+                key={chapter.step}
+                chapter={chapter}
+                index={index}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -182,155 +132,98 @@ const StickyStoryScroll = () => {
   );
 };
 
-const ChapterText = ({
+/* ─── Individual Chapter ─── */
+const TimelineChapter = ({
   chapter,
   index,
-  total,
-  progress,
 }: {
   chapter: Chapter;
   index: number;
-  total: number;
-  progress: MotionValue<number>;
 }) => {
-  const segment = 1 / total;
-  const start = index * segment;
-<<<<<<< Updated upstream
-  const peak = start + segment * 0.5;
-  const end = start + segment;
-
-  const opacity = useTransform(
-    progress,
-    [Math.max(0, start - segment * 0.15), peak - segment * 0.05, peak + segment * 0.05, Math.min(1, end + segment * 0.15)],
-    [0, 1, 1, 0]
-  );
-  const y = useTransform(progress, [start, end], [40, -40]);
-=======
-  const end = (index + 1) * segment;
-
-  // Tighter overlap to prevent messy text collisions
-  const opacity = useTransform(
-    progress,
-    [start - segment * 0.2, start, end - segment * 0.1, end + segment * 0.1],
-    [0, 1, 1, 0]
-  );
-  
-  const y = useTransform(
-    progress,
-    [start - segment * 0.1, start, end, end + segment * 0.1],
-    [15, 0, 0, -15]
-  );
->>>>>>> Stashed changes
-
-  const Icon = chapter.icon;
-
-  return (
-    <motion.div
-      style={{ opacity, y }}
-<<<<<<< Updated upstream
-      className="absolute inset-0 flex flex-col justify-center"
-    >
-      <div className="flex items-center gap-3 mb-5">
-        <span className="text-[#BC6C25] text-sm font-bold tracking-[0.25em]">{chapter.step}</span>
-        <span className="h-px w-10 bg-[#BC6C25]/40" />
-        <span className="text-white/50 text-xs uppercase tracking-[0.2em]">{chapter.meta}</span>
-      </div>
-      <div className="flex items-center gap-4 mb-5">
-        <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-md flex items-center justify-center">
-          <Icon className="w-6 h-6 text-[#BC6C25]" />
-        </div>
-        <h3 className="text-3xl md:text-5xl font-extrabold tracking-tight">{chapter.title}</h3>
-      </div>
-      <p className="text-white/70 text-base md:text-lg leading-relaxed max-w-md">
-=======
-      className="absolute inset-0 flex flex-col justify-center text-center md:text-left pointer-events-none"
-    >
-      <div className="flex items-center justify-center md:justify-start gap-2 md:gap-3 mb-2 md:mb-5">
-        <span className="text-[#BC6C25] text-[10px] md:text-sm font-bold tracking-[0.25em]">{chapter.step}</span>
-        <span className="h-px w-4 md:w-10 bg-[#BC6C25]/40" />
-        <span className="text-white/50 text-[9px] md:text-xs uppercase tracking-[0.2em]">{chapter.meta}</span>
-      </div>
-      <div className="flex items-center justify-center md:justify-start gap-3 md:gap-4 mb-2 md:mb-5">
-        <div className="hidden md:flex w-12 h-12 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-md items-center justify-center">
-          <Icon className="w-6 h-6 text-[#BC6C25]" />
-        </div>
-        <h3 className="text-2xl md:text-5xl font-extrabold tracking-tight">{chapter.title}</h3>
-      </div>
-      <p className="text-white/70 text-sm md:text-lg leading-relaxed max-w-md mx-auto md:mx-0">
->>>>>>> Stashed changes
-        {chapter.desc}
-      </p>
-    </motion.div>
-  );
-};
-
-const ChapterImage = ({
-  chapter,
-  index,
-  total,
-  progress,
-}: {
-  chapter: Chapter;
-  index: number;
-  total: number;
-  progress: MotionValue<number>;
-}) => {
-  const segment = 1 / total;
-  const start = index * segment;
-<<<<<<< Updated upstream
-  const peak = start + segment * 0.5;
-  const end = start + segment;
-
-  const opacity = useTransform(
-    progress,
-    [Math.max(0, start - segment * 0.1), peak - segment * 0.05, peak + segment * 0.05, Math.min(1, end + segment * 0.1)],
-    [0, 1, 1, 0]
-  );
-  const scale = useTransform(progress, [start, end], [1.08, 1.18]);
-=======
-  const end = (index + 1) * segment;
-
-  const opacity = useTransform(
-    progress,
-    [start - segment * 0.2, start, end, end + segment * 0.2],
-    [0, 1, 1, 0]
-  );
-  
-  const scale = useTransform(progress, [start, end], [1, 1.08]);
->>>>>>> Stashed changes
-
-  return (
-    <motion.div style={{ opacity }} className="absolute inset-0">
-      <motion.img
-        src={chapter.image}
-        alt={chapter.title}
-        style={{ scale }}
-        className="w-full h-full object-cover"
-      />
-<<<<<<< Updated upstream
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0a2319]/70 via-transparent to-transparent" />
-=======
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0a2319]/80 via-transparent to-transparent" />
->>>>>>> Stashed changes
-    </motion.div>
-  );
-};
-
-const StepIndicator = ({ progress, total }: { progress: MotionValue<number>; total: number }) => {
-  const current = useTransform(progress, (p) => {
-    const idx = Math.min(total - 1, Math.floor(p * total));
-    return `${String(idx + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+  const isEven = index % 2 === 0;
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
   });
+  
+  // Constrain parallax to a very small vertical range so it NEVER touches the text
+  const yParallax = useTransform(scrollYProgress, [0, 1], [-30, 30]);
+
   return (
-    <>
-      <motion.span className="text-xs font-bold text-white tracking-[0.2em]">{current}</motion.span>
-      <span className="text-[10px] text-white/50 uppercase tracking-[0.2em]">Chapters</span>
-    </>
+    <div ref={ref} className="relative">
+      {/* Blank Space Decorative Graphic */}
+      {index < 5 && (
+        <motion.div 
+          style={{ y: yParallax }}
+          className={`absolute -bottom-12 md:-bottom-20 z-0 opacity-80 pointer-events-none ${
+            isEven ? 'right-4 md:right-32' : 'left-8 md:left-32'
+          }`}
+        >
+          {shapes[index % shapes.length]}
+        </motion.div>
+      )}
+
+      {/* Dot on the line */}
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        whileInView={{ scale: 1, opacity: 1 }}
+        viewport={{ once: true, margin: "-20%" }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="absolute left-0 md:left-1/2 top-3 -translate-x-1/2 z-10"
+      >
+        <div className="w-[11px] h-[11px] rounded-full bg-[#BC6C25] ring-[3px] ring-[#0a2319]" />
+      </motion.div>
+
+      {/* Content grid */}
+      <div className="pl-6 md:pl-0 md:grid md:grid-cols-2 md:gap-16 items-center">
+        {/* Image */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-15%" }}
+          transition={{ duration: 0.7, ease }}
+          className={`relative aspect-[4/3] rounded-2xl overflow-hidden mb-6 md:mb-0 ${
+            isEven ? "" : "md:order-2"
+          }`}
+        >
+          <img
+            src={chapter.image}
+            alt={chapter.title}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent" />
+        </motion.div>
+
+        {/* Text */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-15%" }}
+          transition={{ duration: 0.7, delay: 0.1, ease }}
+          className={`flex flex-col ${
+            isEven
+              ? "md:pl-14"
+              : "md:pr-14 md:text-right md:items-end"
+          }`}
+        >
+          <span className="text-[#BC6C25] text-[11px] md:text-xs tracking-[0.2em] font-semibold mb-3 font-mono">
+            {chapter.step}
+          </span>
+          <h3 className="text-2xl md:text-[2rem] font-bold tracking-tight mb-4 text-white leading-tight">
+            {chapter.title}
+          </h3>
+          <p className="text-white/80 text-[15px] md:text-base leading-[1.85] max-w-md">
+            {chapter.desc}
+          </p>
+          <span className="mt-4 text-white/50 text-xs md:text-sm tracking-wide">
+            {chapter.location}
+          </span>
+        </motion.div>
+      </div>
+    </div>
   );
 };
 
 export default StickyStoryScroll;
-<<<<<<< Updated upstream
-=======
-// cache bust Thu May 14 16:08:34 +07 2026
->>>>>>> Stashed changes
