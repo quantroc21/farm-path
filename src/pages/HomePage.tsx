@@ -101,42 +101,8 @@ const guarantees = [
 const HomePage = () => {
   return (
     <div>
-      {/* Hero */}
-      <section className="relative h-[80vh] min-h-[520px] flex items-center overflow-hidden">
-        <img
-          src={heroCoffeeFarm}
-          alt="Nông trại ớt Bình Thuận – hệ sinh thái nông nghiệp số Daklink"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/40 to-transparent" />
-        <div className="relative z-10 px-6 md:px-10 max-w-7xl mx-auto w-full">
-          <FadeIn>
-            <div className="max-w-xl">
-              <p className="text-white text-sm font-semibold uppercase tracking-[0.2em] mb-4">
-                NỀN TẢNG CÔNG NGHỆ NÔNG NGHIỆP
-              </p>
-              <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-5">
-                Chấp cánh cho<br />nông sản Việt
-              </h1>
-              <p className="text-white text-sm md:text-base mb-6 leading-relaxed max-w-md">
-                Minh bạch từ nông trại đến tay bạn. Theo dõi hành trình từng sản phẩm — hoàn toàn minh bạch, hoàn toàn truy xuất được.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Link to="/shop" className="btn-primary inline-flex items-center gap-2">
-                  Khám phá sản phẩm
-                </Link>
-                <a 
-                  href="https://app.daklink.vn/register" 
-                  className="btn-outline-primary border-white text-white hover:bg-white hover:text-foreground inline-flex items-center gap-2"
-                >
-                  Bắt đầu ngay
-                </a>
-              </div>
-
-            </div>
-          </FadeIn>
-        </div>
-      </section>
+      {/* Cinematic Hero with Video + Parallax */}
+      <CinematicHero />
 
       {/* Tabbed Feature Section (Every Half Style) */}
       <section className="bg-[#F8F8F7] py-14 px-6 md:px-10 overflow-hidden">
@@ -144,6 +110,7 @@ const HomePage = () => {
           <TabbedFeatureSection />
         </div>
       </section>
+
 
       {/* Chấp cánh cho nông sản Việt - drone section */}
       <section className="relative py-16 overflow-hidden">
