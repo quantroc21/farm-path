@@ -1,10 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Sprout, BarChart3, BookOpen, ShoppingCart, Search, Cpu, Truck, Globe, Award, CheckCircle, Zap, Shield, MapPin, Calendar, ArrowRight, Star } from "lucide-react";
 import FadeIn from "@/components/FadeIn";
 import StickyStoryScroll from "@/components/StickyStoryScroll";
-import CertMarquee from "@/components/CertMarquee";
 import heroCoffeeFarm from "@/assets/hero-coffee-farm.jpg";
 import exportBg from "@/assets/export-bg.jpg";
 import { useQuery } from "@tanstack/react-query";
@@ -101,8 +100,41 @@ const guarantees = [
 const HomePage = () => {
   return (
     <div>
-      {/* Cinematic Hero with Video + Parallax */}
-      <CinematicHero />
+      {/* Hero */}
+      <section className="relative h-[80vh] min-h-[520px] flex items-center overflow-hidden">
+        <img
+          src={heroCoffeeFarm}
+          alt="Nông trại ớt Bình Thuận – hệ sinh thái nông nghiệp số Daklink"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/40 to-transparent" />
+        <div className="relative z-10 px-6 md:px-10 max-w-7xl mx-auto w-full">
+          <FadeIn>
+            <div className="max-w-xl">
+              <p className="text-white text-sm font-semibold uppercase tracking-[0.2em] mb-4">
+                NỀN TẢNG CÔNG NGHỆ NÔNG NGHIỆP
+              </p>
+              <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-5">
+                Chấp cánh cho<br />nông sản Việt
+              </h1>
+              <p className="text-white text-sm md:text-base mb-6 leading-relaxed max-w-md">
+                Minh bạch từ nông trại đến tay bạn. Theo dõi hành trình từng sản phẩm — hoàn toàn minh bạch, hoàn toàn truy xuất được.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link to="/shop" className="btn-primary inline-flex items-center gap-2">
+                  Khám phá sản phẩm
+                </Link>
+                <a
+                  href="https://app.daklink.vn/register"
+                  className="btn-outline-primary border-white text-white hover:bg-white hover:text-foreground inline-flex items-center gap-2"
+                >
+                  Bắt đầu ngay
+                </a>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
 
       {/* Tabbed Feature Section (Every Half Style) */}
       <section className="bg-[#F8F8F7] py-14 px-6 md:px-10 overflow-hidden">
@@ -186,8 +218,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Certifications Marquee */}
-      <CertMarquee />
 
 
       {/* Export section */}
@@ -214,122 +244,7 @@ const HomePage = () => {
   );
 };
 
-// Free coffee farm video (Pexels CDN). Falls back to poster image if it fails to load.
-const HERO_VIDEO_SRC =
-  "https://videos.pexels.com/video-files/3214448/3214448-uhd_3840_2160_25fps.mp4";
 
-const CinematicHero = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-  const mediaY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
-  const mediaScale = useTransform(scrollYProgress, [0, 1], [1.05, 1.18]);
-  const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.55, 0.85]);
-
-  return (
-    <section
-      ref={sectionRef}
-      className="relative h-[92vh] min-h-[620px] flex items-end overflow-hidden bg-[#0a2319]"
-    >
-      <motion.div
-        style={{ y: mediaY, scale: mediaScale }}
-        className="absolute inset-0 will-change-transform"
-      >
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster={heroCoffeeFarm}
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src={HERO_VIDEO_SRC} type="video/mp4" />
-        </video>
-        <img
-          src={heroCoffeeFarm}
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 w-full h-full object-cover -z-10"
-        />
-      </motion.div>
-
-      <motion.div
-        style={{ opacity: overlayOpacity }}
-        className="absolute inset-0 bg-gradient-to-t from-[#0a2319] via-[#0a2319]/40 to-[#0a2319]/20"
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#0a2319]/70 via-transparent to-transparent" />
-
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="absolute top-8 md:top-12 left-1/2 -translate-x-1/2 z-20 px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 shadow-lg"
-      >
-        <span className="text-white text-[11px] md:text-xs font-semibold uppercase tracking-[0.3em] whitespace-nowrap">
-          Daklink · Vietnamese Agriculture, Decoded
-        </span>
-      </motion.div>
-
-      <motion.div
-        style={{ y: contentY }}
-        className="relative z-10 px-6 md:px-10 max-w-6xl mx-auto w-full pb-20 md:pb-32 text-center"
-      >
-        <FadeIn delay={0.15}>
-          <p className="text-[#BC6C25] text-xs md:text-sm font-bold uppercase tracking-[0.4em] mb-6">
-            Truy xuất nguồn gốc · Cinematic edition
-          </p>
-        </FadeIn>
-        <FadeIn delay={0.3}>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-white leading-[0.95] tracking-tight mb-8">
-            Minh bạch
-            <br />
-            <span className="italic font-light text-white/80">từ rẫy đến bạn</span>
-          </h1>
-        </FadeIn>
-        <FadeIn delay={0.45}>
-          <p className="text-white/75 text-base md:text-xl max-w-2xl mx-auto leading-relaxed mb-10">
-            Mỗi hạt cà phê, mỗi quả ớt — đều có một câu chuyện được khắc bằng dữ liệu.
-            Daklink kể lại hành trình ấy, không chỉnh sửa.
-          </p>
-        </FadeIn>
-        <FadeIn delay={0.6}>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              to="/shop"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-[#0a2319] font-bold text-sm uppercase tracking-widest hover:bg-[#BC6C25] hover:text-white transition-all duration-500 hover:scale-105 shadow-2xl"
-            >
-              Khám phá sản phẩm
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <a
-              href="https://app.daklink.vn/register"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white/10 backdrop-blur-xl border border-white/30 text-white font-bold text-sm uppercase tracking-widest hover:bg-white/20 transition-all duration-500"
-            >
-              Trở thành đối tác
-            </a>
-          </div>
-        </FadeIn>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 1 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
-      >
-        <span className="text-white/50 text-[10px] uppercase tracking-[0.3em]">Scroll</span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-          className="w-px h-8 bg-gradient-to-b from-white/60 to-transparent"
-        />
-      </motion.div>
-    </section>
-  );
-};
 
 const FeaturedProductsGrid = () => {
   const { data: products, isLoading, error } = useQuery({
