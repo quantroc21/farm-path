@@ -156,8 +156,23 @@ const HomePage = () => {
 
 
       {/* Chấp cánh cho nông sản Việt - drone section */}
-      <section className="relative py-16 overflow-hidden">
-        <img src={heroCoffeeFarm} alt="Nông trại cà phê Tây Nguyên ứng dụng nhật ký canh tác số Daklink" className="absolute inset-0 w-full h-full object-cover" />
+      <section className="relative py-16 overflow-hidden min-h-[400px] flex items-center">
+        <motion.img 
+          src={heroCoffeeFarm} 
+          alt="Nông trại cà phê Tây Nguyên ứng dụng nhật ký canh tác số Daklink" 
+          className="absolute inset-0 w-full h-full object-cover"
+          initial={{ scale: 1.1 }}
+          animate={{
+            scale: [1.1, 1.25, 1.1],
+            x: ["0%", "3%", "0%"],
+            y: ["0%", "-2%", "0%"],
+          }}
+          transition={{
+            duration: 30,
+            ease: "easeInOut",
+            repeat: Infinity,
+          }}
+        />
         <div className="absolute inset-0 bg-foreground/60" />
         <div className="relative z-10 max-w-4xl mx-auto text-center px-6">
           <FadeIn>
