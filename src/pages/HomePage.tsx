@@ -104,15 +104,23 @@ const HomePage = () => {
     <div>
       {/* Hero */}
       <section className="relative h-[80vh] min-h-[520px] flex items-center overflow-hidden">
-        <video
-          src={heroFlycam.url}
-          poster={heroCoffeeFarm}
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        <motion.div
+          className="absolute inset-0"
+          animate={{ x: [0, -6, 4, -3, 0], y: [0, 3, -4, 2, 0] }}
+          transition={{ duration: 14, ease: "easeInOut", repeat: Infinity }}
+        >
+          <video
+            ref={(el) => { if (el) el.playbackRate = 0.7; }}
+            src={heroFlycam.url}
+            poster={heroCoffeeFarm}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover scale-110"
+            style={{ filter: "blur(0.6px) saturate(1.05)" }}
+          />
+        </motion.div>
         <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/40 to-transparent" />
         <div className="relative z-10 px-6 md:px-10 max-w-7xl mx-auto w-full">
           <FadeIn>
