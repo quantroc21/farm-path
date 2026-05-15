@@ -14,7 +14,7 @@ const Navbar = () => {
   const totalItems = useCartStore((state) => state.totalItems());
 
   return (
-    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border transition-all duration-300">
+    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50 transition-all duration-300 supports-[backdrop-filter]:bg-background/60">
       {/* Main nav */}
       <div className="max-w-7xl mx-auto flex items-center justify-between h-20 md:h-24 px-6 md:px-10">
         
@@ -50,12 +50,12 @@ const Navbar = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`relative text-sm font-bold tracking-widest transition-colors hover:text-primary ${
+                className={`relative font-mono-accent text-[11px] transition-colors hover:text-primary ${
                   location.pathname === item.path ? "text-primary" : "text-muted-foreground"
                 } group`}
               >
                 {item.label}
-                <span className={`absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full ${
+                <span className={`absolute -bottom-1.5 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full ${
                   location.pathname === item.path ? "w-full" : ""
                 }`}></span>
               </Link>
@@ -83,7 +83,7 @@ const Navbar = () => {
           
           <a 
             href="https://app.daklink.vn/login" 
-            className="hidden lg:flex items-center px-6 py-2.5 bg-[#004225] text-white rounded-full text-xs font-black tracking-wider uppercase hover:bg-[#005a32] hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-sm"
+            className="hidden lg:flex items-center px-6 py-2.5 bg-[#004225] text-white rounded-full font-mono-accent text-[11px] hover:bg-[#005a32] hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-sm"
           >
             ĐỐI TÁC
           </a>

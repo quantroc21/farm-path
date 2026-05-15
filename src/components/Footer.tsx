@@ -26,7 +26,7 @@ const Footer = () => {
 
           {/* Shop */}
           <div className="md:pt-4">
-            <h4 className="font-black text-xs mb-6 uppercase tracking-[0.2em] text-white/40">Shop</h4>
+            <h4 className="font-mono-accent text-xs mb-6 text-white/40">Shop</h4>
             <ul className="space-y-4 text-white/80 text-[15px] font-medium">
               <li><Link to="/shop" className="hover:text-white hover:pl-2 transition-all">Tất cả sản phẩm</Link></li>
               <li><Link to="/shop" className="hover:text-white hover:pl-2 transition-all">Ớt Tươi Chọn Lọc</Link></li>
@@ -36,7 +36,7 @@ const Footer = () => {
 
           {/* Terms */}
           <div className="md:pt-4">
-            <h4 className="font-black text-xs mb-6 uppercase tracking-[0.2em] text-white/40">Điều khoản</h4>
+            <h4 className="font-mono-accent text-xs mb-6 text-white/40">Điều khoản</h4>
             <ul className="space-y-4 text-white/80 text-[15px] font-medium">
               <li><a href="#" className="hover:text-white hover:pl-2 transition-all">Điều khoản & điều kiện</a></li>
               <li><a href="#" className="hover:text-white hover:pl-2 transition-all">Bảo mật thông tin</a></li>
@@ -46,7 +46,7 @@ const Footer = () => {
 
           {/* Contact */}
           <div className="md:pt-4">
-            <h4 className="font-black text-xs mb-6 uppercase tracking-[0.2em] text-white/40">Liên hệ</h4>
+            <h4 className="font-mono-accent text-xs mb-6 text-white/40">Liên hệ</h4>
             <ul className="space-y-4 text-white/80 text-[15px] font-medium">
               <li className="flex items-center gap-3 group">
                 <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/10 group-hover:bg-primary transition-colors">
@@ -66,14 +66,14 @@ const Footer = () => {
 
         <div className="border-t border-white/5 mt-16 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-center md:text-left">
-            <p className="text-white/40 text-xs font-bold uppercase tracking-widest mb-1">
+            <p className="font-mono-accent text-white/40 text-xs mb-1">
               DAKLINK - Nông sản hữu cơ Việt Nam
             </p>
             <p className="text-white/20 text-[10px]">
               Copyright © 2026 Daklink. All rights reserved.
             </p>
           </div>
-          <div className="flex items-center gap-6 text-[10px] text-white/20 font-bold uppercase tracking-widest">
+          <div className="flex items-center gap-6 font-mono-accent text-[10px] text-white/20">
             <a href="#" className="hover:text-white transition-colors">Privacy</a>
             <a href="#" className="hover:text-white transition-colors">Terms</a>
             <a href="#" className="hover:text-white transition-colors">Cookies</a>

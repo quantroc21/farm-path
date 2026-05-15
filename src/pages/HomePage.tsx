@@ -125,22 +125,22 @@ const HomePage = () => {
         <div className="relative z-10 px-6 md:px-10 max-w-7xl mx-auto w-full">
           <FadeIn>
             <div className="max-w-xl">
-              <p className="text-white text-sm font-semibold uppercase tracking-[0.2em] mb-4">
+              <p className="font-mono-accent text-white/80 text-[11px] mb-4">
                 NỀN TẢNG CÔNG NGHỆ NÔNG NGHIỆP
               </p>
-              <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight mb-5">
+              <h1 className="font-display text-[2.5rem] md:text-5xl font-bold text-white leading-[1.1] mb-5 tracking-tight">
                 Chấp cánh cho<br />nông sản Việt
               </h1>
-              <p className="text-white text-sm md:text-base mb-6 leading-relaxed max-w-md">
+              <p className="text-white/90 text-sm md:text-base mb-8 leading-[1.7] max-w-md">
                 Minh bạch từ nông trại đến tay bạn. Theo dõi hành trình từng sản phẩm, hoàn toàn minh bạch, hoàn toàn truy xuất được.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link to="/shop" className="btn-primary inline-flex items-center gap-2">
+                <Link to="/shop" className="btn-primary inline-flex items-center gap-2 min-h-[48px]">
                   Khám phá sản phẩm
                 </Link>
                 <a
                   href="https://app.daklink.vn/register"
-                  className="btn-outline-primary border-white text-white hover:bg-white hover:text-foreground inline-flex items-center gap-2"
+                  className="btn-outline-primary border-white text-white hover:bg-white hover:text-foreground inline-flex items-center gap-2 min-h-[48px]"
                 >
                   Bắt đầu ngay
                 </a>
@@ -179,10 +179,10 @@ const HomePage = () => {
         <div className="absolute inset-0 bg-foreground/60" />
         <div className="relative z-10 max-w-4xl mx-auto text-center px-6">
           <FadeIn>
-            <p className="text-white text-xs font-semibold uppercase tracking-[0.2em] mb-3">
+            <p className="font-mono-accent text-white/80 text-[11px] mb-3">
               NỀN TẢNG DAKLINK
             </p>
-            <h2 className="text-2xl md:text-4xl font-bold text-white mb-4">
+            <h2 className="font-display text-2xl md:text-4xl font-bold text-white mb-4 tracking-tight">
               Nền tảng nông nghiệp số toàn diện
             </h2>
             <p className="text-white text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
@@ -194,14 +194,14 @@ const HomePage = () => {
       </section>
 
       {/* Featured Products from Turso */}
-      <section className="section-padding bg-background">
+      <section className="section-padding bg-surface-cream">
         <div className="max-w-6xl mx-auto">
           <FadeIn>
             <div className="text-center mb-12">
-              <p className="text-primary text-xs font-semibold uppercase tracking-[0.2em] mb-2">
+              <p className="font-mono-accent text-primary/70 text-[11px] mb-2">
                 SẢN PHẨM CỦA CHÚNG TÔI
               </p>
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
+              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-3 tracking-tight">
                 Minh bạch từ rẫy đến bạn
               </h2>
               <p className="text-primary/70 text-sm max-w-xl mx-auto">
@@ -219,10 +219,10 @@ const HomePage = () => {
       <StickyStoryScroll />
 
       {/* Guarantees */}
-      <section className="section-padding bg-background">
+      <section className="section-padding bg-surface-cream">
         <div className="max-w-6xl mx-auto">
           <FadeIn>
-            <h2 className="text-2xl md:text-3xl font-bold text-foreground text-center mb-3">
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground text-center mb-3 tracking-tight">
               Chúng tôi đảm bảo
             </h2>
             <p className="text-primary/70 text-center mb-10 max-w-lg mx-auto text-sm">
@@ -255,10 +255,10 @@ const HomePage = () => {
         <div className="absolute inset-0 bg-foreground/70" />
         <div className="relative z-10 max-w-4xl mx-auto text-center px-6">
           <FadeIn>
-            <p className="text-white text-xs font-semibold uppercase tracking-[0.2em] mb-3">
+            <p className="font-mono-accent text-white/80 text-[11px] mb-3">
               NỀN TẢNG DAKLINK X
             </p>
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+            <h2 className="font-display text-2xl md:text-3xl font-bold text-white mb-4 tracking-tight">
               Xuất Khẩu Nông Sản
             </h2>
             <p className="text-white text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
@@ -302,7 +302,7 @@ const FeaturedProductsGrid = () => {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
       {displayProducts.map((product, i) => (
         <FadeIn key={product.id} delay={i * 0.1}>
           <ProductCard product={product} />
@@ -406,24 +406,24 @@ const TabbedFeatureSection = () => {
             onDragEnd={handleDragEnd}
             className="p-6 md:p-16 flex flex-col md:flex-row items-center gap-8 md:gap-12 cursor-grab active:cursor-grabbing w-full"
           >
-            <div className="flex-1 space-y-6 md:space-y-8 text-center md:text-left select-none">
-              <div className="w-14 h-14 md:w-16 md:h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6 mx-auto md:mx-0">
+            <div className="flex-1 space-y-6 md:space-y-8 text-left select-none">
+              <div className="w-14 h-14 md:w-16 md:h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-6 mx-0">
                 <activeData.icon className="w-7 h-7 md:w-8 md:h-8" />
               </div>
-              <h3 className="text-3xl md:text-5xl font-black text-foreground leading-tight px-2 md:px-0 tracking-tight">
+              <h3 className="font-display text-3xl md:text-5xl font-bold text-foreground leading-tight px-0 tracking-tight">
                 {activeData.title}
               </h3>
-              <p className="text-primary/70 text-base md:text-lg leading-relaxed max-w-xl mx-auto md:mx-0">
+              <p className="text-primary/70 text-base md:text-lg leading-relaxed max-w-xl mx-0">
                 {activeData.desc}
               </p>
-              <div className="pt-4 flex items-center justify-center md:justify-start gap-4 md:gap-6">
-                 <div className="flex items-center gap-2">
+              <div className="pt-4 flex items-center justify-start gap-4 md:gap-6">
+                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/15 bg-primary/[0.04]">
                    <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                   <span className="text-[10px] md:text-xs font-bold text-primary/70 uppercase tracking-widest">Digital Agri</span>
+                   <span className="font-mono-accent text-[10px] md:text-xs text-primary/70">Digital Agri</span>
                  </div>
-                 <div className="flex items-center gap-2">
+                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/15 bg-primary/[0.04]">
                    <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                   <span className="text-[10px] md:text-xs font-bold text-primary/70 uppercase tracking-widest">VietGAP</span>
+                   <span className="font-mono-accent text-[10px] md:text-xs text-primary/70">VietGAP</span>
                  </div>
               </div>
             </div>

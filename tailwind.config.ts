@@ -14,8 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        heading: ["Plus Jakarta Sans", "sans-serif"],
+        sans: ['"Be Vietnam Pro"', 'system-ui', 'sans-serif'],
+        display: ['Lora', 'Georgia', 'serif'],
+        heading: ['"Be Vietnam Pro"', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'monospace'],
       },
       colors: {
         border: "hsl(var(--border))",

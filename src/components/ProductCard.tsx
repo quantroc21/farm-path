@@ -15,7 +15,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <div className="card-hover bg-card rounded-2xl overflow-hidden shadow-sm border border-border/60 hover:border-primary/20 flex flex-col h-full group-hover:shadow-md transition-all duration-300">
         <div className="relative aspect-square overflow-hidden bg-[#FBFBFB]">
           {product.badge && (
-            <span className="absolute top-3 left-3 bg-secondary text-white text-[10px] font-bold px-2 py-0.5 rounded-full z-10 shadow-sm uppercase tracking-widest">
+            <span className="absolute top-3 left-3 bg-secondary text-white font-mono-accent text-[10px] px-2 py-0.5 rounded-full z-10 shadow-sm">
               {product.badge}
             </span>
           )}
@@ -32,10 +32,10 @@ const ProductCard = ({ product }: ProductCardProps) => {
           
           <div className="flex items-center justify-between pt-1">
             <div className="flex flex-col">
-              <span className="text-primary font-semibold text-lg leading-tight">
+              <span className="text-primary font-mono text-lg leading-tight">
                 {formatPrice(product.price)}
               </span>
-              <span className="text-muted-foreground/70 text-[10px] font-bold uppercase tracking-wider mt-0.5">
+              <span className="text-muted-foreground/70 font-mono-accent text-[9px] mt-0.5">
                 Đã bao gồm Thuế
               </span>
             </div>

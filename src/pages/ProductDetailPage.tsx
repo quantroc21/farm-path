@@ -247,7 +247,7 @@ const ProductDetailPage = () => {
     toast.custom((t) => (
       <div className="bg-white rounded-[1.5rem] shadow-2xl border border-black/5 p-5 w-[90vw] md:w-[380px] flex flex-col gap-5 animate-in slide-in-from-top-10 duration-500">
         <div className="flex items-center justify-between">
-          <h4 className="font-bold text-[16px] text-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>Đã thêm sản phẩm vào giỏ hàng</h4>
+          <h4 className="font-mono-accent text-[14px] text-foreground">Đã thêm sản phẩm vào giỏ hàng</h4>
           <button onClick={() => toast.dismiss(t)} className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
             <X className="w-4 h-4" />
           </button>
@@ -307,14 +307,14 @@ const ProductDetailPage = () => {
     <div className="w-full overflow-x-hidden">
       {/* Breadcrumb */}
       <div className="w-full max-w-6xl mx-auto px-6 md:px-10 py-4 flex items-center justify-between overflow-x-hidden">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground" style={{ fontFamily: "'Inter', sans-serif" }}>
+        <div className="flex items-center gap-2 font-mono-accent text-[11px] text-muted-foreground">
           <Link to="/" className="hover:text-foreground transition-colors">Trang chủ</Link>
           <span>/</span>
-          <Link to="/shop" className="hover:text-foreground transition-colors uppercase">SẢN PHẨM</Link>
+          <Link to="/shop" className="hover:text-foreground transition-colors">SẢN PHẨM</Link>
           <span>/</span>
           <span className="text-foreground">{product.name}</span>
         </div>
-        <div className="hidden md:flex items-center gap-4 text-sm" style={{ fontFamily: "'Inter', sans-serif" }}>
+        <div className="hidden md:flex items-center gap-4 font-mono-accent text-[11px]">
           {prevProduct && (
             <Link to={`/product/${prevProduct.slug}`} className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
               <ChevronLeft className="w-4 h-4" /> Trước
@@ -396,13 +396,13 @@ const ProductDetailPage = () => {
           {/* Right - Info */}
           <FadeIn delay={0.1} className="w-full">
             <div>
-              <h1 className="text-xl md:text-2xl font-bold text-foreground mb-2">{product.name}</h1>
+              <h1 className="font-display text-2xl md:text-4xl font-bold text-foreground mb-3 leading-tight tracking-tight">{product.name}</h1>
               
               <div className="flex items-end gap-2 mb-1">
-                <p className="text-primary text-xl font-bold">{formatPrice(displayPrice)}</p>
-                {selectedSize && <span className="text-muted-foreground text-sm mb-1">/ {selectedSize}</span>}
+                <p className="text-primary font-mono text-2xl font-bold">{formatPrice(displayPrice)}</p>
+                {selectedSize && <span className="font-mono text-muted-foreground text-sm mb-1.5">/ {selectedSize}</span>}
               </div>
-              <p className="text-muted-foreground text-sm mb-6" style={{ fontFamily: "'Inter', sans-serif" }}>Đã bao gồm Thuế</p>
+              <p className="font-mono-accent text-muted-foreground text-[10px] mb-6">Đã bao gồm Thuế</p>
 
               {/* Product Short Description / Quote */}
               <div className="mb-6 pl-4 border-l-[3px] border-border py-1">
@@ -412,7 +412,7 @@ const ProductDetailPage = () => {
               {/* Size */}
               {activeOptions.length > 0 && (
                 <div className="mb-4 mt-6">
-                  <label className="text-sm font-semibold text-foreground mb-2 block" style={{ fontFamily: "'Inter', sans-serif" }}>Size *</label>
+                  <label className="font-mono-accent text-[11px] text-foreground mb-2 block">Size *</label>
                   <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {activeOptions.map((opt) => (
                       <button
@@ -433,7 +433,7 @@ const ProductDetailPage = () => {
 
               {/* Quantity */}
               <div className="mb-5 mt-5">
-                <label className="text-[13px] font-medium text-foreground mb-2 block" style={{ fontFamily: "'Inter', sans-serif" }}>Thêm số lượng</label>
+                <label className="font-mono-accent text-[11px] text-foreground mb-2 block">Thêm số lượng</label>
                 <div className="flex items-center gap-2.5">
                   <button 
                     onClick={() => setQuantity(Math.max(1, quantity - 1))} 
@@ -456,10 +456,9 @@ const ProductDetailPage = () => {
               <div className="mb-4 mt-10">
                 <button 
                   onClick={handleAddToCart}
-                  className="w-full bg-[#0a2319] text-white py-5 rounded-2xl font-bold text-[17px] transition-all duration-300 hover:bg-[#0a2319]/90 hover:shadow-xl hover:shadow-[#0a2319]/20 flex items-center justify-center gap-3 active:scale-[0.98]" 
-                  style={{ fontFamily: "'Inter', sans-serif" }}
+                  className="w-full bg-[#0a2319] text-white py-5 rounded-2xl font-mono-accent text-[15px] transition-all duration-300 hover:bg-[#0a2319]/90 hover:shadow-xl hover:shadow-[#0a2319]/20 flex items-center justify-center gap-3 active:scale-[0.98]" 
                 >
-                  <ShoppingCart className="w-5.5 h-5.5" /> THÊM VÀO GIỎ HÀNG
+                  <ShoppingCart className="w-5 h-5" /> THÊM VÀO GIỎ HÀNG
                 </button>
               </div>
             </div>
@@ -473,13 +472,13 @@ const ProductDetailPage = () => {
           <div className="bg-[#EAE8E1] rounded-2xl p-6 md:p-10">
             <div className="grid md:grid-cols-2 gap-8 md:gap-16">
               <div>
-                <h3 className="font-bold text-lg text-foreground mb-4 uppercase" style={{ fontFamily: "'Inter', sans-serif" }}>Đặc điểm nổi bật:</h3>
+                <h3 className="font-display text-lg font-bold text-foreground mb-4">Đặc điểm nổi bật:</h3>
                 
                 {product.flavorNotes && (
-                  <p className="text-foreground font-semibold mb-6" style={{ fontFamily: "'Inter', sans-serif" }}>{product.flavorNotes}</p>
+                  <p className="text-foreground font-semibold mb-6 leading-relaxed">{product.flavorNotes}</p>
                 )}
 
-                <div className="space-y-4 text-sm mt-6" style={{ fontFamily: "'Inter', sans-serif" }}>
+                <div className="space-y-4 text-sm mt-6">
                   {Object.entries({
                     "TÊN QUỐC GIA": product.origin?.country,
                     "VÙNG ĐẤT": product.origin?.region,
@@ -500,7 +499,7 @@ const ProductDetailPage = () => {
                 </div>
               </div>
               <div>
-                <h3 className="font-bold text-lg text-foreground mb-4" style={{ fontFamily: "'Inter', sans-serif" }}>Câu chuyện</h3>
+                <h3 className="font-display text-lg font-bold text-foreground mb-4">Câu chuyện</h3>
                 {product.story ? (
                   <p className="text-[#333333] text-[15px] leading-[1.8] text-justify whitespace-pre-line">{product.story}</p>
                 ) : (
@@ -522,15 +521,15 @@ const ProductDetailPage = () => {
                   <MapPin className="w-5 h-5 text-primary-foreground" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-primary uppercase tracking-[0.15em]" style={{ fontFamily: "'Inter', sans-serif" }}>
-                    ĐIỂM KHÁC BIỆT CỦA EDEN HUB
+                  <p className="font-mono-accent text-[11px] text-primary">
+                    TRUY XUẤT NGUỒN GỐC
                   </p>
                 </div>
               </div>
-              <h2 className="text-xl md:text-2xl font-bold text-foreground mb-2">
-                Truy Xuất Nguồn Gốc
+              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">
+                Hành trình số Daklink
               </h2>
-              <p className="text-muted-foreground text-sm mb-8 max-w-xl" style={{ fontFamily: "'Inter', sans-serif" }}>
+              <p className="text-muted-foreground text-sm mb-8 max-w-xl leading-relaxed">
                 Theo dõi hành trình từng hạt cà phê - từ lúc gieo hạt đến khi giao tận tay bạn. 
                 Mọi bước đều được ghi nhận và xác thực.
               </p>
@@ -553,8 +552,8 @@ const ProductDetailPage = () => {
                           
                           {/* Content */}
                           <div className="md:text-center flex-1">
-                            <p className="text-xs font-semibold text-primary mb-1" style={{ fontFamily: "'Inter', sans-serif" }}>{step.date}</p>
-                            <h4 className="font-bold text-sm text-foreground mb-1" style={{ fontFamily: "'Inter', sans-serif" }}>{step.stage}</h4>
+                            <p className="font-mono text-[10px] text-primary mb-1">{step.date}</p>
+                            <h4 className="font-display text-sm font-bold text-foreground mb-1">{step.stage}</h4>
                             <p className="text-muted-foreground text-xs leading-relaxed mb-1">{step.description}</p>
                             <p className="text-xs text-primary/70 italic">📝 {step.note}</p>
                           </div>
@@ -579,8 +578,8 @@ const ProductDetailPage = () => {
         <section className="max-w-6xl mx-auto px-6 md:px-10 pb-16">
           <FadeIn>
             <div className="text-center mb-10">
-              <p className="text-xs font-semibold text-primary uppercase tracking-[0.2em] mb-3" style={{ fontFamily: "'Inter', sans-serif" }}>THƯỞNG THỨC TRỌN VẸN</p>
-              <h2 className="text-xl md:text-3xl font-bold text-foreground">Gợi ý kết hợp</h2>
+              <p className="font-mono-accent text-[11px] text-primary mb-3">THƯỞNG THỨC TRỌN VẸN</p>
+              <h2 className="font-display text-2xl md:text-4xl font-bold text-foreground tracking-tight">Gợi ý kết hợp</h2>
             </div>
             
             <div className="flex overflow-x-auto gap-6 md:gap-8 pb-8 snap-x snap-mandatory scrollbar-hide -mx-5 px-5">
@@ -627,7 +626,7 @@ const ProductDetailPage = () => {
       {/* Related products */}
       <section className="max-w-6xl mx-auto px-6 md:px-10 pb-20">
         <FadeIn>
-          <h2 className="text-xl md:text-2xl font-bold text-foreground mb-8">Sản phẩm khác</h2>
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-8 tracking-tight">Sản phẩm khác</h2>
           <div className="flex overflow-x-auto gap-6 md:gap-8 pb-8 snap-x snap-mandatory scrollbar-hide -mx-5 px-5">
             {otherProducts.map((p, i) => (
               <div key={p.id} className="shrink-0 w-[240px] md:w-[280px] snap-center">
@@ -660,7 +659,7 @@ const ProductDetailPage = () => {
               </button>
 
               <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 pb-4 md:pb-6">
-                <h3 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">{selectedRecipe.name}</h3>
+                <h3 className="font-display text-3xl md:text-5xl font-bold text-foreground tracking-tight">{selectedRecipe.name}</h3>
               </div>
             </div>
             

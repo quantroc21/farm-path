@@ -253,7 +253,7 @@ const StickyStoryScroll = () => {
   return (
     <section className="bg-[#0A2319] text-white relative overflow-x-clip">
       {/* Section header */}
-      <div className="max-w-6xl mx-auto px-5 md:px-12 pt-20 md:pt-32 pb-10 md:pb-16 relative z-10">
+      <div className="max-w-6xl mx-auto px-6 md:px-12 pt-20 md:pt-32 pb-10 md:pb-16 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -261,13 +261,13 @@ const StickyStoryScroll = () => {
           transition={{ duration: 0.7, ease }}
           className="max-w-xl"
         >
-          <p className="text-[#E8B647] text-[11px] md:text-xs tracking-[0.25em] mb-3 font-semibold uppercase">
+          <p className="font-mono-accent text-[#E8B647] text-[11px] md:text-xs mb-3">
             Hành trình minh bạch
           </p>
-          <h2 className="text-3xl md:text-5xl font-bold leading-[1.1] tracking-tight text-white mb-4">
+          <h2 className="font-display text-3xl md:text-5xl font-bold leading-[1.1] tracking-tight text-white mb-4">
             Từ rẫy đến<br />bàn ăn
           </h2>
-          <p className="text-white/70 text-[15px] md:text-lg leading-relaxed">
+          <p className="text-white/70 text-[15px] md:text-lg leading-relaxed text-left">
             Mỗi sản phẩm Daklink mang theo một hành trình - từ hạt giống, qua bàn tay người nông dân, đến tách cà phê trên bàn bạn.
           </p>
         </motion.div>
@@ -313,7 +313,7 @@ const StickyStoryScroll = () => {
           </div>
 
           {/* Bottom step dots */}
-          <div className="px-5 md:px-12 pb-10 md:pb-12">
+          <div className="px-6 md:px-12 pb-12 md:pb-12">
             <div className="flex items-center gap-1.5 max-w-3xl">
               {chapters.map((_, dotIndex) => (
                 <div
@@ -359,22 +359,22 @@ const StickyStoryScroll = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-[#0A2319]/80 via-[#0A2319]/20 to-transparent" />
 
             {/* Foreground content */}
-            <div className="relative z-20 px-5 md:px-12 pb-[100px] md:pb-[140px] max-w-3xl">
+            <div className="relative z-20 px-6 md:px-12 pb-[110px] md:pb-[140px] max-w-3xl">
               {/* Meta tag */}
               <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#E8B647] animate-pulse" />
-                <span className="text-[10px] md:text-xs tracking-[0.18em] uppercase text-white/85 font-medium">
+                <span className="font-mono text-[10px] md:text-xs tracking-[0.18em] uppercase text-white/85 font-medium">
                   {c.meta}
                 </span>
               </div>
 
               {/* Title */}
-              <h3 className="text-[2.5rem] leading-[1.05] md:text-7xl font-bold tracking-tight text-white mb-5">
+              <h3 className="font-display text-[2.5rem] leading-[1.05] md:text-7xl font-bold tracking-tight text-white mb-5">
                 {c.title}
               </h3>
 
               {/* Description */}
-              <p className="text-white/85 text-[15px] md:text-xl leading-[1.65] max-w-xl mb-5">
+              <p className="text-white/85 text-[15px] md:text-xl leading-[1.7] max-w-xl mb-6 text-left">
                 {c.desc}
               </p>
 

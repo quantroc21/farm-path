@@ -28,8 +28,8 @@ const TracePage = () => {
               className="w-16 h-16 rounded-2xl object-cover border-2 border-background shadow-lift"
             />
             <div>
-              <h1 className="text-xl font-bold text-foreground">{farmer.fullName}</h1>
-              <p className="text-sm text-primary/70 flex items-center gap-1">
+              <h1 className="font-display text-xl font-bold text-foreground">{farmer.fullName}</h1>
+              <p className="text-sm text-primary/70 flex items-center gap-1 leading-relaxed">
                 <MapPin className="w-3.5 h-3.5" /> {farmer.region}
               </p>
             </div>
@@ -42,10 +42,10 @@ const TracePage = () => {
         <FadeIn>
           <div className="flex items-center gap-2 mb-1">
             <Leaf className="w-4 h-4 text-accent" />
-            <span className="text-xs font-semibold text-accent uppercase tracking-wider">Hành trình truy xuất</span>
+            <span className="font-mono-accent text-[11px] text-accent">Hành trình truy xuất</span>
           </div>
-          <h2 className="text-2xl font-bold text-foreground">{farmer.crop}</h2>
-          <p className="text-sm text-primary/70">{farmer.journey} · {farmer.region}</p>
+          <h2 className="font-display text-2xl font-bold text-foreground tracking-tight">{farmer.crop}</h2>
+          <p className="text-sm text-primary/70 leading-relaxed">{farmer.journey} · {farmer.region}</p>
         </FadeIn>
       </section>
 
@@ -65,8 +65,8 @@ const TracePage = () => {
                   />
                   <div className="p-5">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="badge-terracotta">{entry.stage}</span>
-                      <span className="text-xs text-primary/70">{entry.date}</span>
+                      <span className="badge-terracotta font-mono-accent text-[10px]">{entry.stage}</span>
+                      <span className="font-mono text-[10px] text-primary/70">{entry.date}</span>
                     </div>
                     <p className="text-sm text-foreground leading-relaxed mb-2">{entry.description}</p>
                     <p className="text-xs text-primary/70 italic">📝 {entry.note}</p>
@@ -84,7 +84,7 @@ const TracePage = () => {
           <div className="bg-sage-light rounded-3xl p-6 border border-border">
             <div className="flex items-center gap-2 mb-3">
               <Award className="w-5 h-5 text-forest" />
-              <span className="text-sm font-bold text-foreground">Tóm tắt AI</span>
+              <span className="font-mono-accent text-sm text-foreground">Tóm tắt AI</span>
             </div>
             <p className="text-sm text-primary/80 leading-relaxed">
               Lô cà phê Liberica này được canh tác hoàn toàn hữu cơ tại M'Drak, Đắk Lắk bởi nông dân Nguyễn Văn Việt
@@ -105,8 +105,8 @@ const TracePage = () => {
           <div className="bg-card rounded-2xl overflow-hidden shadow-card border border-border">
             <img src={heroFarm} alt="Vùng canh tác hữu cơ Đắk Lắk - chuỗi cung ứng nông sản minh bạch" className="w-[60%] mx-auto py-3 object-contain rounded-lg" />
             <div className="p-4">
-              <p className="text-xs font-semibold text-foreground mb-1">📍 Vùng canh tác</p>
-              <p className="text-xs text-primary/70">{farmer.region} - Cao nguyên Trung phần, độ cao 500-700m</p>
+              <p className="font-mono-accent text-[10px] text-foreground mb-1">📍 Vùng canh tác</p>
+              <p className="text-xs text-primary/70 leading-relaxed">{farmer.region} - Cao nguyên Trung phần, độ cao 500-700m</p>
             </div>
           </div>
         </FadeIn>
@@ -115,8 +115,8 @@ const TracePage = () => {
       {/* Footer */}
       <footer className="px-5 py-10 text-center bg-sage-light">
         <FadeIn>
-          <p className="text-sm font-semibold text-foreground">Minh bạch & bền vững 🌱</p>
-          <p className="text-xs text-primary/70 mt-1">Powered by Daklink</p>
+          <p className="font-mono-accent text-sm text-foreground">Minh bạch & bền vững 🌱</p>
+          <p className="font-mono-accent text-[10px] text-primary/70 mt-1">Powered by Daklink</p>
         </FadeIn>
       </footer>
     </div>

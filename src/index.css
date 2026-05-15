@@ -1,4 +1,94 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap');
+/* ── Self-hosted Font Declarations ── */
+
+/* Lora – Serif display for hero headlines */
+@font-face {
+  font-family: 'Lora';
+  src: url('@/assets/Lora/Lora-VariableFont_wght.ttf') format('truetype');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lora';
+  src: url('@/assets/Lora/Lora-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: 400 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Be Vietnam Pro – Primary sans-serif for body and sub-headers */
+@font-face {
+  font-family: 'Be Vietnam Pro';
+  src: url('@/assets/Be_Vietnam_Pro/BeVietnamPro-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Be Vietnam Pro';
+  src: url('@/assets/Be_Vietnam_Pro/BeVietnamPro-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Be Vietnam Pro';
+  src: url('@/assets/Be_Vietnam_Pro/BeVietnamPro-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Be Vietnam Pro';
+  src: url('@/assets/Be_Vietnam_Pro/BeVietnamPro-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Be Vietnam Pro';
+  src: url('@/assets/Be_Vietnam_Pro/BeVietnamPro-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Be Vietnam Pro';
+  src: url('@/assets/Be_Vietnam_Pro/BeVietnamPro-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* IBM Plex Mono – Monospace for accent labels and technical data */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('@/assets/IBM_Plex_Mono/IBMPlexMono-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('@/assets/IBM_Plex_Mono/IBMPlexMono-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('@/assets/IBM_Plex_Mono/IBMPlexMono-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('@/assets/IBM_Plex_Mono/IBMPlexMono-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 @tailwind base;
 @tailwind components;
@@ -67,7 +157,11 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.7;
     overflow-x: clip;
     width: 100%;
     position: relative;
@@ -79,8 +173,32 @@
     -webkit-overflow-scrolling: touch;
   }
 
+  /* Sub-headers default to Be Vietnam Pro Semi-bold */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    letter-spacing: 0.05em;
+  }
+
+  /* Hero-level titles use Lora serif for editorial contrast */
+  h1 {
+    font-family: 'Lora', Georgia, serif;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+
+  /* Utility classes for the typography system */
+  .font-display {
+    font-family: 'Lora', Georgia, serif;
+    letter-spacing: -0.02em;
+  }
+  .font-body {
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+  .font-mono-accent {
+    font-family: 'IBM Plex Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
   }
 }
 
@@ -109,35 +227,35 @@
     @apply bg-primary text-primary-foreground px-8 py-3.5 rounded-lg font-bold text-base
     transition-all duration-300 ease-out hover:bg-[#4ADE80] hover:text-[#011C14] hover:scale-[1.05]
     hover:shadow-[0_0_20px_rgba(74,222,128,0.3)] active:scale-[0.95] shadow-md;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Be Vietnam Pro', sans-serif;
   }
 
   .btn-secondary {
     @apply bg-secondary text-secondary-foreground px-8 py-3.5 rounded-lg font-semibold text-base
     transition-all duration-300 ease-out hover:bg-purple-light hover:scale-[1.02]
     active:scale-[0.98] shadow-soft;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Be Vietnam Pro', sans-serif;
   }
 
   .btn-outline-primary {
     @apply border-2 border-primary text-primary px-8 py-3 rounded-lg font-semibold text-base
     transition-all duration-300 ease-out hover:bg-primary hover:text-primary-foreground
     active:scale-[0.98];
-    font-family: 'Inter', sans-serif;
+    font-family: 'Be Vietnam Pro', sans-serif;
   }
 
   .btn-terracotta {
     @apply bg-primary text-primary-foreground px-6 py-3.5 rounded-lg font-semibold text-base
     transition-all duration-300 ease-out hover:bg-daklink-green-light hover:scale-[1.02]
     active:scale-[0.98] shadow-soft;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Be Vietnam Pro', sans-serif;
   }
 
   .btn-forest {
     @apply bg-primary text-primary-foreground px-6 py-3.5 rounded-lg font-semibold text-base
     transition-all duration-300 ease-out hover:bg-daklink-green-light hover:scale-[1.02]
     active:scale-[0.98] shadow-soft;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Be Vietnam Pro', sans-serif;
   }
 
   .timeline-line {
@@ -226,4 +344,27 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+}
+
+/* ── Phase 2: Mobile-First Premium Spacing ── */
+@media (max-width: 768px) {
+  /* Breathable side padding on mobile */
+  .section-padding {
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
+  /* Hero title scales to dominant but readable size */
+  .hero-title-scale {
+    font-size: 2.5rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+}
+
+/* Cream surface texture for visual section breaks */
+.bg-surface-cream {
+  background-color: #F9F7F2;
 }
