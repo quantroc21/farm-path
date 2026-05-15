@@ -4,8 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Sprout, BarChart3, BookOpen, ShoppingCart, Search, Cpu, Truck, Globe, Award, CheckCircle, Zap, Shield, MapPin, Calendar, ArrowRight, Star } from "lucide-react";
 import FadeIn from "@/components/FadeIn";
 import StickyStoryScroll from "@/components/StickyStoryScroll";
-import FlowArt from "@/components/FlowArt";
-import FlowSection from "@/components/FlowSection";
 import heroCoffeeFarm from "@/assets/hero-coffee-farm.jpg";
 import heroVideo from "@/assets/hero-video.mp4";
 import heroFlycam from "@/assets/hero-flycam.mp4.asset.json";
@@ -103,9 +101,8 @@ const guarantees = [
 
 const HomePage = () => {
   return (
-    <FlowArt>
+    <div>
       {/* Hero */}
-      <FlowSection id="hero" isFirst bg="transparent">
       <section className="relative h-[80vh] min-h-[520px] flex items-center overflow-hidden">
         <motion.div
           className="absolute inset-0"
@@ -152,19 +149,15 @@ const HomePage = () => {
           </FadeIn>
         </div>
       </section>
-      </FlowSection>
 
       {/* Tabbed Feature Section */}
-      <FlowSection id="features" bg="#F8F8F7">
-      <section className="py-14 px-6 md:px-10 overflow-hidden">
+      <section className="bg-[#F8F8F7] py-14 px-6 md:px-10 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <TabbedFeatureSection />
         </div>
       </section>
-      </FlowSection>
 
       {/* Drone section */}
-      <FlowSection id="drone" bg="transparent">
       <section className="relative py-16 overflow-hidden min-h-[400px] flex items-center">
         <motion.img 
           src={heroCoffeeFarm} 
@@ -198,11 +191,9 @@ const HomePage = () => {
           </FadeIn>
         </div>
       </section>
-      </FlowSection>
 
       {/* Featured Products */}
-      <FlowSection id="products" bg="#FAF9F6">
-      <section className="section-padding">
+      <section className="section-padding bg-surface-cream">
         <div className="max-w-6xl mx-auto">
           <FadeIn>
             <div className="text-center mb-12">
@@ -222,16 +213,12 @@ const HomePage = () => {
           <FeaturedProductsGrid />
         </div>
       </section>
-      </FlowSection>
 
       {/* Ecosystem - Sticky Scroll Storytelling */}
-      <FlowSection id="journey" bg="transparent" pin={false}>
-        <StickyStoryScroll />
-      </FlowSection>
+      <StickyStoryScroll />
 
       {/* Guarantees */}
-      <FlowSection id="guarantees" bg="#FAF9F6">
-      <section className="section-padding">
+      <section className="section-padding bg-surface-cream">
         <div className="max-w-6xl mx-auto">
           <FadeIn>
             <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground text-center mb-3 tracking-tight">
@@ -258,10 +245,8 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-      </FlowSection>
 
       {/* Export section */}
-      <FlowSection id="export" bg="transparent">
       <section className="relative py-16 overflow-hidden">
         <img src={exportBg} alt="Xuất khẩu nông sản Việt Nam đạt chuẩn quốc tế qua nền tảng Daklink" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-foreground/70" />
@@ -281,8 +266,7 @@ const HomePage = () => {
           </FadeIn>
         </div>
       </section>
-      </FlowSection>
-    </FlowArt>
+    </div>
   );
 };
 

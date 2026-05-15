@@ -1,5 +1,9 @@
-import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
 import seedling from "@/assets/seedling.jpg";
 import heroFarm from "@/assets/hero-farm.jpg";
 import harvest from "@/assets/coffee-harvest.jpg";
@@ -69,238 +73,121 @@ const chapters: Chapter[] = [
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-/* ── Slide transition variants ── */
-const slideVariants = {
-  enter: (direction: number) => ({
-    y: direction > 0 ? "100%" : "-100%",
-    scale: 0.95,
-    opacity: 0,
-  }),
-  center: {
-    y: 0,
-    scale: 1,
-    opacity: 1,
-  },
-  exit: (direction: number) => ({
-    y: direction > 0 ? "-100%" : "100%",
-    scale: 0.95,
-    opacity: 0,
-  }),
+// Transition for UI elements
+const uiFadeVariants = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -10 },
 };
 
 const StickyStoryScroll = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState(0); // +1 down, -1 up
-  const [isLocked, setIsLocked] = useState(false); // true = section has captured scroll
-  const isAnimating = useRef(false);
-  const touchStartY = useRef(0);
-  const accumulatedDelta = useRef(0);
 
-  const SWIPE_THRESHOLD = 50; // px of accumulated wheel delta or touch distance to trigger
-  const DEBOUNCE_MS = 600; // cooldown between transitions
+  useGSAP(() => {
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-  /* ── Navigate to a chapter ── */
-  const goTo = useCallback((newIndex: number, dir: number) => {
-    if (isAnimating.current) return;
-    if (newIndex < 0 || newIndex >= chapters.length) return;
+    chapters.forEach((_, i) => {
+      const id = `#chapter-${i}`;
+      const innerId = `#chapter-inner-${i}`;
+      
+      // 1. Update active index for UI overlay
+      ScrollTrigger.create({
+        trigger: id,
+        start: "top 40%",
+        end: "bottom 40%",
+        onToggle: (self) => {
+          if (self.isActive) setActiveIndex(i);
+        },
+      });
 
-    isAnimating.current = true;
-    accumulatedDelta.current = 0;
-    setDirection(dir);
-    setActiveIndex(newIndex);
+      // 2. Stacking & Pinning
+      ScrollTrigger.create({
+        trigger: id,
+        start: "top top",
+        end: "bottom top",
+        pin: true,
+        pinSpacing: false,
+        scrub: true,
+      });
 
-    setTimeout(() => {
-      isAnimating.current = false;
-    }, DEBOUNCE_MS);
-  }, []);
-
-  /* ── Lock/unlock scroll capture with IntersectionObserver ── */
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // Lock when section is >60% visible
-        if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
-          setIsLocked(true);
-        }
-      },
-      { threshold: [0.6] }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  /* ── Wheel handler: capture scroll gestures while locked ── */
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const handleWheel = (e: WheelEvent) => {
-      if (!isLocked) return;
-      if (isAnimating.current) {
-        e.preventDefault();
-        return;
-      }
-
-      const goingDown = e.deltaY > 0;
-      const goingUp = e.deltaY < 0;
-
-      // At first chapter scrolling up → release to page
-      if (goingUp && activeIndex === 0) {
-        setIsLocked(false);
-        return;
-      }
-      // At last chapter scrolling down → release to page
-      if (goingDown && activeIndex === chapters.length - 1) {
-        setIsLocked(false);
-        return;
-      }
-
-      // We're in the middle - capture the scroll
-      e.preventDefault();
-
-      accumulatedDelta.current += e.deltaY;
-
-      if (accumulatedDelta.current > SWIPE_THRESHOLD) {
-        goTo(activeIndex + 1, 1);
-      } else if (accumulatedDelta.current < -SWIPE_THRESHOLD) {
-        goTo(activeIndex - 1, -1);
-      }
-    };
-
-    el.addEventListener("wheel", handleWheel, { passive: false });
-    return () => el.removeEventListener("wheel", handleWheel);
-  }, [isLocked, activeIndex, goTo]);
-
-  /* ── Touch handler: capture swipe gestures while locked ── */
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartY.current = e.touches[0].clientY;
-      accumulatedDelta.current = 0;
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      if (!isLocked) return;
-      if (isAnimating.current) {
-        e.preventDefault();
-        return;
-      }
-
-      const deltaY = touchStartY.current - e.touches[0].clientY;
-      const goingDown = deltaY > 0;
-      const goingUp = deltaY < 0;
-
-      // At boundaries → release
-      if (goingUp && activeIndex === 0) {
-        setIsLocked(false);
-        return;
-      }
-      if (goingDown && activeIndex === chapters.length - 1) {
-        setIsLocked(false);
-        return;
-      }
-
-      // Capture
-      e.preventDefault();
-
-      if (deltaY > SWIPE_THRESHOLD) {
-        goTo(activeIndex + 1, 1);
-      } else if (deltaY < -SWIPE_THRESHOLD) {
-        goTo(activeIndex - 1, -1);
-      }
-    };
-
-    el.addEventListener("touchstart", handleTouchStart, { passive: true });
-    el.addEventListener("touchmove", handleTouchMove, { passive: false });
-    return () => {
-      el.removeEventListener("touchstart", handleTouchStart);
-      el.removeEventListener("touchmove", handleTouchMove);
-    };
-  }, [isLocked, activeIndex, goTo]);
-
-  /* ── Re-lock when scrolling back into view ── */
-  useEffect(() => {
-    if (isLocked) return;
-
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const relockObserver = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && entry.intersectionRatio > 0.8) {
-          // Only re-lock if we're at a boundary chapter
-          if (activeIndex === 0 || activeIndex === chapters.length - 1) {
-            setIsLocked(true);
+      // 3. Rotation Animation (Skip for first chapter and on mobile)
+      if (i > 0 && !isMobile) {
+        gsap.fromTo(innerId, 
+          { 
+            rotation: 30,
+            transformOrigin: "bottom left",
+          },
+          {
+            rotation: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: id,
+              start: "top bottom",
+              end: "top top",
+              scrub: true,
+            }
           }
-        }
-      },
-      { threshold: [0.8] }
-    );
+        );
+      }
+    });
 
-    relockObserver.observe(el);
-    return () => relockObserver.disconnect();
-  }, [isLocked, activeIndex]);
+    return () => {
+      ScrollTrigger.getAll().forEach(t => t.kill());
+    };
+  }, { scope: containerRef });
 
   const c = chapters[activeIndex];
 
   return (
-    <section className="bg-[#0A2319] text-white relative overflow-x-clip">
-      {/* Section header */}
-      <div className="max-w-6xl mx-auto px-6 md:px-12 pt-20 md:pt-32 pb-10 md:pb-16 relative z-10">
+    <section ref={containerRef} className="bg-[#0A2319] text-white relative">
+      {/* ── Section Header ── */}
+      <div className="max-w-6xl mx-auto px-6 md:px-12 pt-24 md:pt-32 pb-16 md:pb-24 relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7, ease }}
+          transition={{ duration: 0.8, ease }}
           className="max-w-xl"
         >
-          <p className="font-mono-accent text-[#E8B647] text-[11px] md:text-xs mb-3">
+          <p className="font-mono-accent text-[#E8B647] text-[11px] md:text-xs mb-4">
             Hành trình minh bạch
           </p>
-          <h2 className="font-display text-3xl md:text-5xl font-bold leading-[1.1] tracking-tight text-white mb-4">
+          <h2 className="font-display text-4xl md:text-6xl font-bold leading-[1.05] tracking-tight text-white mb-6">
             Từ rẫy đến<br />bàn ăn
           </h2>
-          <p className="text-white/70 text-[15px] md:text-lg leading-relaxed text-left">
+          <p className="text-white/70 text-base md:text-xl leading-relaxed text-left max-w-lg">
             Mỗi sản phẩm Daklink mang theo một hành trình - từ hạt giống, qua bàn tay người nông dân, đến tách cà phê trên bàn bạn.
           </p>
         </motion.div>
       </div>
 
-      {/* ── Reels Viewport ── */}
-      <div
-        ref={sectionRef}
-        className="relative w-full h-[100dvh] overflow-hidden bg-black"
-      >
-        {/* ── UI Overlay ── */}
-        <div className="absolute inset-0 pointer-events-none z-50 flex flex-col justify-between">
+      {/* ── Stacking Chapters ── */}
+      <div className="relative">
+        {/* UI Overlay - Sticky while chapters stack */}
+        <div className="sticky top-0 left-0 w-full h-[100dvh] pointer-events-none z-50 flex flex-col justify-between overflow-hidden">
           <div>
             {/* Progress bar */}
-            <div className="absolute top-0 left-0 right-0 h-[3px] bg-white/10">
+            <div className="absolute top-0 left-0 right-0 h-[4px] bg-white/10">
               <motion.div
                 className="h-full bg-gradient-to-r from-[#E8B647] via-[#BC6C25] to-[#E8B647]"
                 animate={{ width: `${((activeIndex + 1) / chapters.length) * 100}%` }}
-                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.4, ease }}
               />
             </div>
 
             {/* Chapter counter */}
-            <div className="absolute top-6 left-5 md:left-12 flex items-center gap-3 bg-[#0A2319]/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 shadow-lg">
+            <div className="absolute top-8 left-6 md:left-12 flex items-center gap-3 bg-[#0A2319]/80 backdrop-blur-xl px-5 py-2.5 rounded-full border border-white/10 shadow-2xl pointer-events-auto">
               <div className="font-mono text-[10px] tracking-[0.3em] text-white/90 uppercase">
                 Chương
               </div>
               <AnimatePresence mode="popLayout">
                 <motion.div
                   key={activeIndex}
-                  initial={{ y: 10, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -10, opacity: 0 }}
+                  variants={uiFadeVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
                   className="font-mono text-sm tracking-wider text-[#E8B647] font-bold"
                 >
                   {chapters[activeIndex].step}
@@ -313,17 +200,17 @@ const StickyStoryScroll = () => {
           </div>
 
           {/* Bottom step dots */}
-          <div className="px-6 md:px-12 pb-12 md:pb-12">
-            <div className="flex items-center gap-1.5 max-w-3xl">
+          <div className="px-6 md:px-12 pb-14 md:pb-16">
+            <div className="flex items-center gap-2 max-w-3xl pointer-events-auto">
               {chapters.map((_, dotIndex) => (
                 <div
                   key={dotIndex}
-                  className={`h-[3px] rounded-full transition-all duration-300 ${
+                  className={`h-[4px] rounded-full transition-all duration-500 ${
                     dotIndex === activeIndex
-                      ? "w-7 bg-[#E8B647]"
+                      ? "w-8 bg-[#E8B647]"
                       : dotIndex < activeIndex
-                      ? "w-1.5 bg-[#E8B647]/45"
-                      : "w-1.5 bg-white/20"
+                      ? "w-2 bg-[#E8B647]/40"
+                      : "w-2 bg-white/10"
                   }`}
                 />
               ))}
@@ -331,78 +218,64 @@ const StickyStoryScroll = () => {
           </div>
         </div>
 
-        {/* ── Animated Chapter Content ── */}
-        <AnimatePresence initial={false} custom={direction} mode="popLayout">
-          <motion.div
-            key={activeIndex}
-            custom={direction}
-            variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{
-              y: { type: "spring", stiffness: 300, damping: 30 },
-              opacity: { duration: 0.25 },
-              scale: { duration: 0.35 },
-            }}
-            className="absolute inset-0 w-full h-full flex flex-col justify-end overflow-hidden"
-          >
-            {/* Background Image */}
-            <img
-              src={c.image}
-              alt={c.title}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
+        {/* The Actual Chapters */}
+        <div className="relative mt-[-100dvh]">
+          {chapters.map((chapter, i) => (
+            <div 
+              key={i} 
+              id={`chapter-${i}`}
+              className="relative w-full h-[100dvh] overflow-hidden"
+              style={{ zIndex: i + 1 }}
+            >
+              <div 
+                id={`chapter-inner-${i}`}
+                className="absolute inset-0 w-full h-full flex flex-col justify-end overflow-hidden will-change-transform"
+                style={{ backgroundColor: '#0A2319' }}
+              >
+                {/* Background Image */}
+                <img
+                  src={chapter.image}
+                  alt={chapter.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
 
-            {/* Cinematic gradient overlays */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0A2319] via-[#0A2319]/50 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0A2319]/80 via-[#0A2319]/20 to-transparent" />
+                {/* Cinematic gradient overlays */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A2319] via-[#0A2319]/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#0A2319]/90 via-[#0A2319]/10 to-transparent" />
 
-            {/* Foreground content */}
-            <div className="relative z-20 px-6 md:px-12 pb-[110px] md:pb-[140px] max-w-3xl">
-              {/* Meta tag */}
-              <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#E8B647] animate-pulse" />
-                <span className="font-mono text-[10px] md:text-xs tracking-[0.18em] uppercase text-white/85 font-medium">
-                  {c.meta}
-                </span>
-              </div>
+                {/* Foreground content */}
+                <div className="relative z-20 px-6 md:px-12 pb-[120px] md:pb-[160px] max-w-4xl">
+                  {/* Meta tag */}
+                  <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-white/5 backdrop-blur-xl border border-white/10">
+                    <span className="w-2 h-2 rounded-full bg-[#E8B647] animate-pulse" />
+                    <span className="font-mono text-[10px] md:text-xs tracking-[0.2em] uppercase text-white/90 font-semibold">
+                      {chapter.meta}
+                    </span>
+                  </div>
 
-              {/* Title */}
-              <h3 className="font-display text-[2.5rem] leading-[1.05] md:text-7xl font-bold tracking-tight text-white mb-5">
-                {c.title}
-              </h3>
+                  {/* Title */}
+                  <h3 className="font-display text-4xl md:text-8xl font-bold tracking-tighter text-white mb-6 leading-[0.95]">
+                    {chapter.title}
+                  </h3>
 
-              {/* Description */}
-              <p className="text-white/85 text-[15px] md:text-xl leading-[1.7] max-w-xl mb-6 text-left">
-                {c.desc}
-              </p>
+                  {/* Description */}
+                  <p className="text-white/80 text-base md:text-2xl leading-relaxed max-w-2xl mb-8 text-left font-light">
+                    {chapter.desc}
+                  </p>
 
-              {/* Location */}
-              <div className="flex items-center gap-2 text-white/60 text-xs md:text-sm">
-                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z" />
-                  <circle cx="12" cy="9" r="2.5" />
-                </svg>
-                <span className="tracking-wide">{c.location}</span>
+                  {/* Location */}
+                  <div className="flex items-center gap-2.5 text-white/50 text-xs md:text-base">
+                    <svg className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z" />
+                      <circle cx="12" cy="9" r="2" />
+                    </svg>
+                    <span className="tracking-wide font-medium">{chapter.location}</span>
+                  </div>
+                </div>
               </div>
             </div>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Scroll hint - only on first chapter */}
-        {activeIndex === 0 && (
-          <div className="absolute bottom-5 right-5 md:right-12 z-50 flex items-center gap-2 text-white/50 text-[10px] tracking-[0.25em] uppercase">
-            <span>Cuộn</span>
-            <motion.span
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-              className="inline-block"
-            >
-              ↓
-            </motion.span>
-          </div>
-        )}
+          ))}
+        </div>
       </div>
     </section>
   );
