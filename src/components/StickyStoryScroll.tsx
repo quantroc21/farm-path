@@ -70,23 +70,41 @@ const chapters: Chapter[] = [
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const ChapterCard = ({ c, index, progress }: { c: Chapter, index: number, progress: any }) => {
-  const sectionSize = 1 / chapters.length;
-  const start = index * sectionSize;
-  const end = start + sectionSize;
+  const totalSteps = chapters.length - 1;
+  const peak = index / totalSteps;
+  const start = Math.max(0, peak - 1 / totalSteps);
+  const end = Math.min(1, peak + 1 / totalSteps);
 
-  const rotateX = useTransform(progress, [start, end], [0, 80]);
-  const opacity = useTransform(progress, [start, end - 0.05], [1, 0]);
-  const scale = useTransform(progress, [start, end], [1, 0.8]);
-  const y = useTransform(progress, [start, end], ["0%", "-50%"]);
+  // Map the "zoom-scroll" effect from the CodePen
+  // 0% -> 50% -> 100% equivalent
+  // scale: 0 -> 1 -> 1.5
+  // opacity: 0 -> 1 -> 0
+  // blur: 40px -> 0px -> 24px
+
+  const scale = useTransform(
+    progress,
+    [start, peak, end],
+    [0.6, 1, 1.3] // Reduced from 0 and 1.5 to keep it premium and not too extreme
+  );
+  
+  const opacity = useTransform(
+    progress,
+    [start, peak, end],
+    [0, 1, 0]
+  );
+  
+  const blurValue = useTransform(
+    progress,
+    [start, peak, end],
+    [40, 0, 24]
+  );
 
   return (
     <motion.div
       style={{
         opacity,
         scale,
-        y,
-        rotateX,
-        transformOrigin: "top center",
+        filter: useTransform(blurValue, (b) => `blur(${b}px)`),
         zIndex: chapters.length - index,
       }}
       className="absolute inset-0 w-full h-full flex flex-col justify-end overflow-hidden will-change-transform"
