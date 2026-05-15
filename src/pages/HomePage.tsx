@@ -107,14 +107,14 @@ const HomePage = () => {
           src={heroCoffeeFarm}
           alt="Nông trại ớt Bình Thuận – hệ sinh thái nông nghiệp số Daklink"
           className="absolute inset-0 w-full h-full object-cover origin-center"
-          initial={{ scale: 1.2 }}
+          initial={{ scale: 1.4 }}
           animate={{
-            scale: [1.2, 1.4, 1.2],
-            x: ["0%", "-8%", "0%"],
-            y: ["0%", "5%", "0%"],
+            scale: [1.4, 1.05, 1.4],
+            x: ["0%", "-3%", "0%"],
+            y: ["0%", "2%", "0%"],
           }}
           transition={{
-            duration: 18,
+            duration: 12,
             ease: "easeInOut",
             repeat: Infinity,
           }}
@@ -162,14 +162,14 @@ const HomePage = () => {
           src={heroCoffeeFarm} 
           alt="Nông trại cà phê Tây Nguyên ứng dụng nhật ký canh tác số Daklink" 
           className="absolute inset-0 w-full h-full object-cover origin-center"
-          initial={{ scale: 1.2 }}
+          initial={{ scale: 1.4 }}
           animate={{
-            scale: [1.2, 1.4, 1.2],
-            x: ["0%", "6%", "0%"],
-            y: ["0%", "-4%", "0%"],
+            scale: [1.4, 1.05, 1.4],
+            x: ["0%", "3%", "0%"],
+            y: ["0%", "-2%", "0%"],
           }}
           transition={{
-            duration: 20,
+            duration: 12,
             ease: "easeInOut",
             repeat: Infinity,
           }}
