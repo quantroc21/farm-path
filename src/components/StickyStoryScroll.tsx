@@ -119,8 +119,8 @@ const StickyStoryScroll = () => {
         <div className="absolute inset-0 pointer-events-none z-50">
           <div className="sticky top-0 h-screen w-full flex flex-col justify-between">
             <div>
-              {/* Top progress bar */}
-              <div className="absolute top-0 left-0 right-0 h-[3px] bg-white/10">
+              {/* Top progress bar (positioned just below the navbar) */}
+              <div className="absolute top-[80px] md:top-[96px] left-0 right-0 h-[3px] bg-white/10">
                 <motion.div 
                   className="h-full bg-gradient-to-r from-[#E8B647] via-[#BC6C25] to-[#E8B647]" 
                   style={{ width: `${((activeIndex + 1) / chapters.length) * 100}%` }}
@@ -128,8 +128,8 @@ const StickyStoryScroll = () => {
                 />
               </div>
 
-              {/* Chapter counter — top */}
-              <div className="absolute top-6 left-5 md:left-12 flex items-center gap-3 bg-[#0A2319]/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+              {/* Chapter counter — top (clears the navbar) */}
+              <div className="absolute top-[104px] md:top-[124px] left-5 md:left-12 flex items-center gap-3 bg-[#0A2319]/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
                 <div className="font-mono text-[10px] tracking-[0.3em] text-white/90 uppercase">
                   Chương
                 </div>
