@@ -97,7 +97,7 @@ const StickyStoryScroll = () => {
   }, [smooth]);
 
   return (
-    <section className="bg-[#0A2319] text-white relative overflow-hidden">
+    <section className="bg-[#0A2319] text-white relative overflow-x-clip">
       {/* Section header */}
       <div className="max-w-6xl mx-auto px-5 md:px-12 pt-20 md:pt-32 pb-10 md:pb-16">
         <motion.div
