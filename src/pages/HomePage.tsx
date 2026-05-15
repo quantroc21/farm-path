@@ -103,14 +103,21 @@ const HomePage = () => {
     <div>
       {/* Hero */}
       <section className="relative h-[80vh] min-h-[520px] flex items-center overflow-hidden">
-        <video
-          src={heroVideo}
-          poster={heroCoffeeFarm}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+        <motion.img
+          src={heroCoffeeFarm}
+          alt="Nông trại ớt Bình Thuận – hệ sinh thái nông nghiệp số Daklink"
+          className="absolute inset-0 w-full h-full object-cover origin-center"
+          initial={{ scale: 1.2 }}
+          animate={{
+            scale: [1.2, 1.4, 1.2],
+            x: ["0%", "-8%", "0%"],
+            y: ["0%", "5%", "0%"],
+          }}
+          transition={{
+            duration: 18,
+            ease: "easeInOut",
+            repeat: Infinity,
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/40 to-transparent" />
         <div className="relative z-10 px-6 md:px-10 max-w-7xl mx-auto w-full">
@@ -151,14 +158,21 @@ const HomePage = () => {
 
       {/* Chấp cánh cho nông sản Việt - drone section */}
       <section className="relative py-16 overflow-hidden min-h-[400px] flex items-center">
-        <video
-          src={heroVideo}
-          poster={heroCoffeeFarm}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+        <motion.img 
+          src={heroCoffeeFarm} 
+          alt="Nông trại cà phê Tây Nguyên ứng dụng nhật ký canh tác số Daklink" 
+          className="absolute inset-0 w-full h-full object-cover origin-center"
+          initial={{ scale: 1.2 }}
+          animate={{
+            scale: [1.2, 1.4, 1.2],
+            x: ["0%", "6%", "0%"],
+            y: ["0%", "-4%", "0%"],
+          }}
+          transition={{
+            duration: 20,
+            ease: "easeInOut",
+            repeat: Infinity,
+          }}
         />
         <div className="absolute inset-0 bg-foreground/60" />
         <div className="relative z-10 max-w-4xl mx-auto text-center px-6">
