@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import seedling from "@/assets/seedling.jpg";
 import heroFarm from "@/assets/hero-farm.jpg";
 import harvest from "@/assets/coffee-harvest.jpg";
@@ -69,29 +69,91 @@ const chapters: Chapter[] = [
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
+const ChapterCard = ({ c, index, progress }: { c: Chapter, index: number, progress: any }) => {
+  const sectionSize = 1 / chapters.length;
+  const start = index * sectionSize;
+  const end = start + sectionSize;
+
+  const rotateX = useTransform(progress, [start, end], [0, 80]);
+  const opacity = useTransform(progress, [start, end - 0.05], [1, 0]);
+  const scale = useTransform(progress, [start, end], [1, 0.8]);
+  const y = useTransform(progress, [start, end], ["0%", "-50%"]);
+
+  return (
+    <motion.div
+      style={{
+        opacity,
+        scale,
+        y,
+        rotateX,
+        transformOrigin: "top center",
+        zIndex: chapters.length - index,
+      }}
+      className="absolute inset-0 w-full h-full flex flex-col justify-end overflow-hidden will-change-transform"
+    >
+      <img
+        src={c.image}
+        alt={c.title}
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0A2319] via-[#0A2319]/50 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#0A2319]/80 via-[#0A2319]/20 to-transparent" />
+
+      <div className="relative z-20 px-5 md:px-12 pb-[160px] md:pb-[180px] max-w-3xl">
+        <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#E8B647] animate-pulse" />
+          <span className="text-[10px] md:text-xs tracking-[0.18em] uppercase text-white/85 font-medium">
+            {c.meta}
+          </span>
+        </div>
+
+        <h3 className="text-[2.5rem] leading-[1.05] md:text-7xl font-bold tracking-tight text-white mb-5">
+          {c.title}
+        </h3>
+
+        <p className="text-white/85 text-[15px] md:text-xl leading-[1.65] max-w-xl mb-5">
+          {c.desc}
+        </p>
+
+        <div className="flex items-center gap-2 text-white/60 text-xs md:text-sm">
+          <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z" />
+            <circle cx="12" cy="9" r="2.5" />
+          </svg>
+          <span className="tracking-wide">{c.location}</span>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const StickyStoryScroll = () => {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const { scrollYProgress } = useScroll({
-    target: scrollContainerRef,
-    offset: ["start start", "end start"], // Calculate based on top edge crossing
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
   });
 
   useEffect(() => {
-    return scrollYProgress.on("change", (v) => {
-      // v goes from 0 to 1 over the container's height
+    return smoothProgress.on("change", (v) => {
       const idx = Math.min(
         chapters.length - 1,
         Math.floor(v * chapters.length)
       );
       setActiveIndex(Math.max(0, idx));
     });
-  }, [scrollYProgress]);
+  }, [smoothProgress]);
 
   return (
     <section className="bg-[#0A2319] text-white relative overflow-x-clip">
-      {/* Section header */}
       <div className="max-w-6xl mx-auto px-5 md:px-12 pt-20 md:pt-32 pb-10 md:pb-16 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -112,26 +174,19 @@ const StickyStoryScroll = () => {
         </motion.div>
       </div>
 
-      {/* TikTok Style Snap Scrolling Experience - Using Global Document Scroll */}
-      <div 
-        ref={scrollContainerRef} 
-        className="relative w-full"
-      >
-        {/* GLOBAL UI OVERLAY - Fixed to viewport while scrolling container */}
-        <div className="sticky top-0 h-0 w-full pointer-events-none z-50">
-          <div className="h-[100dvh] w-full flex flex-col justify-between">
+      <div ref={containerRef} style={{ height: `${chapters.length * 100}vh` }} className="relative w-full">
+        <div className="sticky top-0 h-screen w-full flex flex-col justify-between overflow-hidden [perspective:1000px]">
+          
+          <div className="absolute inset-0 pointer-events-none z-50 flex flex-col justify-between">
             <div>
-              {/* Top progress bar (positioned just below the navbar) */}
               <div className="absolute top-[80px] md:top-[96px] left-0 right-0 h-[3px] bg-white/10">
                 <motion.div 
                   className="h-full bg-gradient-to-r from-[#E8B647] via-[#BC6C25] to-[#E8B647]" 
-                  style={{ width: `${((activeIndex + 1) / chapters.length) * 100}%` }}
-                  transition={{ duration: 0.3 }}
+                  style={{ width: useTransform(smoothProgress, [0, 1], ["0%", "100%"]) }}
                 />
               </div>
 
-              {/* Chapter counter — top (clears the navbar) */}
-              <div className="absolute top-[104px] md:top-[124px] left-5 md:left-12 flex items-center gap-3 bg-[#0A2319]/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+              <div className="absolute top-[104px] md:top-[124px] left-5 md:left-12 flex items-center gap-3 bg-[#0A2319]/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 shadow-lg">
                 <div className="font-mono text-[10px] tracking-[0.3em] text-white/90 uppercase">
                   Chương
                 </div>
@@ -152,8 +207,7 @@ const StickyStoryScroll = () => {
               </div>
             </div>
 
-            {/* Bottom step dots */}
-            <div className="px-5 md:px-12 pb-[110px] md:pb-[140px]">
+            <div className="px-5 md:px-12 pb-10 md:pb-12">
               <div className="flex items-center gap-1.5 max-w-3xl">
                 {chapters.map((_, dotIndex) => (
                   <div
@@ -170,78 +224,12 @@ const StickyStoryScroll = () => {
               </div>
             </div>
           </div>
+          {/* Render Chapters in 3D Space */}
+          {chapters.map((c, i) => (
+            <ChapterCard key={c.step} c={c} index={i} progress={smoothProgress} />
+          ))}
+
         </div>
-
-        {chapters.map((c, i) => (
-          <div key={c.step} className="w-full h-[100dvh] snap-start snap-always relative flex flex-col justify-end overflow-hidden shrink-0">
-            
-            {/* Background Image with subtle entrance animation */}
-            <motion.img
-              src={c.image}
-              alt={c.title}
-              className="absolute inset-0 w-full h-full object-cover origin-center -z-10"
-              initial={{ scale: 1.15 }}
-              whileInView={{ scale: 1 }}
-              viewport={{ amount: 0.1 }}
-              transition={{ duration: 3, ease: "easeOut" }}
-            />
-            
-            {/* Cinematic gradient overlays */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0A2319] via-[#0A2319]/40 to-transparent -z-10" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0A2319]/70 via-[#0A2319]/20 to-transparent -z-10" />
-
-            {/* Foreground content */}
-            <div className="relative z-20 px-5 md:px-12 pb-16 md:pb-24 max-w-3xl">
-              <motion.div
-                initial={{ opacity: 0, y: 32, filter: "blur(8px)" }}
-                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                viewport={{ amount: 0.4 }}
-                transition={{ duration: 0.6, ease }}
-              >
-                {/* Meta tag */}
-                <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#E8B647] animate-pulse" />
-                  <span className="text-[10px] md:text-xs tracking-[0.18em] uppercase text-white/85 font-medium">
-                    {c.meta}
-                  </span>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-[2.5rem] leading-[1.05] md:text-7xl font-bold tracking-tight text-white mb-5">
-                  {c.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-white/85 text-[15px] md:text-xl leading-[1.65] max-w-xl mb-5">
-                  {c.desc}
-                </p>
-
-                {/* Location */}
-                <div className="flex items-center gap-2 text-white/60 text-xs md:text-sm">
-                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z" />
-                    <circle cx="12" cy="9" r="2.5" />
-                  </svg>
-                  <span className="tracking-wide">{c.location}</span>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Scroll hint — only on first chapter */}
-            {i === 0 && (
-              <div className="absolute bottom-5 right-5 md:right-12 z-30 flex items-center gap-2 text-white/50 text-[10px] tracking-[0.25em] uppercase">
-                <span>Cuộn</span>
-                <motion.span
-                  animate={{ y: [0, 6, 0] }}
-                  transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-                  className="inline-block"
-                >
-                  ↓
-                </motion.span>
-              </div>
-            )}
-          </div>
-        ))}
       </div>
     </section>
   );
