@@ -200,6 +200,14 @@
     letter-spacing: 0.1em;
     font-weight: 500;
   }
+
+  /* Pricing: Be Vietnam Pro to avoid IBM Plex dotted-zero glitch */
+  .product-price {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
 }
 
 @layer components {

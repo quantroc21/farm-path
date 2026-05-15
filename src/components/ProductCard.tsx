@@ -11,8 +11,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const addItem = useCartStore((state) => state.addItem);
 
   return (
-    <Link to={`/product/${product.slug}`} className="group block h-full">
-      <div className="card-hover bg-card rounded-2xl overflow-hidden shadow-sm border border-border/60 hover:border-primary/20 flex flex-col h-full group-hover:shadow-md transition-all duration-300">
+    <Link to={`/product/${product.slug}`} className="group block h-full max-w-[320px] mx-auto">
+      <div className="bg-card rounded-xl overflow-hidden border border-border/40 flex flex-col h-full transition-all duration-500 hover:-translate-y-1" style={{ boxShadow: '0 10px 40px rgba(0,0,0,0.03)' }}>
         <div className="relative aspect-square overflow-hidden bg-[#FBFBFB]">
           {product.badge && (
             <span className="absolute top-3 left-3 bg-secondary text-white font-mono-accent text-[10px] px-2 py-0.5 rounded-full z-10 shadow-sm">
@@ -22,20 +22,20 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <img
             src={product.image}
             alt={`${product.name} \u2013 mua n\u00f4ng s\u1ea3n s\u1ea1ch t\u1ea1i Daklink`}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           />
         </div>
         <div className="p-4 flex flex-col flex-1 gap-1">
-          <h3 className="font-bold text-[16px] text-foreground leading-snug line-clamp-2">
+          <h3 className="font-semibold text-[15px] text-foreground leading-snug line-clamp-2">
             {product.name}
           </h3>
           
           <div className="flex items-center justify-between pt-1">
             <div className="flex flex-col">
-              <span className="text-primary font-mono text-lg leading-tight">
+              <span className="product-price text-primary text-base leading-tight">
                 {formatPrice(product.price)}
               </span>
-              <span className="text-muted-foreground/70 font-mono-accent text-[9px] mt-0.5">
+              <span className="text-muted-foreground/50 text-[8px] font-medium uppercase tracking-wider mt-0.5">
                 Đã bao gồm Thuế
               </span>
             </div>

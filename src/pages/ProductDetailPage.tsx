@@ -261,7 +261,7 @@ const ProductDetailPage = () => {
             <h5 className="font-bold text-[15px] text-foreground leading-tight line-clamp-2 mb-1">{product.name}</h5>
             <p className="text-sm text-muted-foreground mb-2">{itemToAdd.size}</p>
             <div className="flex items-center justify-between mt-auto">
-              <span className="font-bold text-primary text-lg">{formatPrice(itemToAdd.price)}</span>
+              <span className="product-price text-primary text-lg">{formatPrice(itemToAdd.price)}</span>
               <span className="text-sm font-bold text-muted-foreground bg-muted px-2 py-0.5 rounded-lg">x{quantity}</span>
             </div>
           </div>
@@ -399,10 +399,10 @@ const ProductDetailPage = () => {
               <h1 className="font-display text-2xl md:text-4xl font-bold text-foreground mb-3 leading-tight tracking-tight">{product.name}</h1>
               
               <div className="flex items-end gap-2 mb-1">
-                <p className="text-primary font-mono text-2xl font-bold">{formatPrice(displayPrice)}</p>
-                {selectedSize && <span className="font-mono text-muted-foreground text-sm mb-1.5">/ {selectedSize}</span>}
+                <p className="product-price text-primary text-2xl">{formatPrice(displayPrice)}</p>
+                {selectedSize && <span className="text-muted-foreground text-sm mb-1">/ {selectedSize}</span>}
               </div>
-              <p className="font-mono-accent text-muted-foreground text-[10px] mb-6">Đã bao gồm Thuế</p>
+              <p className="text-muted-foreground/50 text-[8px] font-medium uppercase tracking-wider mb-6">Đã bao gồm Thuế</p>
 
               {/* Product Short Description / Quote */}
               <div className="mb-6 pl-4 border-l-[3px] border-border py-1">

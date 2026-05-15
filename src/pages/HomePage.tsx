@@ -285,9 +285,9 @@ const FeaturedProductsGrid = () => {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="bg-card rounded-2xl h-80 border border-border animate-pulse" />
+          <div key={i} className="bg-card rounded-xl h-80 border border-border/40 animate-pulse" />
         ))}
       </div>
     );
@@ -302,7 +302,7 @@ const FeaturedProductsGrid = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
       {displayProducts.map((product, i) => (
         <FadeIn key={product.id} delay={i * 0.1}>
           <ProductCard product={product} />
