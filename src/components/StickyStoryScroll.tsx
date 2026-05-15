@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useSpring, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, AnimatePresence } from "framer-motion";
 import seedling from "@/assets/seedling.jpg";
 import heroFarm from "@/assets/hero-farm.jpg";
 import harvest from "@/assets/coffee-harvest.jpg";
@@ -70,6 +70,26 @@ const chapters: Chapter[] = [
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const StickyStoryScroll = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
+
+  useEffect(() => {
+    return scrollYProgress.on("change", (v) => {
+      // v goes from 0 to 1 over the container's height
+      // Because the last chapter sticks at the end, we adjust the calculation slightly.
+      const idx = Math.min(
+        chapters.length - 1,
+        Math.floor(v * chapters.length)
+      );
+      setActiveIndex(Math.max(0, idx));
+    });
+  }, [scrollYProgress]);
+
   return (
     <section className="bg-[#0A2319] text-white relative overflow-x-clip">
       {/* Section header */}
@@ -94,7 +114,62 @@ const StickyStoryScroll = () => {
       </div>
 
       {/* CSS Stacking Cards Experience */}
-      <div className="relative w-full">
+      <div ref={containerRef} className="relative w-full">
+        {/* GLOBAL UI OVERLAY - Stays fixed over everything */}
+        <div className="absolute inset-0 pointer-events-none z-50">
+          <div className="sticky top-0 h-screen w-full flex flex-col justify-between">
+            <div>
+              {/* Top progress bar */}
+              <div className="absolute top-0 left-0 right-0 h-[3px] bg-white/10">
+                <motion.div 
+                  className="h-full bg-gradient-to-r from-[#E8B647] via-[#BC6C25] to-[#E8B647]" 
+                  style={{ width: `${((activeIndex + 1) / chapters.length) * 100}%` }}
+                  transition={{ duration: 0.3 }}
+                />
+              </div>
+
+              {/* Chapter counter — top */}
+              <div className="absolute top-6 left-5 md:left-12 flex items-center gap-3 bg-[#0A2319]/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+                <div className="font-mono text-[10px] tracking-[0.3em] text-white/90 uppercase">
+                  Chương
+                </div>
+                <AnimatePresence mode="popLayout">
+                  <motion.div
+                    key={activeIndex}
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -10, opacity: 0 }}
+                    className="font-mono text-sm tracking-wider text-[#E8B647] font-bold"
+                  >
+                    {chapters[activeIndex].step}
+                  </motion.div>
+                </AnimatePresence>
+                <div className="font-mono text-[10px] tracking-wider text-white/50">
+                  / 0{chapters.length}
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom step dots */}
+            <div className="relative z-50 px-5 md:px-12 pb-[110px] md:pb-[140px]">
+              <div className="flex items-center gap-1.5 max-w-3xl">
+                {chapters.map((_, dotIndex) => (
+                  <div
+                    key={dotIndex}
+                    className={`h-[3px] rounded-full transition-all duration-300 ${
+                      dotIndex === activeIndex
+                        ? "w-7 bg-[#E8B647]"
+                        : dotIndex < activeIndex
+                        ? "w-1.5 bg-[#E8B647]/45"
+                        : "w-1.5 bg-white/20"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
         {chapters.map((c, i) => (
           <div key={c.step} className="sticky top-0 h-screen w-full flex flex-col justify-end overflow-hidden shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
             
@@ -112,27 +187,6 @@ const StickyStoryScroll = () => {
             {/* Cinematic gradient overlays */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#0A2319] via-[#0A2319]/40 to-transparent -z-10" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#0A2319]/70 via-[#0A2319]/20 to-transparent -z-10" />
-
-            {/* Top progress bar for this specific card */}
-            <div className="absolute top-0 left-0 right-0 z-30 h-[3px] bg-white/10">
-              <div 
-                className="h-full bg-gradient-to-r from-[#E8B647] via-[#BC6C25] to-[#E8B647]" 
-                style={{ width: `${((i + 1) / chapters.length) * 100}%` }}
-              />
-            </div>
-
-            {/* Chapter counter — top */}
-            <div className="absolute top-6 left-5 md:left-12 z-30 flex items-center gap-3">
-              <div className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
-                Chương
-              </div>
-              <div className="font-mono text-sm tracking-wider text-[#E8B647] font-semibold">
-                {c.step}
-              </div>
-              <div className="font-mono text-[10px] tracking-wider text-white/30">
-                / 0{chapters.length}
-              </div>
-            </div>
 
             {/* Foreground content */}
             <div className="relative z-20 px-5 md:px-12 pb-16 md:pb-24 max-w-3xl">
@@ -169,22 +223,6 @@ const StickyStoryScroll = () => {
                   <span className="tracking-wide">{c.location}</span>
                 </div>
               </motion.div>
-
-              {/* Step dots — mobile friendly */}
-              <div className="flex items-center gap-1.5 mt-8">
-                {chapters.map((_, dotIndex) => (
-                  <div
-                    key={dotIndex}
-                    className={`h-[3px] rounded-full transition-all duration-300 ${
-                      dotIndex === i
-                        ? "w-7 bg-[#E8B647]"
-                        : dotIndex < i
-                        ? "w-1.5 bg-[#E8B647]/45"
-                        : "w-1.5 bg-white/20"
-                    }`}
-                  />
-                ))}
-              </div>
             </div>
 
             {/* Scroll hint — only on first chapter */}
