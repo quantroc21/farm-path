@@ -104,21 +104,14 @@ const HomePage = () => {
     <div>
       {/* Hero */}
       <section className="relative h-[80vh] min-h-[520px] flex items-center overflow-hidden">
-        <motion.img
-          src={heroCoffeeFarm}
-          alt="Nông trại ớt Bình Thuận – hệ sinh thái nông nghiệp số Daklink"
-          className="absolute inset-0 w-full h-full object-cover origin-center"
-          initial={{ scale: 1.4 }}
-          animate={{
-            scale: [1.4, 1.05, 1.4],
-            x: ["0%", "-3%", "0%"],
-            y: ["0%", "2%", "0%"],
-          }}
-          transition={{
-            duration: 12,
-            ease: "easeInOut",
-            repeat: Infinity,
-          }}
+        <video
+          src={heroFlycam.url}
+          poster={heroCoffeeFarm}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/40 to-transparent" />
         <div className="relative z-10 px-6 md:px-10 max-w-7xl mx-auto w-full">
