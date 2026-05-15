@@ -70,21 +70,19 @@ const chapters: Chapter[] = [
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const StickyStoryScroll = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"],
+    container: scrollContainerRef,
   });
 
   useEffect(() => {
     return scrollYProgress.on("change", (v) => {
-      // v goes from 0 to 1 over the container's height
-      // Because the last chapter sticks at the end, we adjust the calculation slightly.
+      // v goes from 0 to 1 over the inner container's scroll height
       const idx = Math.min(
         chapters.length - 1,
-        Math.floor(v * chapters.length)
+        Math.round(v * (chapters.length - 1))
       );
       setActiveIndex(Math.max(0, idx));
     });
@@ -113,11 +111,19 @@ const StickyStoryScroll = () => {
         </motion.div>
       </div>
 
-      {/* CSS Stacking Cards Experience */}
-      <div ref={containerRef} className="relative w-full">
-        {/* GLOBAL UI OVERLAY - Stays fixed over everything */}
-        <div className="absolute inset-0 pointer-events-none z-50">
-          <div className="sticky top-0 h-screen w-full flex flex-col justify-between">
+      {/* TikTok Style Snap Scrolling Experience */}
+      <div 
+        ref={scrollContainerRef} 
+        className="relative w-full h-[100dvh] overflow-y-auto snap-y snap-mandatory bg-black"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        <style>{`
+          div::-webkit-scrollbar { display: none; }
+        `}</style>
+
+        {/* GLOBAL UI OVERLAY - Fixed inside the scroll container */}
+        <div className="sticky top-0 h-0 w-full pointer-events-none z-50">
+          <div className="h-[100dvh] w-full flex flex-col justify-between">
             <div>
               {/* Top progress bar (positioned just below the navbar) */}
               <div className="absolute top-[80px] md:top-[96px] left-0 right-0 h-[3px] bg-white/10">
@@ -151,7 +157,7 @@ const StickyStoryScroll = () => {
             </div>
 
             {/* Bottom step dots */}
-            <div className="relative z-50 px-5 md:px-12 pb-[110px] md:pb-[140px]">
+            <div className="px-5 md:px-12 pb-[110px] md:pb-[140px]">
               <div className="flex items-center gap-1.5 max-w-3xl">
                 {chapters.map((_, dotIndex) => (
                   <div
@@ -171,7 +177,7 @@ const StickyStoryScroll = () => {
         </div>
 
         {chapters.map((c, i) => (
-          <div key={c.step} className="sticky top-0 h-screen w-full flex flex-col justify-end overflow-hidden shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+          <div key={c.step} className="w-full h-[100dvh] snap-start snap-always relative flex flex-col justify-end overflow-hidden shrink-0">
             
             {/* Background Image with subtle entrance animation */}
             <motion.img
@@ -180,7 +186,7 @@ const StickyStoryScroll = () => {
               className="absolute inset-0 w-full h-full object-cover origin-center -z-10"
               initial={{ scale: 1.15 }}
               whileInView={{ scale: 1 }}
-              viewport={{ amount: 0.1 }}
+              viewport={{ root: scrollContainerRef, amount: 0.1 }}
               transition={{ duration: 3, ease: "easeOut" }}
             />
             
@@ -193,7 +199,7 @@ const StickyStoryScroll = () => {
               <motion.div
                 initial={{ opacity: 0, y: 32, filter: "blur(8px)" }}
                 whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                viewport={{ amount: 0.4 }}
+                viewport={{ root: scrollContainerRef, amount: 0.4 }}
                 transition={{ duration: 0.6, ease }}
               >
                 {/* Meta tag */}
