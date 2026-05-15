@@ -45,7 +45,7 @@ const Index = () => {
           </FadeIn>
           <FadeIn delay={0.15}>
             <p className="text-base md:text-lg text-primary-foreground/80 mb-8 max-w-md leading-relaxed">
-              Theo dõi hành trình từng sản phẩm hữu cơ — từ hạt giống đến bàn ăn, hoàn toàn minh bạch.
+              Theo dõi hành trình từng sản phẩm hữu cơ - từ hạt giống đến bàn ăn, hoàn toàn minh bạch.
             </p>
           </FadeIn>
           <FadeIn delay={0.3}>

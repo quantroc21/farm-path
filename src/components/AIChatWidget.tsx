@@ -168,7 +168,7 @@ const AIChatWidget = () => {
         </div>
       )}
 
-      {/* Main Toggle Button — Hidden on mobile when chat is open */}
+      {/* Main Toggle Button - Hidden on mobile when chat is open */}
       <button
         onClick={() => {
           if (isOpen) {
@@ -230,7 +230,7 @@ const AIChatWidget = () => {
               </p>
             </div>
           </div>
-          {/* Close button — BIG and VISIBLE */}
+          {/* Close button - BIG and VISIBLE */}
           <button
             onClick={handleClose}
             className="w-10 h-10 flex items-center justify-center bg-white/20 hover:bg-white/30 rounded-full transition-all active:scale-90"

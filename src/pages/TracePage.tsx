@@ -18,13 +18,13 @@ const TracePage = () => {
     <div>
       {/* Hero */}
       <section className="relative h-44 overflow-hidden">
-        <img src={heroFarm} alt="Nông trại hữu cơ Tây Nguyên – truy xuất nguồn gốc nông sản Daklink" className="absolute inset-0 w-full h-full object-cover" />
+        <img src={heroFarm} alt="Nông trại hữu cơ Tây Nguyên - truy xuất nguồn gốc nông sản Daklink" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
         <div className="relative z-10 h-full flex items-end px-5 pb-6">
           <div className="flex items-center gap-4">
             <img
               src={farmerPortrait}
-              alt={`Nông dân ${farmer.name} – đối tác canh tác hữu cơ Daklink`}
+              alt={`Nông dân ${farmer.name} - đối tác canh tác hữu cơ Daklink`}
               className="w-16 h-16 rounded-2xl object-cover border-2 border-background shadow-lift"
             />
             <div>
@@ -60,7 +60,7 @@ const TracePage = () => {
                 <div className="bg-card rounded-2xl overflow-hidden shadow-card border border-border">
                   <img
                     src={imageMap[entry.imageKey]}
-                    alt={`Giai đoạn ${entry.stage} – nhật ký canh tác số Daklink`}
+                    alt={`Giai đoạn ${entry.stage} - nhật ký canh tác số Daklink`}
                     className="w-48 h-32 object-cover rounded-xl"
                   />
                   <div className="p-5">
@@ -103,10 +103,10 @@ const TracePage = () => {
         </FadeIn>
         <FadeIn delay={0.1}>
           <div className="bg-card rounded-2xl overflow-hidden shadow-card border border-border">
-            <img src={heroFarm} alt="Vùng canh tác hữu cơ Đắk Lắk – chuỗi cung ứng nông sản minh bạch" className="w-[60%] mx-auto py-3 object-contain rounded-lg" />
+            <img src={heroFarm} alt="Vùng canh tác hữu cơ Đắk Lắk - chuỗi cung ứng nông sản minh bạch" className="w-[60%] mx-auto py-3 object-contain rounded-lg" />
             <div className="p-4">
               <p className="text-xs font-semibold text-foreground mb-1">📍 Vùng canh tác</p>
-              <p className="text-xs text-primary/70">{farmer.region} — Cao nguyên Trung phần, độ cao 500-700m</p>
+              <p className="text-xs text-primary/70">{farmer.region} - Cao nguyên Trung phần, độ cao 500-700m</p>
             </div>
           </div>
         </FadeIn>

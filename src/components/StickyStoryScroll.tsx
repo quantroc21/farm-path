@@ -36,7 +36,7 @@ const chapters: Chapter[] = [
   {
     step: "03",
     title: "Thu hoạch",
-    desc: "Hái chín chọn lọc thủ công — chỉ những quả đạt độ chín trên 95% mới được thu. Mỗi mẻ được cân và ghi nhận trực tiếp tại rẫy.",
+    desc: "Hái chín chọn lọc thủ công - chỉ những quả đạt độ chín trên 95% mới được thu. Mỗi mẻ được cân và ghi nhận trực tiếp tại rẫy.",
     image: harvest,
     location: "Vụ mùa 2026",
     meta: "1.247 kg cherry",
@@ -60,7 +60,7 @@ const chapters: Chapter[] = [
   {
     step: "06",
     title: "Truy xuất",
-    desc: "Quét mã QR trên bao bì để xem toàn bộ hành trình — từ giống, người trồng, ngày thu hoạch đến lô vận chuyển.",
+    desc: "Quét mã QR trên bao bì để xem toàn bộ hành trình - từ giống, người trồng, ngày thu hoạch đến lô vận chuyển.",
     image: productPkg,
     location: "Mỗi sản phẩm, một câu chuyện",
     meta: "QR · Blockchain ready",
@@ -160,7 +160,7 @@ const StickyStoryScroll = () => {
         return;
       }
 
-      // We're in the middle — capture the scroll
+      // We're in the middle - capture the scroll
       e.preventDefault();
 
       accumulatedDelta.current += e.deltaY;
@@ -268,7 +268,7 @@ const StickyStoryScroll = () => {
             Từ rẫy đến<br />bàn ăn
           </h2>
           <p className="text-white/70 text-[15px] md:text-lg leading-relaxed">
-            Mỗi sản phẩm Daklink mang theo một hành trình — từ hạt giống, qua bàn tay người nông dân, đến tách cà phê trên bàn bạn.
+            Mỗi sản phẩm Daklink mang theo một hành trình - từ hạt giống, qua bàn tay người nông dân, đến tách cà phê trên bàn bạn.
           </p>
         </motion.div>
       </div>
@@ -390,7 +390,7 @@ const StickyStoryScroll = () => {
           </motion.div>
         </AnimatePresence>
 
-        {/* Scroll hint — only on first chapter */}
+        {/* Scroll hint - only on first chapter */}
         {activeIndex === 0 && (
           <div className="absolute bottom-5 right-5 md:right-12 z-50 flex items-center gap-2 text-white/50 text-[10px] tracking-[0.25em] uppercase">
             <span>Cuộn</span>

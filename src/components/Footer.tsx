@@ -67,7 +67,7 @@ const Footer = () => {
         <div className="border-t border-white/5 mt-16 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-center md:text-left">
             <p className="text-white/40 text-xs font-bold uppercase tracking-widest mb-1">
-              DAKLINK – Nông sản hữu cơ Việt Nam
+              DAKLINK - Nông sản hữu cơ Việt Nam
             </p>
             <p className="text-white/20 text-[10px]">
               Copyright © 2026 Daklink. All rights reserved.

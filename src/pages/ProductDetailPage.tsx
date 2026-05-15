@@ -255,7 +255,7 @@ const ProductDetailPage = () => {
         
         <div className="flex gap-5">
           <div className="w-24 h-24 rounded-2xl overflow-hidden bg-muted flex-shrink-0 shadow-sm">
-            <img src={product.image} alt={`${product.name} – nông sản truy xuất nguồn gốc Daklink`} className="w-full h-full object-cover" />
+            <img src={product.image} alt={`${product.name} - nông sản truy xuất nguồn gốc Daklink`} className="w-full h-full object-cover" />
           </div>
           <div className="flex-1 flex flex-col justify-center min-w-0">
             <h5 className="font-bold text-[15px] text-foreground leading-tight line-clamp-2 mb-1">{product.name}</h5>
@@ -340,7 +340,7 @@ const ProductDetailPage = () => {
                   <motion.img
                     key={activeImage || product.image}
                     src={activeImage || product.image}
-                    alt={`${product.name} – sản phẩm nông sản sạch Daklink`}
+                    alt={`${product.name} - sản phẩm nông sản sạch Daklink`}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
@@ -385,7 +385,7 @@ const ProductDetailPage = () => {
                         (activeImage || product.image) === img ? 'border-primary shadow-md opacity-100' : 'border-transparent opacity-60 hover:opacity-100'
                       }`}
                     >
-                      <img src={img} alt={`${product.name} – hình ảnh chi tiết sản phẩm ${i + 1}`} className="w-full h-full object-cover" />
+                      <img src={img} alt={`${product.name} - hình ảnh chi tiết sản phẩm ${i + 1}`} className="w-full h-full object-cover" />
                     </div>
                   ))}
                 </div>
@@ -531,7 +531,7 @@ const ProductDetailPage = () => {
                 Truy Xuất Nguồn Gốc
               </h2>
               <p className="text-muted-foreground text-sm mb-8 max-w-xl" style={{ fontFamily: "'Inter', sans-serif" }}>
-                Theo dõi hành trình từng hạt cà phê — từ lúc gieo hạt đến khi giao tận tay bạn. 
+                Theo dõi hành trình từng hạt cà phê - từ lúc gieo hạt đến khi giao tận tay bạn. 
                 Mọi bước đều được ghi nhận và xác thực.
               </p>
 
@@ -591,7 +591,7 @@ const ProductDetailPage = () => {
                       <div className="aspect-[3/4] overflow-hidden relative">
                         <img 
                           src={pairing.image} 
-                          alt={`${pairing.name} – gợi ý kết hợp với ${product.name}`}
+                          alt={`${pairing.name} - gợi ý kết hợp với ${product.name}`}
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                         {/* Subtle Hover Button */}
@@ -649,7 +649,7 @@ const ProductDetailPage = () => {
             
             {/* Header Image Section */}
             <div className="relative w-full h-[240px] md:h-[380px] shrink-0">
-              <img src={selectedRecipe.image} alt={`Công thức ${selectedRecipe.name} – gợi ý từ Daklink`} className="w-full h-full object-cover" />
+              <img src={selectedRecipe.image} alt={`Công thức ${selectedRecipe.name} - gợi ý từ Daklink`} className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
               
               <button 

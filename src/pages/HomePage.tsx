@@ -132,7 +132,7 @@ const HomePage = () => {
                 Chấp cánh cho<br />nông sản Việt
               </h1>
               <p className="text-white text-sm md:text-base mb-6 leading-relaxed max-w-md">
-                Minh bạch từ nông trại đến tay bạn. Theo dõi hành trình từng sản phẩm — hoàn toàn minh bạch, hoàn toàn truy xuất được.
+                Minh bạch từ nông trại đến tay bạn. Theo dõi hành trình từng sản phẩm, hoàn toàn minh bạch, hoàn toàn truy xuất được.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link to="/shop" className="btn-primary inline-flex items-center gap-2">
@@ -215,7 +215,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Ecosystem — Sticky Scroll Storytelling */}
+      {/* Ecosystem - Sticky Scroll Storytelling */}
       <StickyStoryScroll />
 
       {/* Guarantees */}
