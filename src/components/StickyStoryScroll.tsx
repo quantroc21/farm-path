@@ -74,15 +74,16 @@ const StickyStoryScroll = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const { scrollYProgress } = useScroll({
-    container: scrollContainerRef,
+    target: scrollContainerRef,
+    offset: ["start start", "end start"], // Calculate based on top edge crossing
   });
 
   useEffect(() => {
     return scrollYProgress.on("change", (v) => {
-      // v goes from 0 to 1 over the inner container's scroll height
+      // v goes from 0 to 1 over the container's height
       const idx = Math.min(
         chapters.length - 1,
-        Math.round(v * (chapters.length - 1))
+        Math.floor(v * chapters.length)
       );
       setActiveIndex(Math.max(0, idx));
     });
@@ -111,17 +112,12 @@ const StickyStoryScroll = () => {
         </motion.div>
       </div>
 
-      {/* TikTok Style Snap Scrolling Experience */}
+      {/* TikTok Style Snap Scrolling Experience - Using Global Document Scroll */}
       <div 
         ref={scrollContainerRef} 
-        className="relative w-full h-[100dvh] overflow-y-auto snap-y snap-mandatory bg-black"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        className="relative w-full"
       >
-        <style>{`
-          div::-webkit-scrollbar { display: none; }
-        `}</style>
-
-        {/* GLOBAL UI OVERLAY - Fixed inside the scroll container */}
+        {/* GLOBAL UI OVERLAY - Fixed to viewport while scrolling container */}
         <div className="sticky top-0 h-0 w-full pointer-events-none z-50">
           <div className="h-[100dvh] w-full flex flex-col justify-between">
             <div>
@@ -186,7 +182,7 @@ const StickyStoryScroll = () => {
               className="absolute inset-0 w-full h-full object-cover origin-center -z-10"
               initial={{ scale: 1.15 }}
               whileInView={{ scale: 1 }}
-              viewport={{ root: scrollContainerRef, amount: 0.1 }}
+              viewport={{ amount: 0.1 }}
               transition={{ duration: 3, ease: "easeOut" }}
             />
             
@@ -199,7 +195,7 @@ const StickyStoryScroll = () => {
               <motion.div
                 initial={{ opacity: 0, y: 32, filter: "blur(8px)" }}
                 whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                viewport={{ root: scrollContainerRef, amount: 0.4 }}
+                viewport={{ amount: 0.4 }}
                 transition={{ duration: 0.6, ease }}
               >
                 {/* Meta tag */}
