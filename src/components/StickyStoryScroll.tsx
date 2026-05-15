@@ -70,36 +70,10 @@ const chapters: Chapter[] = [
 const ease = [0.22, 1, 0.36, 1] as const;
 
 const StickyStoryScroll = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  const smooth = useSpring(scrollYProgress, {
-    stiffness: 80,
-    damping: 26,
-    restDelta: 0.001,
-  });
-
-  const progressWidth = useTransform(smooth, [0, 1], ["0%", "100%"]);
-
-  useEffect(() => {
-    return smooth.on("change", (v) => {
-      const idx = Math.min(
-        chapters.length - 1,
-        Math.floor(v * chapters.length + 0.0001)
-      );
-      setActiveIndex(idx);
-    });
-  }, [smooth]);
-
   return (
     <section className="bg-[#0A2319] text-white relative overflow-x-clip">
       {/* Section header */}
-      <div className="max-w-6xl mx-auto px-5 md:px-12 pt-20 md:pt-32 pb-10 md:pb-16">
+      <div className="max-w-6xl mx-auto px-5 md:px-12 pt-20 md:pt-32 pb-10 md:pb-16 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -119,98 +93,71 @@ const StickyStoryScroll = () => {
         </motion.div>
       </div>
 
-      {/* Sticky scroll experience */}
-      <div
-        ref={containerRef}
-        style={{ height: `${chapters.length * 100}vh` }}
-        className="relative"
-      >
-        <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col">
-          {/* Top progress bar */}
-          <div className="absolute top-0 left-0 right-0 z-30 h-[3px] bg-white/10">
-            <motion.div
-              style={{ width: progressWidth }}
-              className="h-full bg-gradient-to-r from-[#E8B647] via-[#BC6C25] to-[#E8B647]"
+      {/* CSS Stacking Cards Experience */}
+      <div className="relative w-full">
+        {chapters.map((c, i) => (
+          <div key={c.step} className="sticky top-0 h-screen w-full flex flex-col justify-end overflow-hidden shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+            
+            {/* Background Image with subtle entrance animation */}
+            <motion.img
+              src={c.image}
+              alt={c.title}
+              className="absolute inset-0 w-full h-full object-cover origin-center -z-10"
+              initial={{ scale: 1.15 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ amount: 0.1 }}
+              transition={{ duration: 3, ease: "easeOut" }}
             />
-          </div>
+            
+            {/* Cinematic gradient overlays */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0A2319] via-[#0A2319]/40 to-transparent -z-10" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0A2319]/70 via-[#0A2319]/20 to-transparent -z-10" />
 
-          {/* Chapter counter — top */}
-          <div className="absolute top-6 left-5 md:left-12 z-30 flex items-center gap-3">
-            <div className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
-              Chương
+            {/* Top progress bar for this specific card */}
+            <div className="absolute top-0 left-0 right-0 z-30 h-[3px] bg-white/10">
+              <div 
+                className="h-full bg-gradient-to-r from-[#E8B647] via-[#BC6C25] to-[#E8B647]" 
+                style={{ width: `${((i + 1) / chapters.length) * 100}%` }}
+              />
             </div>
-            <AnimatePresence mode="popLayout">
-              <motion.div
-                key={activeIndex}
-                initial={{ y: 14, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -14, opacity: 0 }}
-                transition={{ duration: 0.45, ease }}
-                className="font-mono text-sm tracking-wider text-[#E8B647] font-semibold"
-              >
-                {chapters[activeIndex].step}
-              </motion.div>
-            </AnimatePresence>
-            <div className="font-mono text-[10px] tracking-wider text-white/30">
-              / 0{chapters.length}
+
+            {/* Chapter counter — top */}
+            <div className="absolute top-6 left-5 md:left-12 z-30 flex items-center gap-3">
+              <div className="font-mono text-[10px] tracking-[0.3em] text-white/50 uppercase">
+                Chương
+              </div>
+              <div className="font-mono text-sm tracking-wider text-[#E8B647] font-semibold">
+                {c.step}
+              </div>
+              <div className="font-mono text-[10px] tracking-wider text-white/30">
+                / 0{chapters.length}
+              </div>
             </div>
-          </div>
 
-          {/* Stacked images with crossfade + Ken Burns */}
-          <div className="absolute inset-0">
-            {chapters.map((c, i) => (
+            {/* Foreground content */}
+            <div className="relative z-20 px-5 md:px-12 pb-16 md:pb-24 max-w-3xl">
               <motion.div
-                key={c.step}
-                initial={false}
-                animate={{
-                  opacity: i === activeIndex ? 1 : 0,
-                  scale: i === activeIndex ? 1.06 : 1.18,
-                }}
-                transition={{
-                  opacity: { duration: 0.9, ease },
-                  scale: { duration: 6, ease: "linear" },
-                }}
-                className="absolute inset-0"
-              >
-                <img
-                  src={c.image}
-                  alt={c.title}
-                  className="w-full h-full object-cover"
-                  loading={i === 0 ? "eager" : "lazy"}
-                />
-                {/* Cinematic gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A2319] via-[#0A2319]/40 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#0A2319]/70 via-transparent to-transparent" />
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Foreground content */}
-          <div className="relative z-20 flex-1 flex flex-col justify-end px-5 md:px-12 pb-16 md:pb-24 max-w-3xl">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeIndex}
                 initial={{ opacity: 0, y: 32, filter: "blur(8px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -20, filter: "blur(6px)" }}
-                transition={{ duration: 0.55, ease }}
+                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                viewport={{ amount: 0.4 }}
+                transition={{ duration: 0.6, ease }}
               >
                 {/* Meta tag */}
                 <div className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#E8B647] animate-pulse" />
                   <span className="text-[10px] md:text-xs tracking-[0.18em] uppercase text-white/85 font-medium">
-                    {chapters[activeIndex].meta}
+                    {c.meta}
                   </span>
                 </div>
 
-                {/* Title — large dynamic */}
+                {/* Title */}
                 <h3 className="text-[2.5rem] leading-[1.05] md:text-7xl font-bold tracking-tight text-white mb-5">
-                  {chapters[activeIndex].title}
+                  {c.title}
                 </h3>
 
                 {/* Description */}
                 <p className="text-white/85 text-[15px] md:text-xl leading-[1.65] max-w-xl mb-5">
-                  {chapters[activeIndex].desc}
+                  {c.desc}
                 </p>
 
                 {/* Location */}
@@ -219,42 +166,30 @@ const StickyStoryScroll = () => {
                     <path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z" />
                     <circle cx="12" cy="9" r="2.5" />
                   </svg>
-                  <span className="tracking-wide">{chapters[activeIndex].location}</span>
+                  <span className="tracking-wide">{c.location}</span>
                 </div>
               </motion.div>
-            </AnimatePresence>
 
-            {/* Step dots — mobile friendly */}
-            <div className="flex items-center gap-1.5 mt-8">
-              {chapters.map((_, i) => (
-                <motion.div
-                  key={i}
-                  animate={{
-                    width: i === activeIndex ? 28 : 6,
-                    backgroundColor:
-                      i === activeIndex
-                        ? "rgba(232,182,71,1)"
-                        : i < activeIndex
-                        ? "rgba(232,182,71,0.45)"
-                        : "rgba(255,255,255,0.2)",
-                  }}
-                  transition={{ duration: 0.4, ease }}
-                  className="h-[3px] rounded-full"
-                />
-              ))}
+              {/* Step dots — mobile friendly */}
+              <div className="flex items-center gap-1.5 mt-8">
+                {chapters.map((_, dotIndex) => (
+                  <div
+                    key={dotIndex}
+                    className={`h-[3px] rounded-full transition-all duration-300 ${
+                      dotIndex === i
+                        ? "w-7 bg-[#E8B647]"
+                        : dotIndex < i
+                        ? "w-1.5 bg-[#E8B647]/45"
+                        : "w-1.5 bg-white/20"
+                    }`}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Scroll hint — only on first chapter */}
-          <AnimatePresence>
-            {activeIndex === 0 && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.6 }}
-                className="absolute bottom-5 right-5 md:right-12 z-30 flex items-center gap-2 text-white/50 text-[10px] tracking-[0.25em] uppercase"
-              >
+            {/* Scroll hint — only on first chapter */}
+            {i === 0 && (
+              <div className="absolute bottom-5 right-5 md:right-12 z-30 flex items-center gap-2 text-white/50 text-[10px] tracking-[0.25em] uppercase">
                 <span>Cuộn</span>
                 <motion.span
                   animate={{ y: [0, 6, 0] }}
@@ -263,10 +198,10 @@ const StickyStoryScroll = () => {
                 >
                   ↓
                 </motion.span>
-              </motion.div>
+              </div>
             )}
-          </AnimatePresence>
-        </div>
+          </div>
+        ))}
       </div>
     </section>
   );
