@@ -218,7 +218,7 @@ const HomePage = () => {
       <StickyStoryScroll />
 
       {/* Guarantees */}
-      <section className="relative z-20 section-padding bg-surface-cream">
+      <section className="section-padding bg-surface-cream">
         <div className="max-w-6xl mx-auto">
           <FadeIn>
             <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground text-center mb-3 tracking-tight">

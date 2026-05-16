@@ -90,7 +90,7 @@ const StickyStoryScroll = () => {
         endTrigger: isLast ? undefined : `#chapter-${i + 1}`,
         end: isLast ? "+=100%" : "top top", // Pin the last chapter for 100vh so the next section slides over it
         pin: true,
-        pinSpacing: false,
+        pinSpacing: isLast ? true : false,
         anticipatePin: 1,
       });
 
