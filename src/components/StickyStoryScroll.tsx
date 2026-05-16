@@ -1,5 +1,8 @@
-import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
 import seedling from "@/assets/seedling.jpg";
 import heroFarm from "@/assets/hero-farm.jpg";
@@ -73,23 +76,40 @@ const ease = [0.22, 1, 0.36, 1] as const;
 const StickyStoryScroll = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const chapterRefs = useRef<(HTMLElement | null)[]>([]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const idx = Number((entry.target as HTMLElement).dataset.index);
-            if (!Number.isNaN(idx)) setActiveIndex(idx);
-          }
-        });
-      },
-      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
-    );
-    chapterRefs.current.forEach((el) => el && observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
+  useGSAP(() => {
+    chapters.forEach((_, i) => {
+      const isLast = i === chapters.length - 1;
+
+      // Vertical Stacking Pin
+      // We pin all chapters except the last one.
+      // Pinning the last one with pinSpacing: false causes the next section to slide over it, 
+      // but not pinning the last one lets it scroll naturally with the page, giving a better exit.
+      // If we pin the last one, we could use pinSpacing: true so it doesn't get covered immediately.
+      // Let's pin all of them with pinSpacing: false so they all stack. The footer/next section will slide over the last chapter.
+      ScrollTrigger.create({
+        trigger: `#chapter-${i}`,
+        start: "top top",
+        pin: true,
+        pinSpacing: false,
+        // The last chapter does not need to be pinned if we want it to scroll up with the page,
+        // but stacking effect usually pins all cards. We'll pin it.
+      });
+
+      // Active Index for Progress Bar
+      ScrollTrigger.create({
+        trigger: `#chapter-${i}`,
+        start: "top 50%",
+        end: "bottom 50%",
+        onToggle: (self) => {
+          if (self.isActive) setActiveIndex(i);
+        }
+      });
+    });
+
+    const timer = setTimeout(() => ScrollTrigger.refresh(), 500);
+    return () => clearTimeout(timer);
+  }, { scope: containerRef });
 
   return (
     <section ref={containerRef} className="relative bg-[#0A2319] isolate overflow-hidden">
@@ -115,19 +135,27 @@ const StickyStoryScroll = () => {
       </div>
 
       {/* Sticky progress bar (scoped to this section only) */}
-      <div className="sticky top-0 z-30 w-full pointer-events-none">
-        <div className="h-[3px] bg-white/10 w-full">
+      <div className="sticky top-0 z-30 w-full pointer-events-none h-0">
+        <div className="h-[3px] bg-white/10 w-full pointer-events-auto">
           <motion.div
             className="h-full bg-gradient-to-r from-[#E8B647] via-[#BC6C25] to-[#E8B647]"
             animate={{ width: `${((activeIndex + 1) / chapters.length) * 100}%` }}
             transition={{ duration: 0.4, ease }}
           />
         </div>
-        <div className="mt-4 ml-6 md:ml-12 inline-flex items-center gap-3 bg-[#0A2319]/80 backdrop-blur-xl px-4 py-2 rounded-full border border-white/10 shadow-2xl">
+        <div className="mt-4 ml-6 md:ml-12 inline-flex items-center gap-3 bg-[#0A2319]/80 backdrop-blur-xl px-4 py-2 rounded-full border border-white/10 shadow-2xl pointer-events-auto">
           <span className="font-mono text-[10px] tracking-[0.3em] text-white/90 uppercase">Chương</span>
-          <span className="font-mono text-sm tracking-wider text-[#E8B647] font-bold">
-            {chapters[activeIndex].step}
-          </span>
+          <AnimatePresence mode="popLayout">
+            <motion.div
+              key={activeIndex}
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -10, opacity: 0 }}
+              className="font-mono text-sm tracking-wider text-[#E8B647] font-bold"
+            >
+              {chapters[activeIndex].step}
+            </motion.div>
+          </AnimatePresence>
           <span className="font-mono text-[10px] tracking-wider text-white/50">/ 0{chapters.length}</span>
         </div>
       </div>
@@ -137,10 +165,9 @@ const StickyStoryScroll = () => {
         {chapters.map((chapter, i) => (
           <article
             key={i}
-            ref={(el) => (chapterRefs.current[i] = el)}
-            data-index={i}
             id={`chapter-${i}`}
-            className="relative w-full min-h-screen overflow-hidden"
+            className="relative w-full h-screen overflow-hidden bg-[#0A2319]"
+            style={{ zIndex: i + 1 }}
           >
             <img
               src={chapter.image}
