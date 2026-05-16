@@ -1,6 +1,5 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import FlowArt from "./FlowArt";
@@ -87,26 +86,27 @@ const StickyStoryScroll = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(() => {
-    // Sync the active index with ScrollTrigger for the UI overlay
+  useEffect(() => {
+    const triggers: ScrollTrigger[] = [];
     chapters.forEach((_, i) => {
-      ScrollTrigger.create({
-        trigger: `#chapter-${i}`,
-        start: "top 50%",
-        end: "bottom 50%",
-        onToggle: (self) => {
-          if (self.isActive) setActiveIndex(i);
-        },
-      });
+      triggers.push(
+        ScrollTrigger.create({
+          trigger: `#chapter-${i}`,
+          start: "top 50%",
+          end: "bottom 50%",
+          onToggle: (self) => {
+            if (self.isActive) setActiveIndex(i);
+          },
+        })
+      );
     });
 
-    // Ensure layout is correct after images load
     const timer = setTimeout(() => ScrollTrigger.refresh(), 1000);
     return () => {
       clearTimeout(timer);
-      ScrollTrigger.getAll().forEach(t => t.kill());
+      triggers.forEach((t) => t.kill());
     };
-  }, { scope: containerRef });
+  }, []);
 
   return (
     <div ref={containerRef} className="bg-[#0A2319]">
