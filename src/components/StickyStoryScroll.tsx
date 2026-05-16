@@ -124,7 +124,7 @@ const StickyStoryScroll = () => {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="relative bg-[#0A2319] isolate">
+    <section ref={containerRef} className="relative z-40 bg-[#0A2319] isolate">
       <style>{`
         @media (max-width: 768px) {
           body.story-mode-active div[class*="fixed bottom-6 right-6"],
