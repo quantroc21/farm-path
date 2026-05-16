@@ -4,6 +4,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
+gsap.registerPlugin(ScrollTrigger);
+
 import seedling from "@/assets/seedling.jpg";
 import heroFarm from "@/assets/hero-farm.jpg";
 import harvest from "@/assets/coffee-harvest.jpg";
