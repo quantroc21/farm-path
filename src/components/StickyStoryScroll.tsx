@@ -158,7 +158,7 @@ const StickyStoryScroll = () => {
       </div>
 
       {/* Sticky progress bar (scoped to this section only) */}
-      <div className="sticky top-[72px] md:top-0 z-30 w-full pointer-events-none h-0">
+      <div className="sticky top-[80px] md:top-[96px] z-30 w-full pointer-events-none h-0">
         <div className="h-[3px] bg-white/10 w-full pointer-events-auto">
           <motion.div
             className="h-full bg-gradient-to-r from-[#E8B647] via-[#BC6C25] to-[#E8B647]"
