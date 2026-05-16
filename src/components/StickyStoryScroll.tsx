@@ -1,9 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import FlowArt from "./FlowArt";
-import FlowSection from "./FlowSection";
+import { motion } from "framer-motion";
 
 import seedling from "@/assets/seedling.jpg";
 import heroFarm from "@/assets/hero-farm.jpg";
@@ -11,8 +7,6 @@ import harvest from "@/assets/coffee-harvest.jpg";
 import drying from "@/assets/coffee-drying.jpg";
 import farmerPortrait from "@/assets/farmer-portrait.jpg";
 import productPkg from "@/assets/product-proud-vietnam.jpg";
-
-gsap.registerPlugin(ScrollTrigger);
 
 type Chapter = {
   step: string;
