@@ -6,7 +6,7 @@ import FadeIn from "@/components/FadeIn";
 import StickyStoryScroll from "@/components/StickyStoryScroll";
 import heroCoffeeFarm from "@/assets/hero-coffee-farm.jpg";
 import heroVideo from "@/assets/hero-video.mp4";
-import heroFlycam from "@/assets/hero-flycam.mp4.asset.json";
+import heroFlycam from "@/assets/hero-flycam.mp4";
 import exportBg from "@/assets/export-bg.jpg";
 import { useQuery } from "@tanstack/react-query";
 import { LandingService } from "@/services/landing.service";
@@ -111,7 +111,7 @@ const HomePage = () => {
         >
           <video
             ref={(el) => { if (el) el.playbackRate = 0.7; }}
-            src={heroFlycam.url}
+            src={heroFlycam}
             poster={heroCoffeeFarm}
             autoPlay
             muted
