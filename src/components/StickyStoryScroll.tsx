@@ -81,19 +81,6 @@ const StickyStoryScroll = () => {
 
   useGSAP(() => {
     chapters.forEach((_, i) => {
-      const isLast = i === chapters.length - 1;
-
-      // Pin ALL chapters.
-      ScrollTrigger.create({
-        trigger: `#chapter-${i}`,
-        start: "top top",
-        endTrigger: isLast ? undefined : `#chapter-${i + 1}`,
-        end: isLast ? "+=100%" : "top top", // Pin the last chapter for 100vh so the next section slides over it
-        pin: true,
-        pinSpacing: isLast ? true : false,
-        anticipatePin: 1,
-      });
-
       // Active Index for Progress Bar
       ScrollTrigger.create({
         trigger: `#chapter-${i}`,
@@ -188,7 +175,7 @@ const StickyStoryScroll = () => {
           <article
             key={i}
             id={`chapter-${i}`}
-            className="relative w-full h-screen overflow-hidden bg-[#0A2319]"
+            className="sticky top-0 w-full h-screen overflow-hidden bg-[#0A2319]"
             style={{ zIndex: i + 1 }}
           >
             <img
