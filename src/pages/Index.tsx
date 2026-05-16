@@ -31,12 +31,9 @@ const Index = () => {
     <div>
       {/* Hero */}
       <section className="relative h-[85vh] min-h-[500px] flex items-end overflow-hidden">
-        <video
-          src="/__l5e/assets-v1/e1f899b9-69d7-45ef-af9a-a459005d37b6/hero-flycam.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
+        <img
+          src={heroFarm}
+          alt="Nông trại cà phê Việt Nam"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/30 to-transparent" />

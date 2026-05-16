@@ -18,14 +18,7 @@ const TracePage = () => {
     <div>
       {/* Hero */}
       <section className="relative h-44 overflow-hidden">
-        <video
-          src="/__l5e/assets-v1/e1f899b9-69d7-45ef-af9a-a459005d37b6/hero-flycam.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        <img src={heroFarm} alt="Nông trại hữu cơ Tây Nguyên - truy xuất nguồn gốc nông sản Daklink" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
         <div className="relative z-10 h-full flex items-end px-5 pb-6">
           <div className="flex items-center gap-4">
