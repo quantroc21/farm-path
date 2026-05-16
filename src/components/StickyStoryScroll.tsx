@@ -85,33 +85,28 @@ const uiFadeVariants = {
 const StickyStoryScroll = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const chapterRefs = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
-    const triggers: ScrollTrigger[] = [];
-    chapters.forEach((_, i) => {
-      triggers.push(
-        ScrollTrigger.create({
-          trigger: `#chapter-${i}`,
-          start: "top 50%",
-          end: "bottom 50%",
-          onToggle: (self) => {
-            if (self.isActive) setActiveIndex(i);
-          },
-        })
-      );
-    });
-
-    const timer = setTimeout(() => ScrollTrigger.refresh(), 1000);
-    return () => {
-      clearTimeout(timer);
-      triggers.forEach((t) => t.kill());
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = Number((entry.target as HTMLElement).dataset.index);
+            if (!Number.isNaN(idx)) setActiveIndex(idx);
+          }
+        });
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
+    );
+    chapterRefs.current.forEach((el) => el && observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <div ref={containerRef} className="bg-[#0A2319]">
-      {/* 1. Header Section - No Pinning */}
-      <div className="max-w-6xl mx-auto px-6 md:px-12 pt-24 md:pt-32 pb-16 md:pb-24">
+    <section ref={containerRef} className="relative bg-[#0A2319] isolate overflow-hidden">
+      {/* Header */}
+      <div className="max-w-6xl mx-auto px-6 md:px-12 pt-24 md:pt-32 pb-12 md:pb-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -131,110 +126,78 @@ const StickyStoryScroll = () => {
         </motion.div>
       </div>
 
-      {/* 2. Stacking Content Area */}
-      <div className="relative">
-        {/* Sticky UI Overlay - Persistent over all chapters */}
-        <div className="sticky top-0 left-0 w-full h-screen z-50 pointer-events-none flex flex-col justify-between overflow-hidden">
-          {/* Top Progress & Counter */}
-          <div className="w-full">
-            <div className="h-[4px] bg-white/10 w-full">
-              <motion.div
-                className="h-full bg-gradient-to-r from-[#E8B647] via-[#BC6C25] to-[#E8B647]"
-                animate={{ width: `${((activeIndex + 1) / chapters.length) * 100}%` }}
-                transition={{ duration: 0.4, ease }}
-              />
-            </div>
-            
-            <div className="mt-8 ml-6 md:ml-12 inline-flex items-center gap-3 bg-[#0A2319]/80 backdrop-blur-xl px-5 py-2.5 rounded-full border border-white/10 shadow-2xl pointer-events-auto">
-              <div className="font-mono text-[10px] tracking-[0.3em] text-white/90 uppercase">
-                Chương
-              </div>
-              <AnimatePresence mode="popLayout">
-                <motion.div
-                  key={activeIndex}
-                  variants={uiFadeVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  className="font-mono text-sm tracking-wider text-[#E8B647] font-bold"
-                >
-                  {chapters[activeIndex].step}
-                </motion.div>
-              </AnimatePresence>
-              <div className="font-mono text-[10px] tracking-wider text-white/50">
-                / 0{chapters.length}
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Dots */}
-          <div className="mb-14 md:mb-16 ml-6 md:ml-12 flex items-center gap-2 pointer-events-auto">
-            {chapters.map((_, i) => (
-              <div
-                key={i}
-                className={`h-[4px] rounded-full transition-all duration-500 ${
-                  i === activeIndex
-                    ? "w-8 bg-[#E8B647]"
-                    : i < activeIndex
-                    ? "w-2 bg-[#E8B647]/40"
-                    : "w-2 bg-white/10"
-                }`}
-              />
-            ))}
-          </div>
+      {/* Sticky progress bar (scoped to this section only) */}
+      <div className="sticky top-0 z-30 w-full pointer-events-none">
+        <div className="h-[3px] bg-white/10 w-full">
+          <motion.div
+            className="h-full bg-gradient-to-r from-[#E8B647] via-[#BC6C25] to-[#E8B647]"
+            animate={{ width: `${((activeIndex + 1) / chapters.length) * 100}%` }}
+            transition={{ duration: 0.4, ease }}
+          />
         </div>
-
-        {/* Chapters - FlowArt/FlowSection automatically handles pinning/rotation */}
-        <div className="mt-[-100vh]">
-          <FlowArt>
-            {chapters.map((chapter, i) => (
-              <div key={i} id={`chapter-${i}`}>
-                <FlowSection id={`journey-${i}`} bg="#0A2319" isFirst={i === 0}>
-                  <div className="relative w-full h-full flex flex-col justify-end p-6 md:p-12">
-                    {/* Image Layer */}
-                    <img
-                      src={chapter.image}
-                      alt={chapter.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                    
-                    {/* Gradients */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0A2319] via-[#0A2319]/40 to-transparent" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#0A2319]/90 via-[#0A2319]/10 to-transparent" />
-
-                    {/* Content */}
-                    <div className="relative z-10 max-w-4xl pb-12 md:pb-16">
-                      <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-white/5 backdrop-blur-xl border border-white/10">
-                        <span className="w-2 h-2 rounded-full bg-[#E8B647] animate-pulse" />
-                        <span className="font-mono text-[10px] md:text-xs tracking-[0.2em] uppercase text-white/90 font-semibold">
-                          {chapter.meta}
-                        </span>
-                      </div>
-
-                      <h3 className="font-display text-4xl md:text-8xl font-bold tracking-tighter text-white mb-6 leading-[0.95]">
-                        {chapter.title}
-                      </h3>
-
-                      <p className="text-white/80 text-base md:text-2xl leading-relaxed max-w-2xl mb-8 font-light">
-                        {chapter.desc}
-                      </p>
-
-                      <div className="flex items-center gap-2.5 text-white/50 text-xs md:text-base">
-                        <svg className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z" />
-                          <circle cx="12" cy="9" r="2" />
-                        </svg>
-                        <span className="tracking-wide font-medium">{chapter.location}</span>
-                      </div>
-                    </div>
-                  </div>
-                </FlowSection>
-              </div>
-            ))}
-          </FlowArt>
+        <div className="mt-4 ml-6 md:ml-12 inline-flex items-center gap-3 bg-[#0A2319]/80 backdrop-blur-xl px-4 py-2 rounded-full border border-white/10 shadow-2xl">
+          <span className="font-mono text-[10px] tracking-[0.3em] text-white/90 uppercase">Chương</span>
+          <span className="font-mono text-sm tracking-wider text-[#E8B647] font-bold">
+            {chapters[activeIndex].step}
+          </span>
+          <span className="font-mono text-[10px] tracking-wider text-white/50">/ 0{chapters.length}</span>
         </div>
       </div>
-    </div>
+
+      {/* Vertical chapter stack — each chapter takes full viewport height so user reads it fully before the next */}
+      <div className="relative">
+        {chapters.map((chapter, i) => (
+          <article
+            key={i}
+            ref={(el) => (chapterRefs.current[i] = el)}
+            data-index={i}
+            id={`chapter-${i}`}
+            className="relative w-full min-h-screen overflow-hidden"
+          >
+            <img
+              src={chapter.image}
+              alt={chapter.title}
+              loading={i === 0 ? "eager" : "lazy"}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0A2319] via-[#0A2319]/55 to-[#0A2319]/20" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0A2319]/85 via-[#0A2319]/20 to-transparent" />
+
+            <div className="relative z-10 min-h-screen flex flex-col justify-end max-w-4xl px-6 md:px-12 pt-24 pb-16 md:pb-24">
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.7, ease }}
+              >
+                <div className="inline-flex items-center gap-2 mb-5 px-4 py-2 rounded-full bg-white/5 backdrop-blur-xl border border-white/10">
+                  <span className="w-2 h-2 rounded-full bg-[#E8B647] animate-pulse" />
+                  <span className="font-mono text-[10px] md:text-xs tracking-[0.2em] uppercase text-white/90 font-semibold">
+                    {chapter.step} · {chapter.meta}
+                  </span>
+                </div>
+
+                <h3 className="font-display text-4xl md:text-7xl font-bold tracking-tighter text-white mb-5 leading-[0.95]">
+                  {chapter.title}
+                </h3>
+
+                <p className="text-white/85 text-base md:text-xl leading-relaxed max-w-2xl mb-6 font-light">
+                  {chapter.desc}
+                </p>
+
+                <div className="flex items-center gap-2.5 text-white/60 text-xs md:text-sm">
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z" />
+                    <circle cx="12" cy="9" r="2" />
+                  </svg>
+                  <span className="tracking-wide font-medium">{chapter.location}</span>
+                </div>
+              </motion.div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
   );
 };
 
