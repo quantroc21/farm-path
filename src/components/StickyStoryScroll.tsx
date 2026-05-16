@@ -81,26 +81,23 @@ const StickyStoryScroll = () => {
     chapters.forEach((_, i) => {
       const isLast = i === chapters.length - 1;
 
-      // Vertical Stacking Pin
-      // We pin all chapters except the last one.
-      // Pinning the last one with pinSpacing: false causes the next section to slide over it, 
-      // but not pinning the last one lets it scroll naturally with the page, giving a better exit.
-      // If we pin the last one, we could use pinSpacing: true so it doesn't get covered immediately.
-      // Let's pin all of them with pinSpacing: false so they all stack. The footer/next section will slide over the last chapter.
-      ScrollTrigger.create({
-        trigger: `#chapter-${i}`,
-        start: "top top",
-        pin: true,
-        pinSpacing: false,
-        // The last chapter does not need to be pinned if we want it to scroll up with the page,
-        // but stacking effect usually pins all cards. We'll pin it.
-      });
+      // Pin all chapters EXCEPT the last one.
+      // This ensures the final chapter scrolls up naturally and reveals the next section (Guarantees).
+      if (!isLast) {
+        ScrollTrigger.create({
+          trigger: `#chapter-${i}`,
+          start: "top top",
+          end: "bottom top", // Unpin exactly when the next chapter reaches the top
+          pin: true,
+          pinSpacing: false,
+        });
+      }
 
       // Active Index for Progress Bar
       ScrollTrigger.create({
         trigger: `#chapter-${i}`,
-        start: "top 50%",
-        end: "bottom 50%",
+        start: "top 60%",
+        end: "bottom 60%",
         onToggle: (self) => {
           if (self.isActive) setActiveIndex(i);
         }
@@ -175,10 +172,10 @@ const StickyStoryScroll = () => {
               loading={i === 0 ? "eager" : "lazy"}
               className="absolute inset-0 w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0A2319] via-[#0A2319]/55 to-[#0A2319]/20" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0A2319] via-[#0A2319]/75 to-[#0A2319]/10" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#0A2319]/85 via-[#0A2319]/20 to-transparent" />
 
-            <div className="relative z-10 min-h-screen flex flex-col justify-end max-w-4xl px-6 md:px-12 pt-24 pb-16 md:pb-24">
+            <div className="relative z-10 h-screen flex flex-col justify-end max-w-4xl px-6 md:px-12 pb-32 md:pb-48">
               <motion.div
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
