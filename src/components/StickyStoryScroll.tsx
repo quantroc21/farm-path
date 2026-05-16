@@ -89,9 +89,11 @@ const StickyStoryScroll = () => {
         ScrollTrigger.create({
           trigger: `#chapter-${i}`,
           start: "top top",
-          end: "bottom top", // Unpin exactly when the next chapter reaches the top
+          endTrigger: `#chapter-${i + 1}`,
+          end: "top top", // Unpin exactly when the next chapter reaches the top
           pin: true,
           pinSpacing: false,
+          anticipatePin: 1,
         });
       }
 
