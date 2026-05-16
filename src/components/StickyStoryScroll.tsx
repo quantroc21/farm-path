@@ -106,12 +106,36 @@ const StickyStoryScroll = () => {
       });
     });
 
+    // Toggle global class for hiding floating buttons on mobile
+    ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: "top center",
+      end: "bottom center",
+      onToggle: (self) => {
+        if (self.isActive) {
+          document.body.classList.add('story-mode-active');
+        } else {
+          document.body.classList.remove('story-mode-active');
+        }
+      }
+    });
+
     const timer = setTimeout(() => ScrollTrigger.refresh(), 500);
     return () => clearTimeout(timer);
   }, { scope: containerRef });
 
   return (
     <section ref={containerRef} className="relative bg-[#0A2319] isolate overflow-hidden">
+      <style>{`
+        @media (max-width: 768px) {
+          body.story-mode-active div[class*="fixed bottom-6 right-6"],
+          body.story-mode-active button[class*="fixed right-4"] {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transition: opacity 0.3s ease;
+          }
+        }
+      `}</style>
       {/* Header */}
       <div className="max-w-6xl mx-auto px-6 md:px-12 pt-24 md:pt-32 pb-12 md:pb-20">
         <motion.div
@@ -134,7 +158,7 @@ const StickyStoryScroll = () => {
       </div>
 
       {/* Sticky progress bar (scoped to this section only) */}
-      <div className="sticky top-0 z-30 w-full pointer-events-none h-0">
+      <div className="sticky top-[72px] md:top-0 z-30 w-full pointer-events-none h-0">
         <div className="h-[3px] bg-white/10 w-full pointer-events-auto">
           <motion.div
             className="h-full bg-gradient-to-r from-[#E8B647] via-[#BC6C25] to-[#E8B647]"
@@ -195,7 +219,7 @@ const StickyStoryScroll = () => {
                   {chapter.title}
                 </h3>
 
-                <p className="text-white/85 text-base md:text-xl leading-relaxed max-w-2xl mb-6 font-light">
+                <p className="text-white/95 text-[15px] sm:text-base md:text-xl leading-relaxed max-w-2xl mb-6 font-medium drop-shadow-md">
                   {chapter.desc}
                 </p>
 
