@@ -83,19 +83,16 @@ const StickyStoryScroll = () => {
     chapters.forEach((_, i) => {
       const isLast = i === chapters.length - 1;
 
-      // Pin all chapters EXCEPT the last one.
-      // This ensures the final chapter scrolls up naturally and reveals the next section (Guarantees).
-      if (!isLast) {
-        ScrollTrigger.create({
-          trigger: `#chapter-${i}`,
-          start: "top top",
-          endTrigger: `#chapter-${i + 1}`,
-          end: "top top", // Unpin exactly when the next chapter reaches the top
-          pin: true,
-          pinSpacing: false,
-          anticipatePin: 1,
-        });
-      }
+      // Pin ALL chapters.
+      ScrollTrigger.create({
+        trigger: `#chapter-${i}`,
+        start: "top top",
+        endTrigger: isLast ? undefined : `#chapter-${i + 1}`,
+        end: isLast ? "+=100%" : "top top", // Pin the last chapter for 100vh so the next section slides over it
+        pin: true,
+        pinSpacing: false,
+        anticipatePin: 1,
+      });
 
       // Active Index for Progress Bar
       ScrollTrigger.create({
@@ -200,37 +197,38 @@ const StickyStoryScroll = () => {
               loading={i === 0 ? "eager" : "lazy"}
               className="absolute inset-0 w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0A2319] via-[#0A2319]/75 to-[#0A2319]/10" />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0A2319]/85 via-[#0A2319]/20 to-transparent" />
+            {/* Reduced opacity for gradients to show more of the image */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0A2319]/90 via-[#0A2319]/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0A2319]/60 via-[#0A2319]/10 to-transparent" />
 
-            <div className="relative z-10 h-screen flex flex-col justify-end max-w-4xl px-6 md:px-12 pb-32 md:pb-48">
+            <div className="relative z-10 h-screen flex flex-col justify-end max-w-5xl px-6 md:px-16 pb-32 md:pb-48">
               <motion.div
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
                 transition={{ duration: 0.7, ease }}
               >
-                <div className="inline-flex items-center gap-2 mb-5 px-4 py-2 rounded-full bg-white/5 backdrop-blur-xl border border-white/10">
-                  <span className="w-2 h-2 rounded-full bg-[#E8B647] animate-pulse" />
-                  <span className="font-mono text-[10px] md:text-xs tracking-[0.2em] uppercase text-white/90 font-semibold">
+                <div className="inline-flex items-center gap-3 mb-6 px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-xl border border-white/20">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#E8B647] animate-pulse" />
+                  <span className="font-mono text-xs md:text-sm tracking-[0.2em] uppercase text-white font-bold drop-shadow-sm">
                     {chapter.step} · {chapter.meta}
                   </span>
                 </div>
 
-                <h3 className="font-display text-4xl md:text-7xl font-bold tracking-tighter text-white mb-5 leading-[0.95]">
+                <h3 className="font-display text-5xl md:text-8xl font-extrabold tracking-tighter text-white mb-6 leading-[0.95] drop-shadow-lg">
                   {chapter.title}
                 </h3>
 
-                <p className="text-white/95 text-[15px] sm:text-base md:text-xl leading-relaxed max-w-2xl mb-6 font-medium drop-shadow-md">
+                <p className="text-white text-lg sm:text-xl md:text-2xl leading-relaxed max-w-3xl mb-8 font-medium drop-shadow-lg">
                   {chapter.desc}
                 </p>
 
-                <div className="flex items-center gap-2.5 text-white/60 text-xs md:text-sm">
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <div className="flex items-center gap-3 text-white/90 text-sm md:text-base font-medium drop-shadow-sm">
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z" />
-                    <circle cx="12" cy="9" r="2" />
+                    <circle cx="12" cy="9" r="2.5" />
                   </svg>
-                  <span className="tracking-wide font-medium">{chapter.location}</span>
+                  <span className="tracking-wide">{chapter.location}</span>
                 </div>
               </motion.div>
             </div>
