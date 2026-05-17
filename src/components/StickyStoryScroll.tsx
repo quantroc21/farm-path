@@ -79,6 +79,15 @@ const ease = [0.22, 1, 0.36, 1] as const;
 const StickyStoryScroll = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress: headerProgress } = useScroll({
+    target: headerRef,
+    offset: ["start start", "end start"],
+  });
+  const cueOpacity = useTransform(headerProgress, [0, 0.25], [1, 0]);
+  const cueY = useTransform(headerProgress, [0, 0.3], [0, 20]);
+
 
   useGSAP(() => {
     chapters.forEach((_, i) => {
