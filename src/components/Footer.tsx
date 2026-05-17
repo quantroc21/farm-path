@@ -9,7 +9,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="flex flex-col items-start">
             <Link to="/" className="inline-block mb-8">
-              <img src="/logo-transparent.png" alt="Daklink Logo" className="h-20 w-auto object-contain brightness-110 saturate-[1.1]" />
+              <img src="/logo-transparent.png" alt="Daklink Logo" width="188" height="80" className="h-20 w-auto object-contain brightness-110 saturate-[1.1]" />
             </Link>
             <p className="text-white/70 text-[15px] leading-relaxed max-w-xs mb-8">
               Minh bạch từ nông trại đến tay bạn. Truy xuất nguồn gốc nông sản Việt Nam.

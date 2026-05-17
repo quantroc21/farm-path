@@ -63,6 +63,8 @@ export const ProductService = {
   },
 };
 
+const viVNFormatter = new Intl.NumberFormat("vi-VN");
+
 export const formatPrice = (price: number) => {
-  return new Intl.NumberFormat("vi-VN").format(price) + "đ";
+  return viVNFormatter.format(price) + "đ";
 };

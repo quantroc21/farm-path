@@ -152,20 +152,20 @@ const StickyStoryScroll = () => {
             transition={{ duration: 0.4, ease }}
           />
         </div>
-        <div className="mt-4 ml-6 md:ml-12 inline-flex items-center gap-3 bg-[#0A2319]/80 backdrop-blur-xl px-4 py-2 rounded-full border border-white/10 shadow-2xl pointer-events-auto">
-          <span className="font-mono text-[10px] tracking-[0.3em] text-white/90 uppercase">Chương</span>
+        <div className="mt-4 ml-6 md:ml-12 inline-flex items-center gap-4 bg-[#0A2319]/80 backdrop-blur-xl px-6 py-2.5 rounded-full border border-white/10 shadow-2xl pointer-events-auto">
+          <span className="font-mono text-xs tracking-[0.3em] text-white/90 uppercase">Chương</span>
           <AnimatePresence mode="popLayout">
             <motion.div
               key={activeIndex}
               initial={{ y: 10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -10, opacity: 0 }}
-              className="font-mono text-sm tracking-wider text-[#E8B647] font-bold"
+              className="font-mono text-lg tracking-widest text-[#E8B647] font-bold ml-1"
             >
               {chapters[activeIndex].step}
             </motion.div>
           </AnimatePresence>
-          <span className="font-mono text-[10px] tracking-wider text-white/50">/ 0{chapters.length}</span>
+          <span className="font-mono text-sm tracking-[0.2em] text-white/50 ml-1">/ 0{chapters.length}</span>
         </div>
       </div>
 

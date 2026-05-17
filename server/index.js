@@ -1,5 +1,9 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const validate = require('./middleware/validate');
+const { loginSchema } = require('./schemas/authSchema');
+const { createOrderSchema } = require('./schemas/orderSchema');
 const dotenv = require('dotenv');
 const { createClient } = require('@libsql/client');
 const jwt = require('jsonwebtoken');
@@ -8,6 +12,7 @@ const path = require('path');
 const fs = require('fs');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { syncOrderToKiotViet } = require('./kiotviet');
+const rateLimit = require('express-rate-limit');
 
 dotenv.config();
 
@@ -16,8 +21,36 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const app = express();
 const port = process.env.PORT || 3001;
 
-app.use(cors());
-app.use(express.json({ limit: '10mb' }));
+// ─── HTTP Security Headers ────────────────────────────────
+app.use(helmet());
+
+// ─── Cross-Origin Resource Sharing (CORS) ─────────────────
+const allowedOrigins = [
+  'https://daklink.vn', 
+  'https://app.daklink.vn', 
+  'http://localhost:5173', // For local development
+];
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
+// ─── Resource Protection: Limit JSON payload size ─────────
+app.use(express.json({ limit: '2mb' }));
+
+// ─── Global Rate Limiter ──────────────────────────────────
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 200, // Limit each IP to 200 requests per window
+  message: { error: 'Quá nhiều yêu cầu từ IP này. Vui lòng thử lại sau 15 phút.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use(globalLimiter);
 
 // Serve uploads directory statically
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -147,8 +180,16 @@ const authenticateToken = (req, res, next) => {
 };
 
 // ─── Auth Routes ──────────────────────────────────────────
-app.post('/api/admin/login', (req, res) => {
+// ─── Sensitive Route Rate Limiter (Login) ─────────────────
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5, // Strictly limit to 5 attempts
+  message: { message: 'Thử lại quá nhiều lần. Vui lòng quay lại sau 15 phút.' },
+});
+
+app.post('/api/admin/login', loginLimiter, validate(loginSchema), (req, res) => {
   const { password } = req.body;
+  
   if (password === process.env.ADMIN_PASSWORD) {
     const token = jwt.sign({ role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '24h' });
     return res.json({ token });
@@ -406,13 +447,18 @@ app.get('/api/featured-products', async (req, res) => {
 });
 
 // ─── Helper ───────────────────────────────────────────────
+// ─── Order Creation Rate Limiter ──────────────────────────
+const orderLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5, // Limit 5 orders per 15 minutes per IP
+  message: { message: 'Tạo đơn hàng quá nhanh. Vui lòng thử lại sau 15 phút.' },
+});
+
 // ─── Orders: Public Create ────────────────────────────────
-app.post('/api/orders', async (req, res) => {
+app.post('/api/orders', orderLimiter, validate(createOrderSchema), async (req, res) => {
   const { customerName, customerPhone, customerAddress, customerNote, subtotal, shippingFee, totalAmount, items } = req.body;
   
-  if (!customerName || !customerPhone || !customerAddress || !items || items.length === 0) {
-    return res.status(400).json({ message: 'Thiếu thông tin nhận hàng hoặc sản phẩm' });
-  }
+  // ⚡ GUARANTEE: If execution reaches here, req.body is 100% typed and validated by Zod!
 
   try {
     // Start transaction (serial execution since libsql-client doesn't have native multi-statement transactions in one go easily)
@@ -578,7 +624,15 @@ function mapRowToProduct(row) {
 }
 
 // ─── AI Chatbot RAG Route ─────────────────────────────────
-app.post('/api/chat', async (req, res) => {
+const chatLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 10, // Limit each IP to 10 requests per windowMs
+  message: { error: 'Bạn đã gửi tin nhắn quá nhanh. Vui lòng thử lại sau 1 phút.' },
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
+app.post('/api/chat', chatLimiter, async (req, res) => {
   try {
     const { message, conversationHistory = [] } = req.body;
     
@@ -587,8 +641,9 @@ app.post('/api/chat', async (req, res) => {
     const products = rs.rows.map(mapRowToProduct);
 
     // Prepare context
+    const currencyFormatter = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' });
     const productsContext = products.map(p => 
-      `- Tên: ${p.name}\n  Giá: ${p.price > 0 ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(p.price) : 'Liên hệ'}\n  Phân loại: ${p.category}\n  Mã lô: ${p.batchNumber || 'N/A'}\n  Mô tả: ${p.description}`
+      `- Tên: ${p.name}\n  Giá: ${p.price > 0 ? currencyFormatter.format(p.price) : 'Liên hệ'}\n  Phân loại: ${p.category}\n  Mã lô: ${p.batchNumber || 'N/A'}\n  Mô tả: ${p.description}`
     ).join('\n\n');
 
     const systemInstruction = `

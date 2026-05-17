@@ -32,6 +32,8 @@ const Navbar = () => {
             <img 
               src="/logo-transparent.png" 
               alt="Daklink Logo" 
+              width="160"
+              height="68"
               className="h-[68px] w-auto object-contain transition-transform duration-300 group-hover:scale-105" 
             />
           </Link>
@@ -41,7 +43,7 @@ const Navbar = () => {
         <div className="flex justify-center items-center">
           {/* Mobile Logo - Shown on mobile, hidden on MD+ */}
           <Link to="/" className="md:hidden flex items-center">
-            <img src="/logo-transparent.png" alt="Daklink Logo" className="h-[68px] w-auto object-contain" />
+            <img src="/logo-transparent.png" alt="Daklink Logo" width="160" height="68" className="h-[68px] w-auto object-contain" />
           </Link>
           
           {/* Desktop Nav Links - Hidden on mobile, shown on MD+ */}

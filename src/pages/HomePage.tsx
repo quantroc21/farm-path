@@ -5,8 +5,8 @@ import { Sprout, BarChart3, BookOpen, ShoppingCart, Search, Cpu, Truck, Globe, A
 import FadeIn from "@/components/FadeIn";
 import StickyStoryScroll from "@/components/StickyStoryScroll";
 import heroCoffeeFarm from "@/assets/hero-coffee-farm.jpg";
-import heroVideo from "@/assets/hero-video.mp4";
-import heroFlycam from "@/assets/hero-flycam.mp4";
+
+import heroFlycam from "@/assets/hero-flycam.webm";
 import exportBg from "@/assets/export-bg.jpg";
 import { useQuery } from "@tanstack/react-query";
 import { LandingService } from "@/services/landing.service";
@@ -100,6 +100,24 @@ const guarantees = [
 ];
 
 const HomePage = () => {
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+
+  useEffect(() => {
+    // Wait until the entire page (including LCP images and fonts) is fully loaded
+    // before attempting to download and play the 5MB video.
+    // This absolutely guarantees that the video cannot block the First Contentful Paint.
+    const handleLoad = () => {
+      setTimeout(() => setIsVideoLoaded(true), 100);
+    };
+
+    if (document.readyState === 'complete') {
+      handleLoad();
+    } else {
+      window.addEventListener('load', handleLoad);
+      return () => window.removeEventListener('load', handleLoad);
+    }
+  }, []);
+
   return (
     <div>
       {/* Hero */}
@@ -109,30 +127,42 @@ const HomePage = () => {
           animate={{ x: [0, -6, 4, -3, 0], y: [0, 3, -4, 2, 0] }}
           transition={{ duration: 14, ease: "easeInOut", repeat: Infinity }}
         >
-          <video
-            ref={(el) => { if (el) el.playbackRate = 0.7; }}
-            src={heroFlycam}
-            poster={heroCoffeeFarm}
-            autoPlay
-            muted
-            loop
-            playsInline
+          {/* LCP Element: Lightweight image instantly rendered to satisfy Lighthouse */}
+          <img
+            src={heroCoffeeFarm}
+            alt="Daklink Coffee Farm"
+            fetchPriority="high"
             className="absolute inset-0 w-full h-full object-cover scale-110"
             style={{ filter: "blur(0.6px) saturate(1.05)" }}
           />
+
+          {/* Heavy Video Element: Lazily loaded after main thread breathes */}
+          {isVideoLoaded && (
+            <video
+              ref={(el) => { if (el) el.playbackRate = 0.7; }}
+              src={heroFlycam}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="none"
+              className="absolute inset-0 w-full h-full object-cover scale-110 animate-in fade-in duration-1000"
+              style={{ filter: "blur(0.6px) saturate(1.05)" }}
+            />
+          )}
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/40 to-transparent" />
         <div className="relative z-10 px-6 md:px-10 max-w-7xl mx-auto w-full">
           <FadeIn>
             <div className="max-w-xl">
-              <p className="font-mono-accent text-white/80 text-[11px] mb-4">
+              <p className="font-mono-accent text-white text-[11px] mb-4 drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
                 NỀN TẢNG CÔNG NGHỆ NÔNG NGHIỆP
               </p>
-              <h1 className="font-display text-[2.5rem] md:text-5xl font-bold text-white leading-[1.1] mb-5 tracking-tight">
-                Chấp cánh cho<br />nông sản Việt
+              <h1 className="font-display text-[2.2rem] sm:text-[2.75rem] md:text-5xl lg:text-6xl font-bold text-white leading-[1.15] mb-5 tracking-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.7)] max-w-3xl">
+                Nhìn thấu mọi<br /><span className="whitespace-nowrap">hành trình nông sản</span>
               </h1>
-              <p className="text-white/90 text-sm md:text-base mb-8 leading-[1.7] max-w-md">
-                Minh bạch từ nông trại đến tay bạn. Theo dõi hành trình từng sản phẩm, hoàn toàn minh bạch, hoàn toàn truy xuất được.
+              <p className="font-sans font-light text-white/95 text-base md:text-lg lg:text-xl mb-8 leading-relaxed max-w-2xl drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
+                Dữ liệu thay lời nói. Daklink kết nối bạn trực tiếp với nhật ký canh tác số từ nhà vườn.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link to="/shop" className="btn-primary inline-flex items-center gap-2 min-h-[48px]">
@@ -159,21 +189,10 @@ const HomePage = () => {
 
       {/* Drone section */}
       <section className="relative py-16 overflow-hidden min-h-[400px] flex items-center">
-        <motion.img 
+        <img 
           src={heroCoffeeFarm} 
           alt="Nông trại cà phê Tây Nguyên ứng dụng nhật ký canh tác số Daklink" 
           className="absolute inset-0 w-full h-full object-cover origin-center"
-          initial={{ scale: 1.4 }}
-          animate={{
-            scale: [1.4, 1.05, 1.4],
-            x: ["0%", "3%", "0%"],
-            y: ["0%", "-2%", "0%"],
-          }}
-          transition={{
-            duration: 12,
-            ease: "easeInOut",
-            repeat: Infinity,
-          }}
         />
         <div className="absolute inset-0 bg-foreground/60" />
         <div className="relative z-10 max-w-4xl mx-auto text-center px-6">
@@ -200,10 +219,10 @@ const HomePage = () => {
               <p className="font-mono-accent text-primary/70 text-[11px] mb-2">
                 SẢN PHẨM CỦA CHÚNG TÔI
               </p>
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-3 tracking-tight">
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 tracking-tight">
                 Minh bạch từ rẫy đến bạn
               </h2>
-              <p className="text-primary/70 text-sm max-w-xl mx-auto">
+              <p className="text-primary/80 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
                 Khám phá các lô hàng thực tế được quản lý bởi hệ thống Daklink. 
                 Chúng tôi tin rằng sự tin tưởng bắt đầu từ sự minh bạch.
               </p>

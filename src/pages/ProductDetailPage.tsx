@@ -204,7 +204,7 @@ const ProductDetailPage = () => {
   if (isLoading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <Loader2 className="size-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -213,7 +213,7 @@ const ProductDetailPage = () => {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Sản phẩm không tìm thấy</h1>
+          <h1 className="text-2xl font-semibold mb-4">Sản phẩm không tìm thấy</h1>
           <Link to="/shop" className="btn-primary">Quay lại Shop</Link>
         </div>
       </div>
@@ -248,17 +248,17 @@ const ProductDetailPage = () => {
       <div className="bg-white rounded-[1.5rem] shadow-2xl border border-black/5 p-5 w-[90vw] md:w-[380px] flex flex-col gap-5 animate-in slide-in-from-top-10 duration-500">
         <div className="flex items-center justify-between">
           <h4 className="font-mono-accent text-[14px] text-foreground">Đã thêm sản phẩm vào giỏ hàng</h4>
-          <button onClick={() => toast.dismiss(t)} className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
-            <X className="w-4 h-4" />
+          <button onClick={() => toast.dismiss(t)} className="size-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
+            <X className="size-4" />
           </button>
         </div>
         
         <div className="flex gap-5">
-          <div className="w-24 h-24 rounded-2xl overflow-hidden bg-muted flex-shrink-0 shadow-sm">
-            <img src={product.image} alt={`${product.name} - nông sản truy xuất nguồn gốc Daklink`} className="w-full h-full object-cover" />
+          <div className="size-24 rounded-2xl overflow-hidden bg-muted flex-shrink-0 shadow-sm">
+            <img src={product.image} alt={`${product.name} - nông sản truy xuất nguồn gốc Daklink`} className="size-full object-cover" />
           </div>
           <div className="flex-1 flex flex-col justify-center min-w-0">
-            <h5 className="font-bold text-[15px] text-foreground leading-tight line-clamp-2 mb-1">{product.name}</h5>
+            <h5 className="font-semibold text-[15px] text-foreground leading-tight line-clamp-2 mb-1">{product.name}</h5>
             <p className="text-sm text-muted-foreground mb-2">{itemToAdd.size}</p>
             <div className="flex items-center justify-between mt-auto">
               <span className="product-price text-primary text-lg">{formatPrice(itemToAdd.price)}</span>
@@ -317,13 +317,13 @@ const ProductDetailPage = () => {
         <div className="hidden md:flex items-center gap-4 font-mono-accent text-[11px]">
           {prevProduct && (
             <Link to={`/product/${prevProduct.slug}`} className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
-              <ChevronLeft className="w-4 h-4" /> Trước
+              <ChevronLeft className="size-4" /> Trước
             </Link>
           )}
           {prevProduct && nextProduct && <span className="text-border">|</span>}
           {nextProduct && (
             <Link to={`/product/${nextProduct.slug}`} className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors font-semibold">
-              Tiếp <ChevronRight className="w-4 h-4" />
+              Tiếp <ChevronRight className="size-4" />
             </Link>
           )}
         </div>
@@ -352,7 +352,7 @@ const ProductDetailPage = () => {
                       if (info.offset.x < -50) handleNextImage();
                       else if (info.offset.x > 50) handlePrevImage();
                     }}
-                    className="w-full h-full object-cover cursor-grab active:cursor-grabbing"
+                    className="size-full object-cover cursor-grab active:cursor-grabbing"
                   />
                 </AnimatePresence>
 
@@ -361,15 +361,15 @@ const ProductDetailPage = () => {
                   <>
                     <button 
                       onClick={(e) => { e.stopPropagation(); handlePrevImage(); }}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 backdrop-blur-xl flex items-center justify-center text-white opacity-0 md:group-hover:opacity-100 transition-opacity border border-white/30 z-10"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 size-10 rounded-full bg-white/20 backdrop-blur-xl flex items-center justify-center text-white opacity-0 md:group-hover:opacity-100 transition-opacity border border-white/30 z-10"
                     >
-                      <ChevronLeft className="w-6 h-6" />
+                      <ChevronLeft className="size-6" />
                     </button>
                     <button 
                       onClick={(e) => { e.stopPropagation(); handleNextImage(); }}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/20 backdrop-blur-xl flex items-center justify-center text-white opacity-0 md:group-hover:opacity-100 transition-opacity border border-white/30 z-10"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 size-10 rounded-full bg-white/20 backdrop-blur-xl flex items-center justify-center text-white opacity-0 md:group-hover:opacity-100 transition-opacity border border-white/30 z-10"
                     >
-                      <ChevronRight className="w-6 h-6" />
+                      <ChevronRight className="size-6" />
                     </button>
                   </>
                 )}
@@ -381,11 +381,11 @@ const ProductDetailPage = () => {
                     <div 
                       key={i} 
                       onClick={() => setActiveImage(img)}
-                      className={`w-16 h-16 rounded-lg overflow-hidden border-2 shrink-0 cursor-pointer transition-all duration-300 ${
+                      className={`size-16 rounded-lg overflow-hidden border-2 shrink-0 cursor-pointer transition-all duration-300 ${
                         (activeImage || product.image) === img ? 'border-primary shadow-md opacity-100' : 'border-transparent opacity-60 hover:opacity-100'
                       }`}
                     >
-                      <img src={img} alt={`${product.name} - hình ảnh chi tiết sản phẩm ${i + 1}`} className="w-full h-full object-cover" />
+                      <img src={img} alt={`${product.name} - hình ảnh chi tiết sản phẩm ${i + 1}`} className="size-full object-cover" />
                     </div>
                   ))}
                 </div>
@@ -396,7 +396,7 @@ const ProductDetailPage = () => {
           {/* Right - Info */}
           <FadeIn delay={0.1} className="w-full">
             <div>
-              <h1 className="font-display text-2xl md:text-4xl font-bold text-foreground mb-3 leading-tight tracking-tight">{product.name}</h1>
+              <h1 className="font-semibold text-foreground mb-3 leading-tight tracking-tight">{product.name}</h1>
               
               <div className="flex items-end gap-2 mb-1">
                 <p className="product-price text-primary text-2xl">{formatPrice(displayPrice)}</p>
@@ -436,19 +436,19 @@ const ProductDetailPage = () => {
                 <label className="font-mono-accent text-[11px] text-foreground mb-2 block">Thêm số lượng</label>
                 <div className="flex items-center gap-2.5">
                   <button 
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))} 
-                    className="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-black/10 hover:bg-muted transition-all active:scale-95 shadow-sm"
+                    onClick={() => setQuantity(prev => Math.max(1, prev - 1))} 
+                    className="size-10 flex items-center justify-center rounded-xl bg-white border border-black/10 hover:bg-muted transition-all active:scale-95 shadow-sm"
                   >
-                    <Minus className="w-4 h-4 text-muted-foreground" />
+                    <Minus className="size-4 text-muted-foreground" />
                   </button>
                   <div className="h-10 w-20 flex items-center justify-center rounded-xl bg-white border border-black/10 shadow-sm">
                     <span className="text-base font-bold">{quantity}</span>
                   </div>
                   <button 
-                    onClick={() => setQuantity(quantity + 1)} 
-                    className="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-black/10 hover:bg-muted transition-all active:scale-95 shadow-sm"
+                    onClick={() => setQuantity(prev => prev + 1)} 
+                    className="size-10 flex items-center justify-center rounded-xl bg-white border border-black/10 hover:bg-muted transition-all active:scale-95 shadow-sm"
                   >
-                    <Plus className="w-4 h-4 text-muted-foreground" />
+                    <Plus className="size-4 text-muted-foreground" />
                   </button>
                 </div>
               </div>
@@ -458,7 +458,7 @@ const ProductDetailPage = () => {
                   onClick={handleAddToCart}
                   className="w-full bg-[#0a2319] text-white py-5 rounded-2xl font-mono-accent text-[15px] transition-all duration-300 hover:bg-[#0a2319]/90 hover:shadow-xl hover:shadow-[#0a2319]/20 flex items-center justify-center gap-3 active:scale-[0.98]" 
                 >
-                  <ShoppingCart className="w-5 h-5" /> THÊM VÀO GIỎ HÀNG
+                  <ShoppingCart className="size-5" /> THÊM VÀO GIỎ HÀNG
                 </button>
               </div>
             </div>
@@ -472,7 +472,7 @@ const ProductDetailPage = () => {
           <div className="bg-[#EAE8E1] rounded-2xl p-6 md:p-10">
             <div className="grid md:grid-cols-2 gap-8 md:gap-16">
               <div>
-                <h3 className="font-display text-lg font-bold text-foreground mb-4">Đặc điểm nổi bật:</h3>
+                <h3 className="font-semibold text-foreground mb-4">Đặc điểm nổi bật:</h3>
                 
                 {product.flavorNotes && (
                   <p className="text-foreground font-semibold mb-6 leading-relaxed">{product.flavorNotes}</p>
@@ -499,7 +499,7 @@ const ProductDetailPage = () => {
                 </div>
               </div>
               <div>
-                <h3 className="font-display text-lg font-bold text-foreground mb-4">Câu chuyện</h3>
+                <h3 className="font-semibold text-foreground mb-4">Câu chuyện</h3>
                 {product.story ? (
                   <p className="text-[#333333] text-[15px] leading-[1.8] text-justify whitespace-pre-line">{product.story}</p>
                 ) : (
@@ -517,8 +517,8 @@ const ProductDetailPage = () => {
           <FadeIn className="w-full">
             <div className="bg-primary/5 border-2 border-primary/20 rounded-3xl p-6 md:p-10">
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-                  <MapPin className="w-5 h-5 text-primary-foreground" />
+                <div className="size-10 rounded-xl bg-primary flex items-center justify-center">
+                  <MapPin className="size-5 text-primary-foreground" />
                 </div>
                 <div>
                   <p className="font-mono-accent text-[11px] text-primary">
@@ -526,7 +526,7 @@ const ProductDetailPage = () => {
                   </p>
                 </div>
               </div>
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">
+              <h2 className="font-semibold text-foreground mb-2">
                 Hành trình số Daklink
               </h2>
               <p className="text-muted-foreground text-sm mb-8 max-w-xl leading-relaxed">
@@ -546,14 +546,14 @@ const ProductDetailPage = () => {
                       <FadeIn key={step.id || i} delay={i * 0.08}>
                         <div className="relative flex md:flex-col items-start md:items-center gap-4 md:gap-0">
                           {/* Icon circle */}
-                          <div className="relative z-10 w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center shrink-0 shadow-lg md:mb-3">
-                            <StageIcon className="w-5 h-5" />
+                          <div className="relative z-10 size-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center shrink-0 shadow-lg md:mb-3">
+                            <StageIcon className="size-5" />
                           </div>
                           
                           {/* Content */}
                           <div className="md:text-center flex-1">
                             <p className="font-mono text-[10px] text-primary mb-1">{step.date}</p>
-                            <h4 className="font-display text-sm font-bold text-foreground mb-1">{step.stage}</h4>
+                            <h4 className="font-semibold text-foreground mb-1">{step.stage}</h4>
                             <p className="text-muted-foreground text-xs leading-relaxed mb-1">{step.description}</p>
                             <p className="text-xs text-primary/70 italic">📝 {step.note}</p>
                           </div>
@@ -579,7 +579,7 @@ const ProductDetailPage = () => {
           <FadeIn>
             <div className="text-center mb-10">
               <p className="font-mono-accent text-[11px] text-primary mb-3">THƯỞNG THỨC TRỌN VẸN</p>
-              <h2 className="font-display text-2xl md:text-4xl font-bold text-foreground tracking-tight">Gợi ý kết hợp</h2>
+              <h2 className="font-semibold text-foreground tracking-tight">Gợi ý kết hợp</h2>
             </div>
             
             <div className="flex overflow-x-auto gap-6 md:gap-8 pb-8 snap-x snap-mandatory scrollbar-hide -mx-5 px-5">
@@ -591,7 +591,7 @@ const ProductDetailPage = () => {
                         <img 
                           src={pairing.image} 
                           alt={`${pairing.name} - gợi ý kết hợp với ${product.name}`}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          className="size-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                         {/* Subtle Hover Button */}
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500 flex items-center justify-center opacity-0 group-hover:opacity-100">
@@ -610,8 +610,8 @@ const ProductDetailPage = () => {
                           <p className="text-muted-foreground text-[13px] leading-relaxed line-clamp-2 flex-1">
                             {pairing.tip}
                           </p>
-                          <div className="w-10 h-10 rounded-xl bg-[#F9F9F9] flex items-center justify-center text-foreground group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-sm shrink-0">
-                             <ChevronRight className="w-5 h-5" />
+                          <div className="size-10 rounded-xl bg-[#F9F9F9] flex items-center justify-center text-foreground group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-sm shrink-0">
+                             <ChevronRight className="size-5" />
                           </div>
                         </div>
                       </div>
@@ -626,7 +626,7 @@ const ProductDetailPage = () => {
       {/* Related products */}
       <section className="max-w-6xl mx-auto px-6 md:px-10 pb-20">
         <FadeIn>
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-8 tracking-tight">Sản phẩm khác</h2>
+          <h2 className="font-semibold text-foreground mb-8 tracking-tight">Sản phẩm khác</h2>
           <div className="flex overflow-x-auto gap-6 md:gap-8 pb-8 snap-x snap-mandatory scrollbar-hide -mx-5 px-5">
             {otherProducts.map((p, i) => (
               <div key={p.id} className="shrink-0 w-[240px] md:w-[280px] snap-center">
@@ -648,18 +648,18 @@ const ProductDetailPage = () => {
             
             {/* Header Image Section */}
             <div className="relative w-full h-[240px] md:h-[380px] shrink-0">
-              <img src={selectedRecipe.image} alt={`Công thức ${selectedRecipe.name} - gợi ý từ Daklink`} className="w-full h-full object-cover" />
+              <img src={selectedRecipe.image} alt={`Công thức ${selectedRecipe.name} - gợi ý từ Daklink`} className="size-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" />
               
               <button 
                 onClick={() => setSelectedRecipe(null)}
-                className="absolute top-6 right-6 w-10 h-10 bg-black/20 backdrop-blur-xl rounded-full flex items-center justify-center text-white border border-white/20 hover:bg-black/40 transition-all z-20"
+                className="absolute top-6 right-6 size-10 bg-black/20 backdrop-blur-xl rounded-full flex items-center justify-center text-white border border-white/20 hover:bg-black/40 transition-all z-20"
               >
-                <X className="w-5 h-5" />
+                <X className="size-5" />
               </button>
 
               <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 pb-4 md:pb-6">
-                <h3 className="font-display text-3xl md:text-5xl font-bold text-foreground tracking-tight">{selectedRecipe.name}</h3>
+                <h3 className="font-semibold text-foreground tracking-tight">{selectedRecipe.name}</h3>
               </div>
             </div>
             
@@ -671,14 +671,14 @@ const ProductDetailPage = () => {
                 <div className="bg-[#F6F5F2] rounded-[2rem] p-8 border border-black/5">
                   <div className="flex items-center gap-2 mb-8">
                     <span className="text-xl">🍴</span>
-                    <h4 className="font-bold text-[13px] uppercase tracking-[0.15em] text-foreground/80">Nguyên liệu</h4>
+                    <h4 className="font-semibold text-[13px] uppercase tracking-[0.15em] text-foreground/80">Nguyên liệu</h4>
                   </div>
                   
                   {recipes[selectedRecipe.name] ? (
                     <ul className="space-y-4 mb-10">
                       {recipes[selectedRecipe.name].ingredients.map((ing: string, i: number) => (
                         <li key={i} className="flex items-start gap-3 text-[14px] text-muted-foreground leading-relaxed">
-                          <span className="w-1.5 h-1.5 rounded-full bg-black/20 mt-2 shrink-0" />
+                          <span className="size-1.5 rounded-full bg-black/20 mt-2 shrink-0" />
                           <span>{ing}</span>
                         </li>
                       ))}
@@ -694,7 +694,7 @@ const ProductDetailPage = () => {
 
                 {/* Right Column: Instructions */}
                 <div>
-                  <h4 className="font-bold text-lg text-foreground mb-10">Cách thực hiện:</h4>
+                  <h4 className="font-semibold text-lg text-foreground mb-10">Cách thực hiện:</h4>
                   
                   {recipes[selectedRecipe.name] ? (
                     <div className="space-y-10">
@@ -711,7 +711,7 @@ const ProductDetailPage = () => {
                     </div>
                   ) : (
                     <div className="flex flex-col items-center justify-center py-20 bg-black/[0.02] rounded-3xl border border-dashed border-black/10">
-                      <Loader2 className="w-8 h-8 animate-spin text-primary/20 mb-4" />
+                      <Loader2 className="size-8 animate-spin text-primary/20 mb-4" />
                       <p className="text-muted-foreground text-sm">Đang tải công thức chi tiết...</p>
                     </div>
                   )}
