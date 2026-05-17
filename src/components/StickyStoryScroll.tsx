@@ -153,17 +153,21 @@ const StickyStoryScroll = () => {
 
           {/* scroll cue */}
           <motion.div
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6, ease }}
-            className="mt-10 md:mt-14 flex items-center gap-3 text-white/50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5, duration: 0.6, ease }}
+            className="mt-12 md:mt-16 flex flex-col items-start gap-3 text-white/50"
           >
-            <span className="font-mono text-[10px] tracking-[0.3em] uppercase">Cuộn để bắt đầu</span>
-            <motion.span
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-              className="block w-px h-8 bg-gradient-to-b from-[#E8B647] to-transparent"
-            />
+            <span className="font-mono text-[10px] tracking-[0.3em] uppercase leading-none">
+              Cuộn để bắt đầu
+            </span>
+            <div className="relative h-10 w-px bg-white/10 overflow-hidden">
+              <motion.span
+                animate={{ y: ["-100%", "100%"] }}
+                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-transparent via-[#E8B647] to-transparent"
+              />
+            </div>
           </motion.div>
         </motion.div>
       </div>
