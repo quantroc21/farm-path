@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -78,6 +79,15 @@ const ease = [0.22, 1, 0.36, 1] as const;
 const StickyStoryScroll = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress: headerProgress } = useScroll({
+    target: headerRef,
+    offset: ["start start", "end start"],
+  });
+  const cueOpacity = useTransform(headerProgress, [0, 0.25], [1, 0]);
+  const cueY = useTransform(headerProgress, [0, 0.3], [0, 20]);
+
 
   useGSAP(() => {
     chapters.forEach((_, i) => {
@@ -123,7 +133,7 @@ const StickyStoryScroll = () => {
         }
       `}</style>
       {/* Header — editorial cover for the journey */}
-      <div className="relative max-w-6xl mx-auto px-6 md:px-12 pt-20 md:pt-32 pb-16 md:pb-24">
+      <div ref={headerRef} className="relative max-w-6xl mx-auto px-6 md:px-12 pt-20 md:pt-32 pb-16 md:pb-24">
         {/* decorative chapter index */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -151,23 +161,21 @@ const StickyStoryScroll = () => {
             Mỗi sản phẩm Daklink mang theo một hành trình — từ hạt giống, qua bàn tay người nông dân, đến tách cà phê trên bàn bạn.
           </p>
 
-          {/* scroll cue */}
+          {/* scroll cue — chevron, fades out on scroll */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.6, ease }}
-            className="mt-12 md:mt-16 flex flex-col items-start gap-3 text-white/50"
+            style={{ opacity: cueOpacity, y: cueY }}
+            className="mt-12 md:mt-16 flex flex-col items-start gap-3 text-white/55"
           >
             <span className="font-mono text-[10px] tracking-[0.3em] uppercase leading-none">
               Cuộn để bắt đầu
             </span>
-            <div className="relative h-10 w-px bg-white/10 overflow-hidden">
-              <motion.span
-                animate={{ y: ["-100%", "100%"] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-transparent via-[#E8B647] to-transparent"
-              />
-            </div>
+            <motion.div
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+              className="text-[#E8B647]"
+            >
+              <ChevronDown className="w-6 h-6" strokeWidth={2.2} />
+            </motion.div>
           </motion.div>
         </motion.div>
       </div>
