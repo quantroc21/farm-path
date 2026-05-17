@@ -126,17 +126,6 @@ const StickyStoryScroll = () => {
       <div className="relative max-w-6xl mx-auto px-6 md:px-12 pt-20 md:pt-32 pb-16 md:pb-24">
         {/* decorative chapter index */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, ease }}
-          aria-hidden
-          className="pointer-events-none absolute -top-2 md:top-8 right-4 md:right-12 font-display text-[120px] md:text-[220px] leading-none text-white/[0.04] font-black select-none"
-        >
-          06
-        </motion.div>
-
-        <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -158,21 +147,9 @@ const StickyStoryScroll = () => {
           </h2>
 
           {/* lede */}
-          <p className="text-white/75 text-base md:text-xl leading-relaxed max-w-lg mb-8 md:mb-10">
+          <p className="text-white/75 text-base md:text-xl leading-relaxed max-w-lg">
             Mỗi sản phẩm Daklink mang theo một hành trình — từ hạt giống, qua bàn tay người nông dân, đến tách cà phê trên bàn bạn.
           </p>
-
-          {/* meta strip */}
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-white/60">
-            <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#E8B647]" />
-              <span className="font-mono text-[10px] md:text-xs tracking-[0.25em] uppercase">06 chương</span>
-            </div>
-            <span className="hidden sm:block h-3 w-px bg-white/15" />
-            <span className="font-mono text-[10px] md:text-xs tracking-[0.25em] uppercase">M'Drak · Đắk Lắk</span>
-            <span className="hidden sm:block h-3 w-px bg-white/15" />
-            <span className="font-mono text-[10px] md:text-xs tracking-[0.25em] uppercase">Vụ mùa 2026</span>
-          </div>
 
           {/* scroll cue */}
           <motion.div
