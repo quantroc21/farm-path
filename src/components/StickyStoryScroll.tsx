@@ -122,24 +122,72 @@ const StickyStoryScroll = () => {
           }
         }
       `}</style>
-      {/* Header */}
-      <div className="max-w-6xl mx-auto px-6 md:px-12 pt-24 md:pt-32 pb-12 md:pb-20">
+      {/* Header — editorial cover for the journey */}
+      <div className="relative max-w-6xl mx-auto px-6 md:px-12 pt-20 md:pt-32 pb-16 md:pb-24">
+        {/* decorative chapter index */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease }}
+          aria-hidden
+          className="pointer-events-none absolute -top-2 md:top-8 right-4 md:right-12 font-display text-[120px] md:text-[220px] leading-none text-white/[0.04] font-black select-none"
+        >
+          06
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, ease }}
-          className="max-w-xl"
+          transition={{ duration: 0.9, ease }}
+          className="relative max-w-2xl"
         >
-          <p className="font-mono-accent text-[#E8B647] text-[11px] md:text-xs mb-4">
-            Hành trình minh bạch
-          </p>
-          <h2 className="font-display text-4xl md:text-6xl font-bold leading-[1.05] tracking-tight text-white mb-6">
-            Từ rẫy đến<br />bàn ăn
+          {/* eyebrow */}
+          <div className="flex items-center gap-3 mb-5 md:mb-6">
+            <span className="h-px w-8 md:w-12 bg-[#E8B647]" />
+            <p className="font-mono-accent text-[#E8B647] text-[10px] md:text-xs tracking-[0.3em] uppercase">
+              Hành trình minh bạch
+            </p>
+          </div>
+
+          {/* headline */}
+          <h2 className="font-display text-[44px] leading-[0.95] sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-6 md:mb-8">
+            Từ rẫy đến<br />
+            <span className="italic font-light text-[#E8B647]">bàn ăn</span>
           </h2>
-          <p className="text-white/70 text-base md:text-xl leading-relaxed text-left max-w-lg">
-            Mỗi sản phẩm Daklink mang theo một hành trình - từ hạt giống, qua bàn tay người nông dân, đến tách cà phê trên bàn bạn.
+
+          {/* lede */}
+          <p className="text-white/75 text-base md:text-xl leading-relaxed max-w-lg mb-8 md:mb-10">
+            Mỗi sản phẩm Daklink mang theo một hành trình — từ hạt giống, qua bàn tay người nông dân, đến tách cà phê trên bàn bạn.
           </p>
+
+          {/* meta strip */}
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-white/60">
+            <div className="flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E8B647]" />
+              <span className="font-mono text-[10px] md:text-xs tracking-[0.25em] uppercase">06 chương</span>
+            </div>
+            <span className="hidden sm:block h-3 w-px bg-white/15" />
+            <span className="font-mono text-[10px] md:text-xs tracking-[0.25em] uppercase">M'Drak · Đắk Lắk</span>
+            <span className="hidden sm:block h-3 w-px bg-white/15" />
+            <span className="font-mono text-[10px] md:text-xs tracking-[0.25em] uppercase">Vụ mùa 2026</span>
+          </div>
+
+          {/* scroll cue */}
+          <motion.div
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6, ease }}
+            className="mt-10 md:mt-14 flex items-center gap-3 text-white/50"
+          >
+            <span className="font-mono text-[10px] tracking-[0.3em] uppercase">Cuộn để bắt đầu</span>
+            <motion.span
+              animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+              className="block w-px h-8 bg-gradient-to-b from-[#E8B647] to-transparent"
+            />
+          </motion.div>
         </motion.div>
       </div>
 
